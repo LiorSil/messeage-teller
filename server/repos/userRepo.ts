@@ -1,0 +1,31 @@
+import User, { IUser } from "../models/userModel";
+
+const createUser = async (
+  email: string,
+  password: string,
+  phoneNumber: string
+): Promise<IUser> => {
+  const user = new User({ email, password, phoneNumber });
+  return await user.save();
+};
+
+const getUserById = async (userId: string): Promise<IUser | null> => {
+  return await User.findById(userId).exec();
+};
+
+const getUserByEmail = async (email: string): Promise<IUser | null> => {
+  return await User.findOne({ email }).exec();
+};
+
+const updateUser = async (
+  userId: string,
+  updateData: Partial<IUser>
+): Promise<IUser | null> => {
+  return await User.findByIdAndUpdate(userId, updateData, { new: true }).exec();
+};
+
+const deleteUser = async (userId: string): Promise<IUser | null> => {
+  return await User.findByIdAndDelete(userId).exec();
+};
+
+export { createUser, getUserById, getUserByEmail, updateUser, deleteUser };
