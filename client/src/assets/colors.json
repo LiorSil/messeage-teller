@@ -1,5 +1,5 @@
 {
-  "cool-gray": {
+  "app-palette-cool-gray": {
     "+90": "#E3EEF1",
     "+80": "#C7DDE3",
     "+70": "#ACCBD5",
@@ -20,7 +20,7 @@
     "-80": "#060B0C",
     "-90": "#030506"
   },
-  "cobalt-turquoise": {
+  "app-palette-cobalt-turquoise": {
     "+90": "#EAF3F5",
     "+80": "#D5E6EC",
     "+70": "#C0DAE2",
@@ -41,7 +41,7 @@
     "-80": "#0D181C",
     "-90": "#060C0E"
   },
-  "muted-turquoise": {
+  "app-palette-muted-turquoise": {
     "+90": "#F1F6F6",
     "+80": "#E2EEEC",
     "+70": "#D4E5E3",
@@ -62,7 +62,7 @@
     "-80": "#152321",
     "-90": "#0B1211"
   },
-  "sap-green-light": {
+  "app-palette-sap-green-light": {
     "+90": "#F5F9F6",
     "+80": "#ECF3ED",
     "+70": "#E2EDE4",
@@ -83,7 +83,7 @@
     "-80": "#1B2B1E",
     "-90": "#0E150F"
   },
-  "grey-green-light": {
+  "app-palette-grey-green-light": {
     "+90": "#FAFCF9",
     "+80": "#F5F9F3",
     "+70": "#F0F6ED",
