@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { registerUser, findUserByEmail } from "../services/userService";
+import {
+  registerUser,
+  findUserByEmail,
+  findUsers,
+} from "../services/userService";
 import jwt from "jsonwebtoken";
 
 const register = async (req: Request, res: Response) => {
@@ -37,7 +41,16 @@ const login = async (req: Request, res: Response) => {
   }
 };
 
+const getUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await findUsers();
+    res.status(200).json(users);
+  } catch (err: any) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
 //TODO: implement generateOtp
 //TODO: implement verifyOtp
 
-export { register, login };
+export { register, login, getUsers };

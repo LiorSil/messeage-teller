@@ -6,6 +6,7 @@ import cors from "cors";
 
 import contactRoute from "./routes/contactRoute";
 import authRoute from "./routes/authRoute";
+import userRoute from "./routes/userRoute";
 
 const port = process.env.PORT || 5000;
 const app = express();
@@ -21,6 +22,7 @@ app.get("/", (req: any, res: { send: (arg0: string) => void }) => {
 
 app.use("/contacts", contactRoute);
 app.use("/auth", authRoute);
+app.use("/users", userRoute);
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);

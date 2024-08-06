@@ -9,6 +9,10 @@ const createUser = async (
   return await user.save();
 };
 
+const getUsers = async (): Promise<IUser[]> => {
+  return await User.find().exec();
+};
+
 const getUserById = async (userId: string): Promise<IUser | null> => {
   return await User.findById(userId).exec();
 };
@@ -28,4 +32,11 @@ const deleteUser = async (userId: string): Promise<IUser | null> => {
   return await User.findByIdAndDelete(userId).exec();
 };
 
-export { createUser, getUserById, getUserByEmail, updateUser, deleteUser };
+export {
+  createUser,
+  getUsers,
+  getUserById,
+  getUserByEmail,
+  updateUser,
+  deleteUser,
+};

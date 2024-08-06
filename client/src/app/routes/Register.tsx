@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import useRegisterForm from "../../hooks/useRegisterForm";
 
 const Register = () => {
+  const { register, handleSubmit, onSubmitHandler, error, loading } =
+    useRegisterForm();
   return (
     <div className="bg-app-palette-sap-green-light-+40 font-serif h-screen">
       <div className="w-full flex flex-wrap">
@@ -15,12 +18,14 @@ const Register = () => {
           </div>
           <div className="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
             <p className="text-center text-3xl text-app-palette-muted-turquoise--30">
-              Register
+              Nice To Meet You!
             </p>
             <form
               className="flex flex-col pt-3 md:pt-8"
               onSubmit={(e) => {
                 e.preventDefault();
+                handleSubmit(onSubmitHandler)();
+                console.log("test");
               }}
             >
               <div className="flex flex-col pt-4">
@@ -32,6 +37,11 @@ const Register = () => {
                   type="email"
                   id="email"
                   placeholder="your@email.com"
+                  {...register("email", {
+                    required: true,
+                  })}
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                  title="Please enter a valid email address (example: name@email.com)"
                 />
               </div>
               <div className="flex flex-col pt-4">
@@ -43,6 +53,14 @@ const Register = () => {
                   type="password"
                   id="password"
                   placeholder="Password"
+                  {...register("password", {
+                    required: true,
+                  })}
+                  /*                 
+                  pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}"
+                  title="Password must be at least 8 characters long and include at least one Uppercase letter, one lowercase letter, one digit, and one special character (e.g., !, @, #, $, %, ^, &, *)."
+                    
+                    */
                 />
               </div>
               <div className="flex flex-col pt-4">
@@ -53,14 +71,20 @@ const Register = () => {
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
                   type="tel"
                   id="phone"
-                  placeholder="05-xxxxxxx"
+                  placeholder="05x-xxx-xxxx"
+                  {...register("phoneNumber", {
+                    required: true,
+                  })}
+                  pattern="05[0-9]{8}"
+                  title="Please enter a valid phone number (example: 050-234-5678)"
                 />
               </div>
-              <input
+              <button
                 type="submit"
-                value="Register"
                 className="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8"
-              />
+              >
+                Register
+              </button>
             </form>
             <div className="text-center pt-12 pb-12">
               <p className="text-sm">

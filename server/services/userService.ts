@@ -1,5 +1,6 @@
 import {
   createUser,
+  getUsers,
   getUserByEmail,
   updateUser,
   deleteUser,
@@ -13,6 +14,10 @@ const registerUser = async (
   phoneNumber: string
 ): Promise<IUser> => {
   return await createUser(email, password, phoneNumber);
+};
+
+const findUsers = async (): Promise<IUser[]> => {
+  return await getUsers();
 };
 
 const getUser = async (userId: string): Promise<IUser | null> => {
@@ -34,4 +39,11 @@ const removeUser = async (userId: string): Promise<IUser | null> => {
   return await deleteUser(userId);
 };
 
-export { registerUser, getUser, findUserByEmail, updateUserData, removeUser };
+export {
+  registerUser,
+  findUsers,
+  getUser,
+  findUserByEmail,
+  updateUserData,
+  removeUser,
+};
