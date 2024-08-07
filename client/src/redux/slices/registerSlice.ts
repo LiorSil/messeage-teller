@@ -58,6 +58,7 @@ const registerSlice = createSlice({
       state.userData = action.payload;
     });
     builder.addCase(registerUser.rejected, (state, action) => {
+      console.log("action", action);
       state.loading = false;
       state.error =
         typeof action.payload === "string"

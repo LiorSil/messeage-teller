@@ -11,6 +11,7 @@ const register = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
+
     const user = await registerUser(email, password, phoneNumber);
 
     res.status(201).json({ message: "User registered successfully", user });
@@ -20,6 +21,8 @@ const register = async (req: Request, res: Response) => {
 };
 
 const login = async (req: Request, res: Response) => {
+  // wait 10 seconds
+
   try {
     const { email, password } = req.body;
 
