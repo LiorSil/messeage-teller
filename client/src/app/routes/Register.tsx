@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { SubmitHandler } from "react-hook-form";
 import useRegisterForm from "../../hooks/useRegisterForm";
 import Loading from "../../components/Loading";
@@ -11,16 +11,26 @@ interface IFormInputs {
 }
 
 const Register: React.FC = () => {
-  const { register, handleSubmit, onSubmitHandler, error, loading } =
+  const { register, handleSubmit, onSubmitHandler, error, loading, success } =
     useRegisterForm();
+
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     onSubmitHandler(data);
   };
 
+  useEffect(() => {
+    if (success) {
+      navigate("/chat-room");
+    }
+  }, [success, navigate]);
+
   return (
     <>
       {loading && <Loading />}
+
+      {error && <p className="text-red-500 text-center">{error}</p>}
       <div className="bg-app-palette-sap-green-light-+40 font-serif h-screen">
         <div className="w-full flex flex-wrap">
           <div className="w-full md:w-1/2 flex flex-col">

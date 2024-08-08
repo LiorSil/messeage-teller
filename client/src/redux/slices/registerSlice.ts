@@ -10,6 +10,7 @@ const initialState = {
   },
   loading: false,
   error: "",
+  success: false,
 };
 
 // Async thunk for registering a user
@@ -56,15 +57,14 @@ const registerSlice = createSlice({
     builder.addCase(registerUser.fulfilled, (state, action) => {
       state.loading = false;
       state.userData = action.payload;
+      state.success = true;
     });
     builder.addCase(registerUser.rejected, (state, action) => {
-      console.log("action", action);
       state.loading = false;
       state.error =
         typeof action.payload === "string"
           ? action.payload
           : "An error occurred";
-      console.log("state.error", state.error);
     });
   },
 });

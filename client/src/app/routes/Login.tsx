@@ -58,6 +58,12 @@ const Home = () => {
                   Register here!
                 </Link>
               </p>
+              <br />
+              <p className="text-sm">
+                <Link className="underline font-semibold" to="/chat-room">
+                  chat-room
+                </Link>
+              </p>
             </div>
           </div>
         </div>

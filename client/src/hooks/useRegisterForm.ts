@@ -17,7 +17,9 @@ const useRegisterForm = () => {
     formState: { errors },
   } = useForm<RegisterFormData>(); // Type the useForm hook with RegisterFormData
   const dispatch: AppDispatch = useDispatch();
-  const { loading, error } = useSelector((state: RootState) => state.register);
+  const { loading, error, success } = useSelector(
+    (state: RootState) => state.register
+  );
 
   const onSubmitHandler: SubmitHandler<RegisterFormData> = (data) => {
     console.log("data", data);
@@ -32,6 +34,7 @@ const useRegisterForm = () => {
     errors,
     loading,
     error,
+    success,
   };
 };
 

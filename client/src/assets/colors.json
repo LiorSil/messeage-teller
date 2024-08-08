@@ -1,4 +1,8 @@
 {
+  "gradients": {
+    "chatBackground": "linear-gradient(90deg, hsla(195, 20%, 32%, 1) 0%, hsla(195, 37%, 40%, 1) 13%, hsla(172, 25%, 55%, 1) 37%, hsla(129, 22%, 69%, 1) 65%, hsla(95, 32%, 82%, 1) 100%)"
+  },
+
   "app-palette-cool-gray": {
     "+90": "#E3EEF1",
     "+80": "#C7DDE3",

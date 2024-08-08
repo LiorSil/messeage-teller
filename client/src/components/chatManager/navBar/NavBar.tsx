@@ -1,0 +1,25 @@
+import React, { ReactNode } from "react";
+import Profile from "./Profile";
+import Status from "./Status";
+import ButtonNewChat from "./ButtonNewChat";
+
+type Props = {
+  children?: ReactNode;
+  onSelectChat: (chatId: string) => void;
+};
+
+const NavBar: React.FC<Props> = ({ onSelectChat }) => {
+  return (
+    <div className="flex flex-col pl-3 rounded-2xl md:flex-row p-4 bg-app-palette-muted-turquoise-+90 justify-between">
+      <div className="flex items-center">
+        <Profile />
+        <Status />
+      </div>
+      <div className="flex items-center ml-auto">
+        <ButtonNewChat />
+      </div>
+    </div>
+  );
+};
+
+export default NavBar;
