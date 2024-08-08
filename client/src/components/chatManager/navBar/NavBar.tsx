@@ -10,12 +10,12 @@ type Props = {
 
 const NavBar: React.FC<Props> = ({ onSelectChat }) => {
   return (
-    <div className="flex flex-col pl-3 rounded-2xl md:flex-row p-4 bg-app-palette-muted-turquoise-+90 justify-between">
-      <div className="flex items-center">
+    <div className="flex flex-col pl-3 rounded-2xl md:flex-row m-3 p-2 bg-app-palette-sap-green-light-+30 justify-between border-sold border-app-palette-muted-turquoise--50 border-2">
+      <div className="flex items-center ">
         <Profile />
         <Status />
       </div>
-      <div className="flex items-center ml-auto">
+      <div className="flex items-center ml-auto ">
         <ButtonNewChat />
       </div>
     </div>

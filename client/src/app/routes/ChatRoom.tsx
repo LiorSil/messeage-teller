@@ -13,7 +13,7 @@ const ChatRoom: React.FC = () => {
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
 
   return (
-    <div className="h-screen flex flex-col md:flex-row">
+    <div className="h-screen flex flex-col md:flex-row bg-app-palette-sap-green-light-+40">
       <div
         className={`md:w-1/3 w-full flex flex-col ${selectedChat ? "hidden md:flex" : "flex"}`}
       >
