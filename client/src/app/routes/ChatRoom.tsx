@@ -19,9 +19,8 @@ const ChatRoom: React.FC = () => {
       <div
         className={`md:w-2/3 w-full flex flex-col relative ${selectedChat ? "flex" : "hidden md:flex"}`}
       >
-        <ChatHeader className="flex-none h-16" />
-        <ChatBoard className="flex-grow overflow-y-auto pb-16 md:pb-0" />{" "}
-        {/* Add padding-bottom for phone mode */}
+        <ChatHeader className="flex-none h-16 md:relative fixed top-0 left-0 right-0  " />
+        <ChatBoard className="flex-grow overflow-y-auto pb-16 md:pb-0" />
         <ChatInput className=" flex-none h-16 md:relative fixed bottom-0 left-0 right-0" />{" "}
         {/* Fix to bottom on phone mode */}
       </div>
