@@ -11,9 +11,10 @@ const ChatHeader: React.FC<ChatHeaderProps> = () => {
 
   //get image form src
 
+  //className="flex-none h-16"
   return (
-    <div className="flex flex-col flex-auto pt-2 px-3 ">
-      <div className="flex items-center p-4 rounded-2xl bg-chat-background border-solid border-2 border-app-palette-muted-turquoise--50">
+    <div className="flex flex-col flex-auto pt-2 px-3">
+      <div className="flex items-center p-4 mb-2 rounded-2xl bg-chat-background border-solid border-2 border-app-palette-muted-turquoise--50">
         <img
           src={avatar}
           alt={`${name}'s avatar`}

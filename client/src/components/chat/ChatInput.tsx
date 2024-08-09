@@ -1,8 +1,14 @@
 import React from "react";
 
-const ChatInput: React.FC = () => {
+interface ChatInputProps {
+  className?: string;
+}
+
+const ChatInput: React.FC<ChatInputProps> = ({ className = "" }) => {
   return (
-    <div className="flex flex-row items-center h-16 rounded-xl bg-app-palette-sap-green-light-+0 bg-transparent w-auto mx-3 py-4 px-3 ">
+    <div
+      className={`flex flex-row items-center h-16 rounded-xl mx-16 md:mx-3  py-4 px-3 backdrop-blur-lg bg-white/50  ${className}`}
+    >
       <div>
         <button className="flex items-center justify-center text-gray-400 hover:text-gray-600">
           <svg

@@ -2,9 +2,10 @@ import React from "react";
 
 interface InputMessageProps {
   message: string;
+  date: string; // Add a prop for the message date
 }
 
-const InputMessage: React.FC<InputMessageProps> = ({ message }) => {
+const InputMessage: React.FC<InputMessageProps> = ({ message, date }) => {
   return (
     <div className="col-start-1 col-end-8 p-3 rounded-lg">
       <div className="flex flex-row items-center">
@@ -13,6 +14,8 @@ const InputMessage: React.FC<InputMessageProps> = ({ message }) => {
         </div>
         <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
           <div>{message}</div>
+          <div className="text-gray-400 text-xs mt-1">{date}</div>{" "}
+          {/* Date hint */}
         </div>
       </div>
     </div>

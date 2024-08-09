@@ -1,11 +1,18 @@
 import React from "react";
 import MessageList from "./MessageList";
 
-const ChatBoard: React.FC = () => {
+interface ChatBoardProps {
+  className?: string;
+}
+
+const ChatBoard: React.FC<ChatBoardProps> = ({ className = "" }) => {
   return (
-    <div className="flex flex-col flex-auto h-full py-2 px-3  ">
-      <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl  border-solid border-2 border-app-palette-muted-turquoise--50 bg-chat-background">
-        <MessageList />
+    <div className={`flex-grow ${className} rounded-2xl py-2 px-3`}>
+      <div
+        className="flex flex-col h-full rounded-2xl border-solid border-2 border-app-palette-muted-turquoise--50 bg-chat-background overflow-hidden 
+      "
+      >
+        <MessageList className="flex-grow overflow-y-auto" />
       </div>
     </div>
   );

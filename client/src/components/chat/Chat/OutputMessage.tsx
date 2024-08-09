@@ -2,9 +2,10 @@ import React from "react";
 
 interface OutputMessageProps {
   message: string;
+  date: string; // Add a prop for the message date
 }
 
-const OutputMessage: React.FC<OutputMessageProps> = ({ message }) => {
+const OutputMessage: React.FC<OutputMessageProps> = ({ message, date }) => {
   return (
     <div className="col-start-6 col-end-13 p-3 rounded-lg">
       <div className="flex items-center justify-start flex-row-reverse">
@@ -13,6 +14,10 @@ const OutputMessage: React.FC<OutputMessageProps> = ({ message }) => {
         </div>
         <div className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
           <div>{message}</div>
+          <div className="text-gray-400 text-xs mt-1 text-right">
+            {date}
+          </div>{" "}
+          {/* Date hint */}
         </div>
       </div>
     </div>

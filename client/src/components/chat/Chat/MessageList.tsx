@@ -2,19 +2,56 @@ import React from "react";
 import InputMessage from "./InputMessage";
 import OutputMessage from "./OutputMessage";
 
-const MessageList: React.FC = () => {
+interface MessageListProps {
+  className?: string;
+}
+
+const MessageList: React.FC<MessageListProps> = ({ className = "" }) => {
   return (
-    <div className="flex flex-col h-full overflow-x-auto mb-4">
-      <div className="flex flex-col h-full">
-        <div className="grid grid-cols-12 gap-y-2">
-          <InputMessage message="Hey How are you today?" />
-          <InputMessage message="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel ipsa commodi illum saepe numquam maxime asperiores voluptate sit, minima perspiciatis." />
-          <OutputMessage message="I'm ok what about you?" />
-          <OutputMessage message="Lorem ipsum dolor sit, amet consectetur adipisicing?" />
-          <InputMessage message="Lorem ipsum dolor sit amet!" />
-          <OutputMessage message="Lorem ipsum dolor sit, amet consectetur adipisicing?" />
-          <InputMessage message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis, in." />
-        </div>
+    <div className={`flex flex-col h-full ${className} p-4 `}>
+      <div className="grid grid-cols-12 gap-y-2">
+        <InputMessage
+          date="2024-08-09 10:45 AM"
+          message="Hey How are you today?"
+        />
+        <InputMessage
+          message="Lorem ipsum dolor sit hello, consectetur adipisicing elit. Vel ipsa commodi illum saepe numquam maxime asperiores voluptate sit, minima perspiciatis."
+          date="2024-08-09 10:45 AM"
+        />
+        <OutputMessage
+          message="I'm ok what about you?"
+          date="2024-08-09 10:50 AM"
+        />
+        <OutputMessage
+          message="Lorem ipsum dolor sit, hello consectetur adipisicing?"
+          date="2024-08-09 10:50 AM"
+        />
+        <InputMessage
+          message="Lorem ipsum dolor sit hello!"
+          date="2024-08-09 10:45 AM"
+        />
+        <OutputMessage
+          message="Lorem ipsum dolor sit, hello consectetur adipisicing?"
+          date="2024-08-09 10:50 AM"
+        />
+        <InputMessage
+          message="Lorem ipsum dolor sit hello consectetur adipisicing elit. 
+          Perspiciatis, in."
+          date="2024-08-09 10:45 AM"
+        />
+        <OutputMessage
+          message="Lorem ipsum dolor sit, hello consectetur adipisicing?"
+          date="2024-08-09 10:50 AM"
+        />
+        <InputMessage
+          message="Lorem ipsum dolor sit hello consectetur adipisicing elit. 
+          Perspiciatis, in."
+          date="2024-08-09 10:45 AM"
+        />
+        <OutputMessage
+          message="Lorem ipsum dolor sit, hello consectetur adipisicing?"
+          date="2024-08-09 10:50 AM"
+        />
       </div>
     </div>
   );
