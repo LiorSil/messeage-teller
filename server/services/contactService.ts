@@ -31,7 +31,9 @@ const deleteContact = async (
   return await contactRepo.deleteContact(contactId);
 };
 
-export default {
+
+
+export {
   createContact,
   getContactById,
   getContacts,

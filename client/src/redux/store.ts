@@ -4,10 +4,12 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 import userSlice from "./slices/userSlice";
 import registerSlice from "./slices/registerSlice";
+import contactSlice from "./slices/contactSlice";
 
 const rootReducer = combineReducers({
   user: userSlice,
   register: registerSlice,
+  contact: contactSlice,
 });
 
 const store = configureStore({

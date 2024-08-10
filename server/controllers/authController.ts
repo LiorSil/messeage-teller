@@ -21,8 +21,6 @@ const register = async (req: Request, res: Response) => {
 };
 
 const login = async (req: Request, res: Response) => {
-  // wait 10 seconds
-
   try {
     const { email, password } = req.body;
 

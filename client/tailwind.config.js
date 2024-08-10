@@ -3,6 +3,7 @@ import forms from "@tailwindcss/forms";
 import typography from "@tailwindcss/typography";
 import lineClamp from "@tailwindcss/line-clamp";
 import filters from "tailwindcss-filters"; //
+import daisyui from "daisyui";
 
 import colors from "./src/assets/colors.json";
 
@@ -25,5 +26,9 @@ export default {
     typography, // Tailwind CSS typography plugin
     lineClamp, // Tailwind CSS line-clamp plugin
     filters, // Tailwind CSS filters plugin for backdrop filters
+    daisyui,
   ],
+  daisyui: {
+    themes: ["dark", "light", "emerald"],
+  },
 };

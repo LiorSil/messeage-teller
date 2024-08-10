@@ -6,12 +6,12 @@ import NavBar from "../../components/chatManager/navBar/NavBar";
 import ChatBoard from "../../components/chat/Chat/ChatBoard";
 
 const ChatRoom: React.FC = () => {
-  const [selectedChat, setSelectedChat] = useState<string | null>(true);
+  const [selectedChat, setSelectedChat] = useState<string | null>(null);
 
   return (
     <div className=" md:h-screen flex flex-col md:flex-row bg-app-palette-sap-green-light-+40">
       <div
-        className={`md:w-1/3 w-full flex flex-col ${selectedChat ? "hidden md:flex" : "flex"}`}
+        className={`md:w-1/3 w-full h-screen flex flex-col ${selectedChat ? "hidden md:flex" : "flex"}`}
       >
         <NavBar onSelectChat={setSelectedChat} />
         <ChatList onSelectChat={setSelectedChat} />

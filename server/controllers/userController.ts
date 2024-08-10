@@ -3,6 +3,7 @@ import {
   registerUser,
   findUserByEmail,
   findUsers,
+  
 } from "../services/userService";
 import jwt from "jsonwebtoken";
 
@@ -15,9 +16,11 @@ const register = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    const user = await registerUser(email, password, phoneNumber);
+    const { user, contact } = await registerUser(email, password, phoneNumber);
 
-    res.status(201).json({ message: "User registered successfully", user });
+    res
+      .status(201)
+      .json({ message: "User registered successfully", user, contact });
   } catch (err: any) {
     res.status(400).json({ message: err.message });
   }
@@ -49,6 +52,8 @@ const getUsers = async (req: Request, res: Response) => {
     res.status(400).json({ message: err.message });
   }
 };
+
+
 
 //TODO: implement generateOtp
 //TODO: implement verifyOtp

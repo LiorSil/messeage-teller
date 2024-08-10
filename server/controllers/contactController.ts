@@ -1,9 +1,15 @@
 import { Request, Response } from "express";
-import contactService from "../services/contactService";
+import {
+  createContact as createContactService,
+  getContactById as getContactByIdService,
+  getContacts as getContactsService,
+  updateContact as updateContactService,
+  deleteContact as deleteContactService,
+} from "../services/contactService";
 
 const createContact = async (req: Request, res: Response) => {
   try {
-    const contact = await contactService.createContact(req.body);
+    const contact = await createContactService(req.body);
     res.status(201).json(contact);
   } catch (err: any) {
     res.status(400).json({ message: err.message });
@@ -12,7 +18,7 @@ const createContact = async (req: Request, res: Response) => {
 
 const getContactById = async (req: Request, res: Response) => {
   try {
-    const contact = await contactService.getContactById(req.params.id);
+    const contact = await getContactByIdService(req.params.id);
     if (!contact) {
       return res.status(404).json({ message: "Contact not found" });
     }
@@ -24,8 +30,17 @@ const getContactById = async (req: Request, res: Response) => {
 
 const getContacts = async (req: Request, res: Response) => {
   try {
-    const contacts = await contactService.getContacts();
-    res.status(200).json(contacts);
+    const { phoneNumber } = req.query;
+    const contacts = await getContactsService();
+
+    if (phoneNumber) {
+      const filteredContacts = contacts.filter((contact) =>
+        contact.phoneNumber.startsWith(phoneNumber as string)
+      );
+      return res.status(200).json(filteredContacts);
+    } else {
+      res.status(200).json(contacts);
+    }
   } catch (err: any) {
     res.status(400).json({ message: err.message });
   }
@@ -33,7 +48,7 @@ const getContacts = async (req: Request, res: Response) => {
 
 const updateContact = async (req: Request, res: Response) => {
   try {
-    const contact = await contactService.updateContact(req.params.id, req.body);
+    const contact = await updateContactService(req.params.id, req.body);
     if (!contact) {
       return res.status(404).json({ message: "Contact not found" });
     }
@@ -45,7 +60,7 @@ const updateContact = async (req: Request, res: Response) => {
 
 const deleteContact = async (req: Request, res: Response) => {
   try {
-    const contact = await contactService.deleteContact(req.params.id);
+    const contact = await deleteContactService(req.params.id);
     if (!contact) {
       return res.status(404).json({ message: "Contact not found" });
     }

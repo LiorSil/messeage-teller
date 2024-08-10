@@ -7,13 +7,23 @@ import {
   getUserById,
 } from "../repos/userRepo";
 import { IUser } from "../models/userModel";
+import { IContact } from "../models/contactModel";
+import { createContact } from "../services/contactService";
 
 const registerUser = async (
   email: string,
   password: string,
   phoneNumber: string
-): Promise<IUser> => {
-  return await createUser(email, password, phoneNumber);
+): Promise<{ user: IUser; contact: IContact }> => {
+  const user = await createUser(email, password, phoneNumber);
+  const contact = await createContact({
+    name: email,
+    phoneNumber, 
+    createdAt: new Date().toISOString(),
+  });
+
+  // Return both the user and the contact
+  return { user, contact };
 };
 
 const findUsers = async (): Promise<IUser[]> => {
@@ -39,6 +49,8 @@ const removeUser = async (userId: string): Promise<IUser | null> => {
   return await deleteUser(userId);
 };
 
+
+
 export {
   registerUser,
   findUsers,
@@ -46,4 +58,5 @@ export {
   findUserByEmail,
   updateUserData,
   removeUser,
+  
 };

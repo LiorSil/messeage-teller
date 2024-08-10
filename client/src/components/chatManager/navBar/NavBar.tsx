@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import Profile from "./Profile";
 import Status from "./Status";
-import ButtonNewChat from "./ButtonNewChat";
+import FindNewChat from "./newChat/FindNewChat";
 
 type Props = {
   children?: ReactNode;
@@ -16,7 +16,7 @@ const NavBar: React.FC<Props> = ({ onSelectChat }) => {
         <Status />
       </div>
       <div className="flex items-center ml-auto ">
-        <ButtonNewChat />
+        <FindNewChat />
       </div>
     </div>
   );
