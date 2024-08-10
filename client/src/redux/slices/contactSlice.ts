@@ -9,25 +9,19 @@ const initialState = {
 };
 
 // Async thunk for fetching filtered by user's entered phone number contacts
-export const fetchContacts = createAsyncThunk(
-  "contact/fetchContacts",
-  async (phoneNumber: string, { rejectWithValue }) => {
-    if (phoneNumber.length > 5) {
-      try {
-        const response = await axios.get(
-          `${VITE_API_URL}/contacts?phoneNumber=${phoneNumber}`
-        );
-        return response.data;
-      } catch (err) {
-        if (err.response && err.response.data) {
-          return rejectWithValue(err.response.data.message);
-        } else {
-          return rejectWithValue("An error occurred");
-        }
-      }
+export const fetchContacts = createAsyncThunk("contact/fetchContacts", async () => {
+  try {
+    const response = await axios.get(`${VITE_API_URL}/contacts/`);
+    console.log("response", response);
+    return response.data;
+  } catch (err) {
+    if (err.response && err.response.data) {
+      throw err.response.data;
+    } else {
+      throw err;
     }
   }
-);
+});
 
 const contactSlice = createSlice({
   name: "contact",

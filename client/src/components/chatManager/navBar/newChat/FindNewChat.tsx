@@ -26,21 +26,18 @@ const FindNewChat: React.FC = () => {
   };
 
   useEffect(() => {
-    if (phoneNumber) {
-      dispatch(fetchContacts(phoneNumber));
-    }
-  }, [phoneNumber, dispatch]);
+    dispatch(fetchContacts());
+  }, []);
 
   const toggleInputVisibility = () => {
     setInputVisible((prevState) => !prevState);
   };
-  console.log("contacts", contacts);
 
   return (
     <>
       <button
         onClick={toggleInputVisibility}
-        className=" p-2 rounded-lg hover:bg-app-palette-cool-gray-+80"
+        className="p-2 rounded-lg hover:bg-app-palette-cool-gray-+80"
       >
         <img src={icon} alt="New chat" className="h-6 w-6" />
         <span className="ml-2"></span>
@@ -48,7 +45,7 @@ const FindNewChat: React.FC = () => {
       {isInputVisible && (
         <input
           maxLength={10}
-          onChange={(e) => editPhoneHandler(e)}
+          onChange={editPhoneHandler}
           placeholder="052-111-2345"
           className="w-5/6 p-2 rounded-lg bg-transparent border-2 border-app-palette-muted-turquoise--50 text-black focus:text-app-palette-cool-gray-+30 focus:ring-0 focus:border-app-palette-cool-gray-+30 focus:shadow-lg"
         />
