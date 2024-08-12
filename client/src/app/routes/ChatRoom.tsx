@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import ChatList from "../../components/chatManager/chatList/ChatList";
-import ChatHeader from "../../components/chat/ChatHeader";
-import ChatInput from "../../components/chat/ChatInput";
-import NavBar from "../../components/chatManager/navBar/NavBar";
-import ChatBoard from "../../components/chat/Chat/ChatBoard";
+import ChatList from "../../components/chat-manager/chats-list/ChatList";
+import ChatHeader from "../../components/chat-session/ChatHeader";
+import ChatInput from "../../components/chat-session/ChatInput";
+import NavBar from "../../components/chat-manager/nav-bar/NavBar";
+import ChatBoard from "../../components/chat-session/chat/ChatBoard";
 
 const ChatRoom: React.FC = () => {
   const [selectedChat, setSelectedChat] = useState<string | null>(null);

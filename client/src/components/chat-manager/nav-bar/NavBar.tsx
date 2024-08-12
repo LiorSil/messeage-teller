@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import Profile from "./Profile";
 import Status from "./Status";
-import FindNewChat from "./newChat/FindNewChat";
+import FindNewChat from "./new-chat/FindNewChat";
 
 type Props = {
   children?: ReactNode;

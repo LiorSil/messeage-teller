@@ -17,6 +17,7 @@
     "@tailwindcss/typography": "^0.5.14",
     "@types/jest": "^29.5.12",
     "@types/node": "^22.1.0",
+    "antd": "^5.20.1",
     "axios": "^1.7.3",
     "classnames": "^2.5.1",
     "date-fns": "^3.6.0",

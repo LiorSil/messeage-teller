@@ -1,11 +1,11 @@
 import React from "react";
 
-interface InputMessageProps {
+interface IncomingMessageProps {
   message: string;
   date: string; // Add a prop for the message date
 }
 
-const InputMessage: React.FC<InputMessageProps> = ({ message, date }) => {
+const IncomingMessage: React.FC<IncomingMessageProps> = ({ message, date }) => {
   return (
     <div className="col-start-1 col-end-8 p-3 rounded-lg">
       <div className="flex flex-row items-center">
@@ -22,4 +22,4 @@ const InputMessage: React.FC<InputMessageProps> = ({ message, date }) => {
   );
 };
 
-export default InputMessage;
+export default IncomingMessage;

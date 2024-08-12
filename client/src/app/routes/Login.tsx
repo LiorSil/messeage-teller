@@ -51,6 +51,7 @@ const Home = () => {
                 className="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8"
               />
             </form>
+
             <div className="text-center pt-12 pb-12">
               <p className="text-sm">
                 Don't have an account?{" "}

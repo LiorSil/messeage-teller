@@ -1,11 +1,11 @@
 import React from "react";
 
-interface OutputMessageProps {
+interface OutgoingMessageProps {
   message: string;
   date: string; // Add a prop for the message date
 }
 
-const OutputMessage: React.FC<OutputMessageProps> = ({ message, date }) => {
+const OutgoingMessage: React.FC<OutgoingMessageProps> = ({ message, date }) => {
   return (
     <div className="col-start-6 col-end-13 p-3 rounded-lg">
       <div className="flex items-center justify-start flex-row-reverse">
@@ -24,4 +24,4 @@ const OutputMessage: React.FC<OutputMessageProps> = ({ message, date }) => {
   );
 };
 
-export default OutputMessage;
+export default OutgoingMessage;

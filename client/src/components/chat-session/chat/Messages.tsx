@@ -1,12 +1,12 @@
 import React from "react";
-import InputMessage from "./InputMessage";
-import OutputMessage from "./OutputMessage";
+import InputMessage from "./IncomingMessage";
+import OutputMessage from "./OutgoingMessage";
 
-interface MessageListProps {
+interface MessagesProps {
   className?: string;
 }
 
-const MessageList: React.FC<MessageListProps> = ({ className = "" }) => {
+const Messages: React.FC<MessagesProps> = ({ className = "" }) => {
   return (
     <div className={`flex flex-col h-full ${className} p-4 `}>
       <div className="grid grid-cols-12 gap-y-2">
@@ -57,4 +57,4 @@ const MessageList: React.FC<MessageListProps> = ({ className = "" }) => {
   );
 };
 
-export default MessageList;
+export default Messages;
