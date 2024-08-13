@@ -42,7 +42,31 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-const registerSlice = createSlice({
+export const loginUser = createAsyncThunk(
+  "register/loginUser",
+  async (
+    userData: {
+      email: string;
+      password: string;
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await axios.post(`${VITE_API_URL}/auth/login`, userData);
+      return response.data;
+    } catch (err) {
+      if (err.response && err.response.data) {
+        // Return the error message from the API response
+        return rejectWithValue(err.response.data.message);
+      } else {
+        // Return a generic error message
+        return rejectWithValue("An error occurred");
+      }
+    }
+  }
+);
+
+const authSlice = createSlice({
   name: "register",
   initialState,
   reducers: {
@@ -66,8 +90,23 @@ const registerSlice = createSlice({
           ? action.payload
           : "An error occurred";
     });
+    builder.addCase(loginUser.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(loginUser.fulfilled, (state, action) => {
+      state.loading = false;
+      state.userData = action.payload;
+      state.success = true;
+    });
+    builder.addCase(loginUser.rejected, (state, action) => {
+      state.loading = false;
+      state.error =
+        typeof action.payload === "string"
+          ? action.payload
+          : "An error occurred";
+    });
   },
 });
 
-export const { setUser } = registerSlice.actions;
-export default registerSlice.reducer;
+export const { setUser } = authSlice.actions;
+export default authSlice.reducer;

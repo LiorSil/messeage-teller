@@ -5,6 +5,7 @@ import {
   updateUser,
   deleteUser,
   getUserById,
+  getUserByPhoneNumber,
 } from "../repos/userRepo";
 import { IUser } from "../models/userModel";
 import { IContact } from "../models/contactModel";
@@ -18,7 +19,7 @@ const registerUser = async (
   const user = await createUser(email, password, phoneNumber);
   const contact = await createContact({
     name: email,
-    phoneNumber, 
+    phoneNumber,
     createdAt: new Date().toISOString(),
   });
 
@@ -38,6 +39,12 @@ const findUserByEmail = async (email: string): Promise<IUser | null> => {
   return await getUserByEmail(email);
 };
 
+const findUserByPhoneNumber = async (
+  phoneNumber: string
+): Promise<IUser | null> => {
+  return await getUserByPhoneNumber(phoneNumber);
+};
+
 const updateUserData = async (
   userId: string,
   updateData: Partial<IUser>
@@ -49,14 +56,12 @@ const removeUser = async (userId: string): Promise<IUser | null> => {
   return await deleteUser(userId);
 };
 
-
-
 export {
   registerUser,
   findUsers,
   getUser,
   findUserByEmail,
+  findUserByPhoneNumber,
   updateUserData,
   removeUser,
-  
 };

@@ -1,28 +1,28 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../redux/store";
-import { registerUser } from "../redux/slices/authSlice";
+import { loginUser } from "../redux/slices/authSlice";
 
-type RegisterFormData = {
+type LoginFormData = {
   email: string;
   password: string;
-  phoneNumber: string;
 };
 
-const useRegisterForm = () => {
+const useLoginForm = () => {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<RegisterFormData>(); // Type the useForm hook with RegisterFormData
+  } = useForm<LoginFormData>();
+
   const dispatch: AppDispatch = useDispatch();
   const { loading, error, success } = useSelector(
     (state: RootState) => state.auth
   );
 
-  const onSubmitHandler: SubmitHandler<RegisterFormData> = (data) => {
-    dispatch(registerUser(data));
+  const onSubmitHandler: SubmitHandler<LoginFormData> = (data) => {
+    dispatch(loginUser(data));
     reset();
   };
 
@@ -37,4 +37,4 @@ const useRegisterForm = () => {
   };
 };
 
-export default useRegisterForm;
+export default useLoginForm;

@@ -37,11 +37,12 @@ const FindNewChat: React.FC = () => {
     <>
       <button
         onClick={toggleInputVisibility}
-        className="p-2 rounded-lg hover:bg-app-palette-cool-gray-+80"
+        className="flex  md:w-30  space-x-2 p-2 text-white hover:bg-app-palette-muted-turquoise--20 hover:rounded-md focus:outline-none"
       >
+        <span>New Chat</span>
         <img src={icon} alt="New chat" className="h-6 w-6" />
-        <span className="ml-2"></span>
       </button>
+
       {isInputVisible && (
         <input
           maxLength={10}

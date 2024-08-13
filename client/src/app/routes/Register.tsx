@@ -11,7 +11,11 @@ interface IFormInputs {
   phoneNumber: string;
 }
 
-const Register: React.FC = () => {
+type Props = {
+  headline: string;
+};
+
+const Register = (props: Props) => {
   const { register, handleSubmit, onSubmitHandler, error, loading, success } =
     useRegisterForm();
 
@@ -29,22 +33,23 @@ const Register: React.FC = () => {
 
   return (
     <>
-      <FormWrapper headline="Nice To Meet you">
+      <FormWrapper headline={props.headline}>
         {loading && <Loading />}
-        {error && <p className="text-red-500 text-center">{error}</p>}
+        {error && (
+          <p className="bg-app-palette-cool-gray-+90 border-2 border-red-600 text-red-500 text-center">
+            {error}
+          </p>
+        )}
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4 ">
-            <label
-              htmlFor="email"
-              className="block text-base font-medium text-app-palette-muted-turquoise--60 mb-2"
-            >
+            <label htmlFor="email" className="app-form-label">
               Email Address
             </label>
             <input
               type="email"
               id="email"
-              className="shadow-sm rounded-md w-full px-3 py-2 border-2 border-app-palette-cool-gray--30 focus:outline-none focus:ring-offset-app-palette-muted-turquoise--60 focus:border-app-palette-muted-turquoise--60 text-app-palette-muted-turquoise--60"
+              className="app-form-input"
               placeholder="your@email.com"
               {...register("email", {
                 required: true,
@@ -52,16 +57,13 @@ const Register: React.FC = () => {
             />
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="password"
-              className="text-base block font-medium text-gray-700 mb-2"
-            >
+            <label htmlFor="password" className="app-form-label">
               Password
             </label>
             <input
               type="password"
               id="password"
-              className="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-offset-app-palette-muted-turquoise--60 focus:border-app-palette-muted-turquoise--60"
+              className="app-form-input"
               placeholder="Enter your password"
               {...register("password", {
                 required: true,
@@ -69,16 +71,13 @@ const Register: React.FC = () => {
             />
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="tel"
-              className="text-base block font-medium text-gray-700 mb-2"
-            >
+            <label htmlFor="tel" className="app-form-label">
               Phone
             </label>
             <input
               type="tel"
               id="phone"
-              className="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-offset-app-palette-muted-turquoise--60 focus:border-app-palette-muted-turquoise--60"
+              className="app-form-input"
               placeholder="05x-xxx-xxxx"
               {...register("phoneNumber", {
                 required: true,

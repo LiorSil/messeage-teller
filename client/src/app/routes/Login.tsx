@@ -1,55 +1,81 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FormWrapper from "./FormWrapper";
+import useLoginForm from "../../hooks/useLoginForm";
+import { useEffect } from "react";
+import Loading from "../../components/Loading";
+
+interface IFormInputs {
+  email: string;
+  password: string;
+  // phoneNumber: string;
+}
 
 type Props = {
   headline: string;
 };
 
 const Login = (props: Props) => {
+  const { register, handleSubmit, onSubmitHandler, error, loading, success } =
+    useLoginForm();
+  const navigate = useNavigate();
+
+  const onSubmit = (data: IFormInputs) => {
+    onSubmitHandler(data);
+  };
+
+  useEffect(() => {
+    if (success) {
+      navigate("/chat-room");
+    }
+  }, [success, navigate]);
+
   return (
     <FormWrapper headline={props.headline}>
-      <form onSubmit={(e) => e.preventDefault()}>
+      {loading && <Loading />}
+      {error && (
+        <p className="bg-app-palette-cool-gray-+90 border-2 border-red-600 text-red-500 text-center">
+          {error}
+        </p>
+      )}
+
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
-          <label
-            htmlFor="email"
-            className="block text-base font-medium text-app-palette-muted-turquoise--60 mb-2"
-          >
+          <label htmlFor="email" className="app-form-label">
             Email Address
           </label>
           <input
             type="email"
             id="email"
-            className="shadow-sm rounded-md w-full px-3 py-2 border-2 border-app-palette-cool-gray--30 focus:outline-none focus:ring-offset-app-palette-muted-turquoise--60 focus:border-app-palette-muted-turquoise--60 text-app-palette-muted-turquoise--60"
+            className="app-form-input"
             placeholder="your@email.com"
-            required
+            {...register("email", {
+              required: true,
+            })}
           />
         </div>
         <div className="mb-4">
-          <label
-            htmlFor="password"
-            className="text-base block font-medium text-gray-700 mb-2"
-          >
+          <label htmlFor="password" className="app-form-label">
             Password
           </label>
           <input
             type="password"
             id="password"
-            className="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-offset-app-palette-muted-turquoise--60 focus:border-app-palette-muted-turquoise--60"
+            className="app-form-input"
             placeholder="Enter your password"
-            required
+            {...register("password", {
+              required: true,
+            })}
           />
         </div>
         <div className="mb-4">
-          <label
-            htmlFor="phoneNumber"
-            className="text-base block font-medium text-gray-700 mb-2"
-          >
-            Password
+          <label htmlFor="phoneNumber" className="app-form-label">
+            Phone
           </label>
           <input
+            disabled
             type="tel"
             id="phoneNumber"
-            className="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-offset-app-palette-muted-turquoise--60 focus:border-app-palette-muted-turquoise--60"
+            className="app-form-input disabled:opacity-50"
             placeholder="Enter your phone number"
             required
           />
@@ -80,11 +106,11 @@ const Login = (props: Props) => {
         <button
           type="submit"
           className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-app-palette-muted-turquoise--30 hover:bg-app-palette-muted-turquoise--50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-app-palette-cool-gray-+0"
-          onClick={() => alert("Hello")}
         >
           Login
         </button>
       </form>
+
       <Link
         to={"/chat-room"}
         className="mt-4 bottom-4 text-app-palette-muted-turquoise--60 hover:text-app-palette-muted-turquoise-+50"

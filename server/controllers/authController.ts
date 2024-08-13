@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { registerUser, findUserByEmail } from "../services/userService";
+import {
+  registerUser,
+  findUserByEmail,
+  findUserByPhoneNumber,
+} from "../services/userService";
 import jwt from "jsonwebtoken";
 
 const register = async (req: Request, res: Response) => {
@@ -10,7 +14,10 @@ const register = async (req: Request, res: Response) => {
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
-
+    const existingPhoneNumber = await findUserByPhoneNumber(phoneNumber);
+    if (existingPhoneNumber) {
+      return res.status(400).json({ message: "Phone number already exists" });
+    }
 
     const user = await registerUser(email, password, phoneNumber);
 
