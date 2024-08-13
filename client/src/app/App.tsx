@@ -7,10 +7,13 @@ const App = () => {
   return (
     <Routes location={location} key={location.pathname}>
       <Route path="/" element={<Navigate to="/login" />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/login" element={<Login headline="Welcome Back!" />} />
 
       <Route path="/about" element={<>About</>} />
-      <Route path="/register" element={<Register />} />
+      <Route
+        path="/register"
+        element={<Register headline="Nice To Meet You!" />}
+      />
       <Route path="/chat-room" element={<ChatRoom />} />
       <Route path="*" element={<>Not Found</>} />
     </Routes>

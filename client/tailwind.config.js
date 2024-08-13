@@ -19,6 +19,10 @@ export default {
       backgroundImage: {
         ...gradients,
       },
+      fontFamily: {
+        assistant: ["Assistant", "sans-serif"],
+        "open-sans": ["Open Sans", "sans-serif"],
+      },
     },
   },
   plugins: [

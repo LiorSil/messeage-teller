@@ -1,8 +1,19 @@
 import { ReactNode } from "react";
+import { Link } from "react-router-dom";
 
-const LoginWrapper = ({ children }: { children: ReactNode }) => {
+type Props = {
+  headline: string;
+};
+
+const FormWrapper = ({
+  children,
+  headline,
+}: {
+  children: ReactNode;
+  headline: Props["headline"];
+}) => {
   return (
-    <div className="bg-app-palette-sap-green-light-+40 font-serif h-screen">
+    <div className="bg-app-palette-sap-green-light-+40 font-open-sans h-screen">
       <div className="w-full flex flex-wrap">
         <div className="w-full md:w-1/2 flex flex-col">
           <div className="flex justify-center md:justify-start pt-12 md:pl-12 md:-mb-24">
@@ -14,7 +25,14 @@ const LoginWrapper = ({ children }: { children: ReactNode }) => {
             </a>
           </div>
           <div className="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
-            {children}
+            <div className="min-h-min flex items-center justify-center w-full">
+              <div className=" bg-app-palette-sap-green-light-+10 shadow-md rounded-lg px-8 py-6  max-w-xl">
+                <h1 className="font-assistant text-2xl font-bold text-center mb-4 text-app-palette-muted-turquoise--60">
+                  {headline}
+                </h1>
+                {children}
+              </div>
+            </div>
           </div>
         </div>
         <div className="w-1/2 shadow-2xl">
@@ -29,4 +47,4 @@ const LoginWrapper = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export default LoginWrapper;
+export default FormWrapper;
