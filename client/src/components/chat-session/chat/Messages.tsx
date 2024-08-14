@@ -1,59 +1,35 @@
 import React from "react";
-import InputMessage from "./IncomingMessage";
-import OutputMessage from "./OutgoingMessage";
+import IncomingMessage from "./IncomingMessage";
+import OutgoingMessage from "./OutgoingMessage";
 
-interface MessagesProps {
-  className?: string;
-}
+type Props = {};
 
-const Messages: React.FC<MessagesProps> = ({ className = "" }) => {
+const Messages = (props: Props) => {
   return (
-    <div className={`flex flex-col h-full ${className} p-4 `}>
-      <div className="grid grid-cols-12 gap-y-2">
-        <InputMessage
-          date="2024-08-09 10:45 AM"
-          message="Hey How are you today?"
-        />
-        <InputMessage
-          message="Lorem ipsum dolor sit hello, consectetur adipisicing elit. Vel ipsa commodi illum saepe numquam maxime asperiores voluptate sit, minima perspiciatis."
-          date="2024-08-09 10:45 AM"
-        />
-        <OutputMessage
-          message="I'm ok what about you?"
-          date="2024-08-09 10:50 AM"
-        />
-        <OutputMessage
-          message="Lorem ipsum dolor sit, hello consectetur adipisicing?"
-          date="2024-08-09 10:50 AM"
-        />
-        <InputMessage
-          message="Lorem ipsum dolor sit hello!"
-          date="2024-08-09 10:45 AM"
-        />
-        <OutputMessage
-          message="Lorem ipsum dolor sit, hello consectetur adipisicing?"
-          date="2024-08-09 10:50 AM"
-        />
-        <InputMessage
-          message="Lorem ipsum dolor sit hello consectetur adipisicing elit. 
-          Perspiciatis, in."
-          date="2024-08-09 10:45 AM"
-        />
-        <OutputMessage
-          message="Lorem ipsum dolor sit, hello consectetur adipisicing?"
-          date="2024-08-09 10:50 AM"
-        />
-        <InputMessage
-          message="Lorem ipsum dolor sit hello consectetur adipisicing elit. 
-          Perspiciatis, in."
-          date="2024-08-09 10:45 AM"
-        />
-        <OutputMessage
-          message="Lorem ipsum dolor sit, hello consectetur adipisicing?"
-          date="2024-08-09 10:50 AM"
-        />
-      </div>
-    </div>
+    <>
+      <OutgoingMessage message="Hello, how can I help you today?" />
+      <OutgoingMessage message="I'm here to help you with any questions you may have." />
+      <IncomingMessage message="I have a question about my account." />
+      <OutgoingMessage message="Sure, I can help you with that." />
+      <IncomingMessage message="I'm having trouble logging in." />
+      <OutgoingMessage message="I can help you with that. Please provide me with your email address." />
+      <IncomingMessage message="My email address is" />
+      <OutgoingMessage message="Thank you. I will look up your account now." />
+      <OutgoingMessage message="I have found your account. Please provide me with your username." />
+      <IncomingMessage message="My username is" />
+
+      <IncomingMessage message="Thank you for your help." />
+      <OutgoingMessage message="You're welcome. Have a great day!" />
+      <IncomingMessage message="I'm having trouble logging in." />
+      <OutgoingMessage message="I can help you with that. Please provide me with your email address." />
+      <IncomingMessage message="My email address is" />
+      <OutgoingMessage message="Thank you. I will look up your account now." />
+      <OutgoingMessage message="I have found your account. Please provide me with your username." />
+      <IncomingMessage message="My username is" />
+
+      <IncomingMessage message="Thank you for your help." />
+      <OutgoingMessage message="You're welcome. Have a great day!" />
+    </>
   );
 };
 

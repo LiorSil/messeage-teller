@@ -2,21 +2,24 @@ import React from "react";
 
 interface IncomingMessageProps {
   message: string;
-  date: string; // Add a prop for the message date
 }
 
-const IncomingMessage: React.FC<IncomingMessageProps> = ({ message, date }) => {
+const IncomingMessage: React.FC<IncomingMessageProps> = ({ message }) => {
   return (
-    <div className="col-start-1 col-end-8 p-3 rounded-lg">
-      <div className="flex flex-row items-center">
-        <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-          A
+    <div className="chat-message">
+      <div className="flex items-end justify-end">
+        <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end">
+          <div>
+            <span className="px-4 py-2 rounded-lg inline-block bg-blue-600 text-white text-lg">
+              {message}
+            </span>
+          </div>
         </div>
-        <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
-          <div>{message}</div>
-          <div className="text-gray-400 text-xs mt-1">{date}</div>{" "}
-          {/* Date hint */}
-        </div>
+        <img
+          src="https://images.unsplash.com/photo-1590031905470-a1a1feacbb0b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=144&h=144"
+          alt="My profile"
+          className="w-10 h-10 rounded-full order-2"
+        />
       </div>
     </div>
   );
