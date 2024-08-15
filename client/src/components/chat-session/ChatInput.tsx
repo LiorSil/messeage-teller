@@ -4,9 +4,9 @@ import React from "react";
 
 const ChatInput = () => {
   return (
-    <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
-      <div className="relative flex">
-        <span className="absolute inset-y-0 flex items-center">
+    <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0 ">
+      <div className="relative flex border-2 rounded-md border-black ">
+        <span className="absolute inset-y-0 flex items-center ">
           <button
             type="button"
             className="inline-flex items-center justify-center rounded-full h-12 w-12 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none"
