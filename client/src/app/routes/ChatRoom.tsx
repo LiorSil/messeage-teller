@@ -6,7 +6,7 @@ import NavBar from "../../components/chat-manager/nav-bar/NavBar";
 import ChatBoard from "../../components/chat-session/chat/ChatBoard";
 import ChatComponent from "../../components/chat-session/ChatComp";
 import ChatManagerMainComp from "../../components/chat-manager/chats-list/ChatManagerMainComp";
-import ChatListNavBar from "../../components/chat-manager/chats-list/ChatListNavBar";
+import ChatListNavBar from "../../components/chat-manager/ChatListNavBar";
 
 const ChatRoom: React.FC = () => {
   const [selectedChat, setSelectedChat] = useState<string | null>(null);

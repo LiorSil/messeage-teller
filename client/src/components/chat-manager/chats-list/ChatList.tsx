@@ -1,6 +1,6 @@
 import React from "react";
 import ChatListItems from "./ChatListItems";
-import ChatListNavBar from "./ChatListNavBar";
+import ChatListNavBar from "../ChatListNavBar";
 
 const ChatList = () => {
   return (

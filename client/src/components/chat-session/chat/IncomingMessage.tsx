@@ -22,7 +22,7 @@ const IncomingMessage: React.FC<IncomingMessageProps> = ({ message }) => {
         <img
           src="https://images.unsplash.com/photo-1590031905470-a1a1feacbb0b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=144&h=144"
           alt="My profile"
-          className="w-10 h-10 rounded-full order-2"
+          className="w-10 h-10 rounded-full order-2 border-2 border-black"
         />
       </div>
     </div>
