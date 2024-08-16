@@ -3,14 +3,18 @@ import dbConnect from "./config/db";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import http from "http";
+import { initializeSocket } from "./config/socket";
 
 import contactRoute from "./routes/contactRoute";
 import authRoute from "./routes/authRoute";
 import userRoute from "./routes/userRoute";
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 const app = express();
+const server = http.createServer(app);
 dbConnect();
+initializeSocket(server);
 
 app.use(bodyParser.json());
 app.use(cors());

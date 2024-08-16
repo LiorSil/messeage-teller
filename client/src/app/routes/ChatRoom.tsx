@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import ChatList from "../../components/chat-manager/chats-list/ChatList";
-import ChatListNavBar from "../../components/chat-manager/chat-list-nav-bar/ChatListNavBar";
+
+
 import ChatLayout from "../../components/chat-session/ChatLayout";
 import ChatsManagerLayout from "../../components/chat-manager/chatsManagerLayout";
 
