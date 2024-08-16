@@ -1,28 +1,26 @@
 import React, { useState } from "react";
 import ChatList from "../../components/chat-manager/chats-list/ChatList";
-import ChatHeader from "../../components/chat-session/ChatHeader";
-import ChatInput from "../../components/chat-session/ChatInput";
-import NavBar from "../../components/chat-manager/nav-bar/NavBar";
-import ChatBoard from "../../components/chat-session/chat/ChatBoard";
-import ChatComponent from "../../components/chat-session/ChatComp";
-import ChatManagerMainComp from "../../components/chat-manager/chats-list/ChatManagerMainComp";
-import ChatListNavBar from "../../components/chat-manager/ChatListNavBar";
+import ChatListNavBar from "../../components/chat-manager/chat-list-nav-bar/ChatListNavBar";
+import ChatLayout from "../../components/chat-session/ChatLayout";
+import ChatsManagerLayout from "../../components/chat-manager/chatsManagerLayout";
 
 const ChatRoom: React.FC = () => {
-  const [selectedChat, setSelectedChat] = useState<string | null>(null);
+  const [selectedChat, setSelectedChat] = useState<string | null>(true);
+
+  const baseClass =
+    "w-full flex flex-col h-screen bg-app-palette-sap-green-light-+40";
+
+  const getClassNames = (isSelected: boolean, mdWidth: string) => {
+    return `${baseClass} ${mdWidth} ${isSelected ? "flex" : "hidden md:flex"}`;
+  };
 
   return (
-    <div className=" md:h-screen flex flex-col md:flex-row bg-app-palette-sap-green-light-+40">
-      <div
-        className={`md:w-1/3 w-full h-screen flex flex-col ${selectedChat ? "hidden md:flex" : "flex"}`}
-      >
-        <ChatListNavBar />
-        <ChatList />
+    <div className="flex flex-col md:flex-row">
+      <div className={getClassNames(!selectedChat, "md:w-1/3")}>
+        <ChatsManagerLayout />
       </div>
-      <div
-        className={`md:w-2/3 w-full flex flex-col relative ${selectedChat ? "flex" : "hidden md:flex"}`}
-      >
-        <ChatComponent />
+      <div className={getClassNames(!!selectedChat, "md:w-2/3")}>
+        <ChatLayout />
       </div>
     </div>
   );

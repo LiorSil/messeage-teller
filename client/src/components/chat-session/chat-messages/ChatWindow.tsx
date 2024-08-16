@@ -1,11 +1,11 @@
 import React from "react";
-import MessageList from "./Messages";
+import MessageList from "./MessageList ";
 
-interface ChatBoardProps {
+interface ChatWindowProps {
   className?: string;
 }
 
-const ChatBoard: React.FC<ChatBoardProps> = ({ className = "" }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({ className = "" }) => {
   return (
     <div className={`flex-grow ${className} rounded-2xl py-2 px-3`}>
       <div
@@ -18,4 +18,4 @@ const ChatBoard: React.FC<ChatBoardProps> = ({ className = "" }) => {
   );
 };
 
-export default ChatBoard;
+export default ChatWindow;

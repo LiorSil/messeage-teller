@@ -17,7 +17,7 @@ const ChatListNavBar = () => {
   };
 
   return (
-    <nav className="relative border-black border-2 bg-app-palette-sap-green-light-+0  dark:border-gray-700 rounded-md m-4">
+    <nav className="relative border-black border-2 bg-app-palette-sap-green-light-+0  rounded-md m-4">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between  mx-auto p-4">
         <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse">
           <img
@@ -25,14 +25,14 @@ const ChatListNavBar = () => {
             className="h-8"
             alt="Flowbite Logo"
           />
-          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+          <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
             Flowbite
           </span>
         </a>
         <button
           onClick={toggleMenu} // Add the onClick handler here
           type="button"
-          className="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+          className="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-gray-500 rounded-lg hover:bg-app-palette-sap-green-light--20 focus:outline-none focus:ring-2 focus:ring-app-palette-sap-green-light--20  "
           aria-controls="navbar-hamburger"
           aria-expanded={isOpen}
         >
@@ -57,13 +57,13 @@ const ChatListNavBar = () => {
         {isOpen && (
           <div
             id="backdrop"
-            className="fixed inset-0 bg-gray-900 bg-opacity-50 z-40"
+            className="fixed inset-0 bg-app-palette-muted-turquoise--10 bg-opacity-50 z-40"
             onClick={handleOutsideClick} // Close drawer on click
           ></div>
         )}
         {/* Drawer */}
         <div
-          className={`fixed inset-y-0 left-0 w-64 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 transform ${
+          className={`fixed inset-y-0 left-0 w-64 bg-app-palette-cool-gray-+0 border-gray-700 transform ${
             isOpen ? "translate-x-0" : "-translate-x-full"
           } transition-transform duration-300 ease-in-out z-50`}
           id="navbar-hamburger"
@@ -72,7 +72,7 @@ const ChatListNavBar = () => {
             <li>
               <a
                 href="#"
-                className="block py-2 px-3 text-white bg-blue-700 rounded dark:bg-blue-600"
+                className="block py-2 px-3 text-white bg-blue-500 rounded "
                 aria-current="page"
               >
                 Home
@@ -81,7 +81,7 @@ const ChatListNavBar = () => {
             <li>
               <a
                 href="#"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                className="block py-2 px-3 rounded text-gray-400 hover:bg-gray-700 hover:text-white"
               >
                 Services
               </a>
@@ -89,7 +89,7 @@ const ChatListNavBar = () => {
             <li>
               <a
                 href="#"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white"
+                className="block py-2 px-3 text-gray-400 rounded hover:bg-gray-700   hover:text-white"
               >
                 Pricing
               </a>
@@ -97,7 +97,7 @@ const ChatListNavBar = () => {
             <li>
               <a
                 href="#"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                className="block py-2 px-3 text-gray-400 rounded  hover:bg-gray-700 hover:text-white"
               >
                 Contact
               </a>

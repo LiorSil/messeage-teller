@@ -1,10 +1,10 @@
 import React from "react";
 
-interface IncomingMessageProps {
+interface InboundMessageProps {
   message: string;
 }
 
-const IncomingMessage: React.FC<IncomingMessageProps> = ({ message }) => {
+const InboundMessage: React.FC<InboundMessageProps> = ({ message }) => {
   return (
     <div className="chat-message">
       <div className="flex items-end justify-end">
@@ -14,7 +14,7 @@ const IncomingMessage: React.FC<IncomingMessageProps> = ({ message }) => {
         "
         >
           <div>
-            <span className="px-4 py-2 rounded-lg inline-block bg-blue-600 text-white text-lg  border-2 border-black">
+            <span className="px-4 py-2 rounded-xl rounded-br-none inline-block bg-blue-600 text-white text-lg  border-2 border-black">
               {message}
             </span>
           </div>
@@ -29,4 +29,4 @@ const IncomingMessage: React.FC<IncomingMessageProps> = ({ message }) => {
   );
 };
 
-export default IncomingMessage;
+export default InboundMessage;

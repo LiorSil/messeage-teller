@@ -1,11 +1,9 @@
 import React, { useEffect, useRef } from "react";
-import OutgoingMessage from "./chat/OutgoingMessage";
-import IncomingMessage from "./chat/IncomingMessage";
-import ChatInput from "./ChatInput";
-import ChatHeader from "./ChatHeader";
-import Messages from "./chat/Messages";
+import ChatHeader from "./chat-header/ChatHeader";
+import MessageList from "./chat-messages/MessageList ";
+import ChatInput from "./chat-input/ChatInput";
 
-const ChatComponent: React.FC = () => {
+const ChatLayout: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToBottom = () => {
@@ -27,7 +25,7 @@ const ChatComponent: React.FC = () => {
         id="messages"
         className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
       >
-        <Messages />
+        <MessageList />
         <div ref={messagesEndRef} />
       </div>
       <div className="sticky bottom-0 z-10 bg-app-palette-sap-green-light-+30">
@@ -37,4 +35,4 @@ const ChatComponent: React.FC = () => {
   );
 };
 
-export default ChatComponent;
+export default ChatLayout;
