@@ -1,19 +1,22 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
-const useSocket = (url: string) => {
-  const socketRef = useRef<Socket | null>(null);
+const SERVER_URL = "http://localhost:3000"; // Replace with your server URL
+
+export const useSocket = () => {
+  const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
-    socketRef.current = io(url);
+    const socketInstance = io(SERVER_URL, {
+      withCredentials: true,
+    });
+
+    setSocket(socketInstance);
 
     return () => {
-      // Cleanup on component unmount
-      socketRef.current?.disconnect();
+      socketInstance.disconnect();
     };
-  }, [url]);
+  }, []);
 
-  return socketRef.current;
+  return socket;
 };
-
-export default useSocket;

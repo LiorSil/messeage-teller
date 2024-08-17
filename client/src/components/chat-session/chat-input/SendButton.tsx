@@ -1,12 +1,18 @@
 import React from "react";
 
-const SendButton = () => {
+interface SendButtonProps {
+  onSend: () => void;
+  isInputEmpty: boolean;
+}
+
+const SendButton = ({ onSend, isInputEmpty }: SendButtonProps) => {
   return (
     <button
+      onClick={onSend}
+      disabled={isInputEmpty}
       type="button"
-      className="inline-flex items-center justify-center rounded-md px-4 py-3 transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none
-            border-y-2 border-l-2 lg border-black 
-            "
+      className={`inline-flex rounded-l-md rounded-sm px-4 py-3  transition duration-500 ease-in-out text-white focus:outline-none  disabled:bg-gray-400 disabled:cursor-not-allowed
+       ${isInputEmpty ? "bg-gray-500 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-400"} `}
     >
       <span className="font-bold">Send</span>
       <svg

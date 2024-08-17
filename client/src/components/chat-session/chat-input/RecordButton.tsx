@@ -2,7 +2,7 @@ import React from "react";
 
 const RecordButton = () => {
   return (
-    <span className="absolute inset-y-0 flex items-center ">
+    <span className="flex items-center bg-gray-200 rounded-l-lg">
       <button
         type="button"
         className="inline-flex items-center justify-center rounded-full h-12 w-12 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none"

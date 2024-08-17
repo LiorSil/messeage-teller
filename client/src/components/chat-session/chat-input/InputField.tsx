@@ -1,11 +1,19 @@
 import React from "react";
 
-const InputField = () => {
+const InputField = ({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) => {
   return (
     <input
       type="text"
       placeholder="Write your message!"
-      className="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-md py-3"
+      className="flex-1 min-w-0  focus:outline-none focus:ring-0 text-gray-600 placeholder-gray-600 bg-gray-200 rounded-l-md py-3 pl-3 border-0"
+      value={value}
+      onChange={onChange}
     />
   );
 };

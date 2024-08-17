@@ -14,7 +14,7 @@ const port = process.env.PORT || 3000;
 const app = express();
 const server = http.createServer(app);
 dbConnect();
-initializeSocket(server);
+
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -28,6 +28,10 @@ app.use("/contacts", contactRoute);
 app.use("/auth", authRoute);
 app.use("/users", userRoute);
 
-app.listen(port, () => {
+// Initialize Socket.io with the server
+initializeSocket(server);
+
+// Use `server.listen` instead of `app.listen` since we're now using the HTTP server
+server.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
