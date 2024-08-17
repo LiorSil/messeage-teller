@@ -14,6 +14,12 @@ const getContactById = async (
   return await contactRepo.getContactById(contactId);
 };
 
+const getContactByPhoneNumber = async (
+  phoneNumber: string
+): Promise<IContact | null> => {
+  return await contactRepo.getContactByPhoneNumber(phoneNumber);
+};
+
 const getContacts = async (): Promise<IContact[]> => {
   return await contactRepo.getContacts();
 };
@@ -31,11 +37,10 @@ const deleteContact = async (
   return await contactRepo.deleteContact(contactId);
 };
 
-
-
-export {
+export default {
   createContact,
   getContactById,
+  getContactByPhoneNumber,
   getContacts,
   updateContact,
   deleteContact,

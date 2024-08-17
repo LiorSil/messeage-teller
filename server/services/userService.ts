@@ -9,7 +9,7 @@ import {
 } from "../repos/userRepo";
 import { IUser } from "../models/userModel";
 import { IContact } from "../models/contactModel";
-import { createContact } from "../services/contactService";
+import contactService from "../services/contactService";
 
 const registerUser = async (
   email: string,
@@ -17,7 +17,7 @@ const registerUser = async (
   phoneNumber: string
 ): Promise<{ user: IUser; contact: IContact }> => {
   const user = await createUser(email, password, phoneNumber);
-  const contact = await createContact({
+  const contact = await contactService.createContact({
     name: email,
     phoneNumber,
     createdAt: new Date().toISOString(),

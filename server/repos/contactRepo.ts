@@ -14,6 +14,12 @@ const getContactById = async (
   return await Contact.findById(contactId).exec();
 };
 
+const getContactByPhoneNumber = async (
+  phoneNumber: string
+): Promise<IContact | null> => {
+  return await Contact.findOne({ phoneNumber }).exec();
+};
+
 const getContacts = async (): Promise<IContact[]> => {
   return await Contact.find().exec();
 };
@@ -36,6 +42,7 @@ const deleteContact = async (
 export default {
   createContact,
   getContactById,
+  getContactByPhoneNumber,
   getContacts,
   updateContact,
   deleteContact,

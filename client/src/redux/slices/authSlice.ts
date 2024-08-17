@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { sign } from "crypto";
+import { create } from "domain";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
@@ -8,6 +10,12 @@ const initialState = {
     email: "",
     password: "",
     phoneNumber: "",
+    contact: {
+      name: "",
+      phoneNumber: "",
+      contacts: [],
+      createdAt: "",
+    },
   },
   loading: false,
   error: "",
@@ -15,8 +23,8 @@ const initialState = {
 };
 
 // Async thunk for registering a user
-export const registerUser = createAsyncThunk(
-  "register/registerUser",
+const registerUser = createAsyncThunk(
+  "auth/registerUser",
   async (
     userData: {
       email: string;
@@ -43,8 +51,8 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-export const loginUser = createAsyncThunk(
-  "register/loginUser",
+const loginUser = createAsyncThunk(
+  "auth/loginUser",
   async (
     userData: {
       email: string;
@@ -54,7 +62,6 @@ export const loginUser = createAsyncThunk(
   ) => {
     try {
       const response = await axios.post(`${VITE_API_URL}/auth/login`, userData);
-
       return response.data;
     } catch (err) {
       if (err.response && err.response.data) {
@@ -68,11 +75,16 @@ export const loginUser = createAsyncThunk(
 );
 
 const authSlice = createSlice({
-  name: "register",
+  name: "auth",
   initialState,
   reducers: {
-    setUser: (state, action) => {
-      state.userData = action.payload;
+    logoutUser: (state) => {
+      state.userData = {
+        email: "",
+        password: "",
+        phoneNumber: "",
+      };
+      state.success = false;
     },
   },
   extraReducers: (builder) => {
@@ -91,14 +103,15 @@ const authSlice = createSlice({
           ? action.payload
           : "An error occurred";
     });
-    builder.addCase(loginUser.pending, (state) => {
-      state.loading = true;
-    });
     builder.addCase(loginUser.fulfilled, (state, action) => {
       state.loading = false;
       state.userData = action.payload;
       state.success = true;
     });
+    builder.addCase(loginUser.pending, (state) => {
+      state.loading = true;
+    });
+
     builder.addCase(loginUser.rejected, (state, action) => {
       state.loading = false;
       state.error =
@@ -109,5 +122,9 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUser } = authSlice.actions;
+export { registerUser, loginUser };
+export const { logoutUser } = authSlice.actions;
+ 
+
+
 export default authSlice.reducer;

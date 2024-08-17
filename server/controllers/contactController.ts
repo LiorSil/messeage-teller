@@ -1,15 +1,11 @@
 import { Request, Response } from "express";
-import {
-  createContact as createContactService,
-  getContactById as getContactByIdService,
-  getContacts as getContactsService,
-  updateContact as updateContactService,
-  deleteContact as deleteContactService,
-} from "../services/contactService";
+
+
+import contactService from "../services/contactService";
 
 const createContact = async (req: Request, res: Response) => {
   try {
-    const contact = await createContactService(req.body);
+    const contact = await contactService.createContact(req.body);
     res.status(201).json(contact);
   } catch (err: any) {
     res.status(400).json({ message: err.message });
@@ -18,7 +14,7 @@ const createContact = async (req: Request, res: Response) => {
 
 const getContactById = async (req: Request, res: Response) => {
   try {
-    const contact = await getContactByIdService(req.params.id);
+    const contact = await contactService.getContactById(req.params.id);
     if (!contact) {
       return res.status(404).json({ message: "Contact not found" });
     }
@@ -31,7 +27,7 @@ const getContactById = async (req: Request, res: Response) => {
 const getContacts = async (req: Request, res: Response) => {
   try {
     const { phoneNumber } = req.query;
-    const contacts = await getContactsService();
+    const contacts = await contactService.getContacts();
 
     if (phoneNumber) {
       const filteredContacts = contacts.filter((contact) =>
@@ -48,7 +44,7 @@ const getContacts = async (req: Request, res: Response) => {
 
 const updateContact = async (req: Request, res: Response) => {
   try {
-    const contact = await updateContactService(req.params.id, req.body);
+    const contact = await contactService.updateContact(req.params.id, req.body);
     if (!contact) {
       return res.status(404).json({ message: "Contact not found" });
     }
@@ -60,7 +56,7 @@ const updateContact = async (req: Request, res: Response) => {
 
 const deleteContact = async (req: Request, res: Response) => {
   try {
-    const contact = await deleteContactService(req.params.id);
+    const contact = await contactService.deleteContact(req.params.id);
     if (!contact) {
       return res.status(404).json({ message: "Contact not found" });
     }

@@ -5,6 +5,7 @@ import {
   findUserByPhoneNumber,
 } from "../services/userService";
 import jwt from "jsonwebtoken";
+import contactService from "../services/contactService";
 
 const register = async (req: Request, res: Response) => {
   try {
@@ -36,14 +37,24 @@ const login = async (req: Request, res: Response) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
+    const contact = await contactService.getContactByPhoneNumber(
+      user.phoneNumber
+    );
+
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, {
       expiresIn: "1h",
     });
-    res.status(200).json({ token });
+    res.status(200).json({
+      token,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      contact: contact,
+    });
   } catch (err: any) {
     res.status(400).json({ message: err.message });
   }
 };
+
 
 //TODO: implement generateOtp
 //TODO: implement verifyOtp
