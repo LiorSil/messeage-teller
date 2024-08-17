@@ -12,9 +12,11 @@ const createContact = async (req: Request, res: Response) => {
   }
 };
 
-const getContactById = async (req: Request, res: Response) => {
+const getContact = async (req: Request, res: Response) => {
+  const { id, phoneNumber } = req.body.contact;
+  console.log("id", id, "phoneNumber", phoneNumber);
   try {
-    const contact = await contactService.getContactById(req.params.id);
+    const contact = await contactService.getContactByPhoneNumber(phoneNumber);
     if (!contact) {
       return res.status(404).json({ message: "Contact not found" });
     }
@@ -24,27 +26,13 @@ const getContactById = async (req: Request, res: Response) => {
   }
 };
 
-const getContacts = async (req: Request, res: Response) => {
-  try {
-    const { phoneNumber } = req.query;
-    const contacts = await contactService.getContacts();
+const getContactByPhoneNumber = async (req: Request, res: Response) => {
+  const { phoneNumber } = req.params;
 
-    if (phoneNumber) {
-      const filteredContacts = contacts.filter((contact) =>
-        contact.phoneNumber.startsWith(phoneNumber as string)
-      );
-      return res.status(200).json(filteredContacts);
-    } else {
-      res.status(200).json(contacts);
-    }
-  } catch (err: any) {
-    res.status(400).json({ message: err.message });
-  }
-};
-
-const updateContact = async (req: Request, res: Response) => {
   try {
-    const contact = await contactService.updateContact(req.params.id, req.body);
+    const contact = await contactService.getContactByPhoneNumber(
+      phoneNumber as string
+    );
     if (!contact) {
       return res.status(404).json({ message: "Contact not found" });
     }
@@ -54,22 +42,4 @@ const updateContact = async (req: Request, res: Response) => {
   }
 };
 
-const deleteContact = async (req: Request, res: Response) => {
-  try {
-    const contact = await contactService.deleteContact(req.params.id);
-    if (!contact) {
-      return res.status(404).json({ message: "Contact not found" });
-    }
-    res.status(200).json({ message: "Contact deleted" });
-  } catch (err: any) {
-    res.status(400).json({ message: err.message });
-  }
-};
-
-export {
-  createContact,
-  getContactById,
-  getContacts,
-  updateContact,
-  deleteContact,
-};
+export { createContact, getContact, getContactByPhoneNumber };

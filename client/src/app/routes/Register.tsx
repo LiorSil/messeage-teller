@@ -4,6 +4,7 @@ import { SubmitHandler } from "react-hook-form";
 import useRegisterForm from "../../hooks/useRegisterForm";
 import Loading from "../../components/Loading";
 import FormWrapper from "./FormWrapper";
+import Button from "../../components/Button";
 
 interface IFormInputs {
   email: string;
@@ -84,12 +85,8 @@ const Register = (props: Props) => {
               })}
             />
           </div>
-          <button
-            type="submit"
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md  text-sm font-medium text-white bg-app-palette-muted-turquoise--30 hover:bg-app-palette-muted-turquoise--50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-app-palette-cool-gray-+0"
-          >
-            Register
-          </button>
+
+          <Button type="submit">Register</Button>
         </form>
 
         <p className="text-base mt-4 text-app-palette-cool-gray--30">

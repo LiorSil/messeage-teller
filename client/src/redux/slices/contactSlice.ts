@@ -3,43 +3,92 @@ import axios from "axios";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 const initialState = {
-  contacts: [],
+  contact: {},
   loading: false,
+  findContactLoading: false,
   error: "",
+  phoneNumber: "",
 };
 
 // Async thunk for fetching filtered by user's entered phone number contacts
-export const fetchContacts = createAsyncThunk("contact/fetchContacts", async () => {
-  try {
-    const response = await axios.get(`${VITE_API_URL}/contacts/`);
-    console.log("response", response);
-    return response.data;
-  } catch (err) {
-    if (err.response && err.response.data) {
-      throw err.response.data;
-    } else {
-      throw err;
+const fetchContact = createAsyncThunk(
+  "contact/fetchContact",
+  async (token: string) => {
+    try {
+      const response = await axios.get(`${VITE_API_URL}/contacts`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return error.response.data;
     }
   }
-});
+);
+
+const fetchContactByPhoneNumber = createAsyncThunk(
+  "contact/fetchContactByPhoneNumber",
+  async (data: { token: string; phoneNumber: string }) => {
+    try {
+      const response = await axios.get(`${VITE_API_URL}/contacts`, {
+        params: {
+          phoneNumber: data.phoneNumber,
+        },
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      // Handle and return the error response
+      if (error.response) {
+        return error.response.data;
+      }
+      throw error; // Re-throw if it's a different kind of error (e.g., network error)
+    }
+  }
+);
 
 const contactSlice = createSlice({
   name: "contact",
   initialState,
-  reducers: {},
+  reducers: {
+    setPhoneNumber: (state, action) => {
+      state.phoneNumber = action.payload;
+    },
+  },
   extraReducers: (builder) => {
-    builder.addCase(fetchContacts.pending, (state) => {
+    /** fetchContact  */
+
+    builder.addCase(fetchContact.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(fetchContacts.fulfilled, (state, action) => {
+    builder.addCase(fetchContact.fulfilled, (state, action) => {
       state.loading = false;
-      state.contacts = action.payload;
+      state.contact = action.payload;
     });
-    builder.addCase(fetchContacts.rejected, (state, action) => {
+    builder.addCase(fetchContact.rejected, (state, action) => {
       state.loading = false;
+      state.error = action.payload;
+    });
+
+    /** getContactByPhoneNumber */
+    builder.addCase(fetchContactByPhoneNumber.fulfilled, (state, action) => {
+      state.findContactLoading = false;
+      state.contact = action.payload;
+    });
+    builder.addCase(fetchContactByPhoneNumber.pending, (state) => {
+      state.findContactLoading = true;
+    });
+    builder.addCase(fetchContactByPhoneNumber.rejected, (state, action) => {
+      state.findContactLoading = false;
       state.error = action.payload;
     });
   },
 });
+
+export { fetchContact, fetchContactByPhoneNumber };
+export const { setPhoneNumber } = contactSlice.actions;
 
 export default contactSlice.reducer;

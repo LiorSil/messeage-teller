@@ -14,10 +14,14 @@ const getContactById = async (
   return await Contact.findById(contactId).exec();
 };
 
-const getContactByPhoneNumber = async (
-  phoneNumber: string
-): Promise<IContact | null> => {
-  return await Contact.findOne({ phoneNumber }).exec();
+const getContactByPhoneNumber = async (phoneNumber: string) => {
+  try {
+    const contact = await Contact.findOne({ phoneNumber: phoneNumber });
+    return contact; // This will be the document if found, or null if not found
+  } catch (error) {
+    console.error("Error finding contact by phone number:", error);
+    throw error;
+  }
 };
 
 const getContacts = async (): Promise<IContact[]> => {

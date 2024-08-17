@@ -1,12 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import ChatLayout from "../../components/chat-session/ChatLayout";
 import ChatsManagerLayout from "../../components/chat-manager/chatsManagerLayout";
 import { useSocket } from "../../hooks/useSocket";
+import { useSelector } from "react-redux";
+import Cookies from "universal-cookie";
 
 const ChatRoom: React.FC = () => {
-  const [selectedChat, setSelectedChat] = useState<string | null>(true);
+  const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [messages, setMessages] = useState<string[]>([]);
+
+  const { userData } = useSelector((state: any) => state.auth);
+
+  const { token, email, phoneNumber } = userData;
+  const cookies = useMemo(() => new Cookies(), []);
+
+  useEffect(() => {
+    if (token) {
+      cookies.set("token", token, { path: "/" });
+    }
+  }, [token, email, phoneNumber, cookies]);
+
   const socket = useSocket();
 
   const baseClass =

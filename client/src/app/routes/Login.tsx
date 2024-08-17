@@ -3,6 +3,8 @@ import FormWrapper from "./FormWrapper";
 import useLoginForm from "../../hooks/useLoginForm";
 import { useEffect } from "react";
 import Loading from "../../components/Loading";
+import Cookies from "universal-cookie";
+import Button from "../../components/Button";
 
 interface IFormInputs {
   email: string;
@@ -14,7 +16,11 @@ type Props = {
   headline: string;
 };
 
+const cookies = new Cookies();
+
 const Login = (props: Props) => {
+  cookies.remove("token");
+
   const { register, handleSubmit, onSubmitHandler, error, loading, success } =
     useLoginForm();
   const navigate = useNavigate();
@@ -103,12 +109,7 @@ const Login = (props: Props) => {
           </Link>
         </div>
 
-        <button
-          type="submit"
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-app-palette-muted-turquoise--30 hover:bg-app-palette-muted-turquoise--50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-app-palette-cool-gray-+0"
-        >
-          Login
-        </button>
+        <Button type="submit">Login</Button>
       </form>
 
       <Link

@@ -17,7 +17,10 @@ const getContactById = async (
 const getContactByPhoneNumber = async (
   phoneNumber: string
 ): Promise<IContact | null> => {
-  return await contactRepo.getContactByPhoneNumber(phoneNumber);
+
+  const contact = await contactRepo.getContactByPhoneNumber(phoneNumber);
+
+  return contact;
 };
 
 const getContacts = async (): Promise<IContact[]> => {
