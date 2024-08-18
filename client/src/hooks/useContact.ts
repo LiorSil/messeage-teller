@@ -10,7 +10,7 @@ const useContact = () => {
 
   const dispatch: AppDispatch = useDispatch();
 
-  const { contact, loading, error } = useSelector(
+  const { contact, loading, error, addContactSuccess } = useSelector(
     (state: RootState) => state.contact
   );
 
@@ -18,7 +18,7 @@ const useContact = () => {
     dispatch(fetchContact(token));
   }, [dispatch, token, cookies]);
 
-  return { contact, loading, error };
+  return { contact, loading, error, addContactSuccess };
 };
 
 export default useContact;

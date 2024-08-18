@@ -9,7 +9,8 @@ const initialState = {
   error: "",
   phoneNumber: "",
   subContactPhoneNumber: "",
-  subContact: {},
+  subContacts: [],
+  addContactSuccess: false,
 };
 
 // Async thunk for fetching filtered by user's entered phone number contacts
@@ -98,24 +99,25 @@ const contactSlice = createSlice({
     });
     builder.addCase(fetchContact.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.payload;
+      state.error = action.payload as string;
     });
 
     /** getContactByPhoneNumber */
     builder.addCase(fetchContactByPhoneNumber.fulfilled, (state, action) => {
       state.findContactLoading = false;
-      state.subContact = action.payload;
+      state.subContacts = action.payload;
     });
     builder.addCase(fetchContactByPhoneNumber.pending, (state) => {
       state.findContactLoading = true;
     });
     builder.addCase(fetchContactByPhoneNumber.rejected, (state, action) => {
       state.findContactLoading = false;
-      state.error = action.payload;
+      state.error = action.payload as string;
     });
 
     /** fetchAddSubContact */
     builder.addCase(fetchAddSubContact.fulfilled, (state, action) => {
+      state.addContactSuccess = true;
       state.loading = false;
     });
 

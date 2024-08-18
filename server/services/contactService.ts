@@ -26,6 +26,14 @@ const getContactByPhoneNumber = async (
   return contact;
 };
 
+const getContactsByName = async (name: string): Promise<IContact[] | null> => {
+  return await contactRepo.getContactsByName(name);
+};
+
+const findContacts = async (query: string): Promise<IContact[]> => {
+  return await contactRepo.findContacts(query);
+};
+
 const getContacts = async (): Promise<IContact[]> => {
   return await contactRepo.getContacts();
 };
@@ -47,6 +55,8 @@ export default {
   createContact,
   getContactById,
   getContactByPhoneNumber,
+  getContactsByName,
+  findContacts,
   getContacts,
   updateContact,
   deleteContact,

@@ -5,11 +5,7 @@ const router = express.Router();
 
 
 router.get("/", authMiddleware, contactController.getContact);
-router.get(
-  "/:phoneNumber",
-  authMiddleware,
-  contactController.getContactByPhoneNumber
-);
+router.get("/:query", authMiddleware, contactController.findContactsByQuery);
 router.put("/addSubContact", authMiddleware, contactController.addSubContact);
 
 export default router;

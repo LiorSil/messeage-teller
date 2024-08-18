@@ -14,7 +14,7 @@ const ComboboxInput: React.FC<ComboboxInputProps> = ({
   return (
     <div className="relative">
       <input
-        className="py-3 ps-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+        className="bg-app-palette-sap-green-light-+40 py-3 ps-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-app-palette-cool-gray-+20 focus:ring-app-palette-cool-gray-+20  disabled:opacity-50 disabled:pointer-events-none"
         type="text"
         maxLength={10}
         role="combobox"

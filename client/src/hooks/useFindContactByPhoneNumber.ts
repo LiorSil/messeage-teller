@@ -4,8 +4,7 @@ import {
   fetchContactByPhoneNumber,
   setPhoneNumber,
 } from "../redux/slices/contactSlice";
-
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import Cookies from "universal-cookie";
 
 const useFindContactByPhoneNumber = () => {
@@ -14,23 +13,30 @@ const useFindContactByPhoneNumber = () => {
 
   const dispatch: AppDispatch = useDispatch();
 
-  const { subContact, findContactLoading, error } =
-    useSelector((state: RootState) => state.contact);
+  const { subContacts, findContactLoading, error } = useSelector(
+    (state: RootState) => state.contact
+  );
 
-  const handleSetContactByPN = (phoneNumber: string) => {
-    dispatch(setPhoneNumber(phoneNumber));
-  };
+  const handleSetPhoneNumber = useCallback(
+    (phoneNumber: string) => {
+      dispatch(setPhoneNumber(phoneNumber));
+    },
+    [dispatch]
+  );
 
-  const handleFetchContactByPN = (phoneNumber: string) => {
-    dispatch(fetchContactByPhoneNumber({ token, phoneNumber }));
-  };
+  const handleFetchContactByPhoneNumber = useCallback(
+    (phoneNumber: string) => {
+      dispatch(fetchContactByPhoneNumber({ token, phoneNumber }));
+    },
+    [dispatch, token]
+  );
 
   return {
-    subContact,
+    subContacts,
     findContactLoading,
     error,
-    handleSetContactByPN,
-    handleFetchContactByPN,
+    handleSetPhoneNumber,
+    handleFetchContactByPhoneNumber,
   };
 };
 

@@ -14,7 +14,7 @@ const createContact = async (req: Request, res: Response) => {
 };
 
 const getContact = async (req: Request, res: Response) => {
-  const { id, phoneNumber } = req.body.contact;
+  const { phoneNumber } = req.body.contact;
 
   try {
     const contact = await contactService.getContactByPhoneNumber(phoneNumber);
@@ -34,10 +34,32 @@ const getContactByPhoneNumber = async (req: Request, res: Response) => {
     const contact = await contactService.getContactByPhoneNumber(
       phoneNumber as string
     );
+
     if (!contact) {
       return res.status(404).json({ message: "Contact not found" });
     }
+
     res.status(200).json(contact);
+  } catch (err: any) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+const findContactsByQuery = async (req: Request, res: Response) => {
+  const { query } = req.params;
+
+  try {
+    const contacts = await contactService.findContacts(query as string);
+
+    if (!contacts) {
+      return res.status(404).json({ message: "Contacts not found" });
+    }
+    const safeContacts = contacts.map((contact, index) => {
+      const { name, phoneNumber } = contact;
+      return { id: index, name, phoneNumber };
+    });
+
+    res.status(200).json(safeContacts);
   } catch (err: any) {
     res.status(400).json({ message: err.message });
   }
@@ -80,4 +102,10 @@ const addSubContact = async (req: Request, res: Response) => {
   }
 };
 
-export { createContact, getContact, getContactByPhoneNumber, addSubContact };
+export {
+  createContact,
+  getContact,
+  getContactByPhoneNumber,
+  addSubContact,
+  findContactsByQuery,
+};

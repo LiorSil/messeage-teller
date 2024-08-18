@@ -29,6 +29,20 @@ const getContactByPhoneNumber = async (phoneNumber: string) => {
   }
 };
 
+const getContactsByName = async (name: string): Promise<IContact[]> => {
+  
+  return await Contact.find({ name: { $regex: name, $options: "i" } }).exec();
+};
+
+const findContacts = async (query: string): Promise<IContact[]> => {
+  return await Contact.find({
+    $or: [
+      { name: { $regex: query, $options: "i" } },
+      { phoneNumber: { $regex: query, $options: "i" } },
+    ],
+  }).exec();
+};
+
 const getContacts = async (): Promise<IContact[]> => {
   return await Contact.find().exec();
 };
@@ -52,6 +66,8 @@ export default {
   createContact,
   getContactById,
   getContactByPhoneNumber,
+  getContactsByName,
+  findContacts,
   getContacts,
   updateContact,
   deleteContact,
