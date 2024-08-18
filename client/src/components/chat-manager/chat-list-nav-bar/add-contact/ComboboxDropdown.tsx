@@ -1,14 +1,15 @@
-import React, { memo } from "react";
 import Button from "../../../Button";
 
 interface ComboboxDropdownProps {
   children: React.ReactNode;
   isVisible: boolean;
+  onAddContact: () => void;
 }
 
 const ComboboxDropdown: React.FC<ComboboxDropdownProps> = ({
   children,
   isVisible,
+  onAddContact,
 }) => {
   return (
     <>
@@ -22,7 +23,7 @@ const ComboboxDropdown: React.FC<ComboboxDropdownProps> = ({
         <Button
           type="button"
           className="w-full text-sm text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 my-2"
-          onClick={() => null}
+          onClick={() => onAddContact()}
         >
           Add Contact
         </Button>

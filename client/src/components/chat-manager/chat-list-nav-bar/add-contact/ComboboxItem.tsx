@@ -13,7 +13,7 @@ const ComboboxItem: React.FC<ComboboxItemProps> = ({
 }) => {
   return (
     <div
-      className={`cursor-pointer py-2 px-4 w-full text-sm text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 ${
+      className={`cursor-pointer py-2 px-4 mt-2 w-full text-sm text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 ${
         isSelected ? "bg-gray-100" : ""
       }`}
       onClick={onClick}

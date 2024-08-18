@@ -11,7 +11,10 @@ const createContact = async (
 const getContactById = async (
   contactId: Types.ObjectId | string
 ): Promise<IContact | null> => {
-  return await contactRepo.getContactById(contactId);
+  
+  const contact = await contactRepo.getContactById(contactId);
+
+  return contact;
 };
 
 const getContactByPhoneNumber = async (

@@ -5,13 +5,18 @@ const createContact = async (
   contactData: Partial<IContact>
 ): Promise<IContact> => {
   const contact = new Contact(contactData);
+
   return await contact.save();
 };
 
 const getContactById = async (
   contactId: Types.ObjectId | string
 ): Promise<IContact | null> => {
-  return await Contact.findById(contactId).exec();
+  
+  const contact = await Contact.findById(contactId).exec();
+
+  return contact;
+  
 };
 
 const getContactByPhoneNumber = async (phoneNumber: string) => {

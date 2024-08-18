@@ -10,5 +10,6 @@ router.get(
   authMiddleware,
   contactController.getContactByPhoneNumber
 );
+router.put("/addSubContact", authMiddleware, contactController.addSubContact);
 
 export default router;

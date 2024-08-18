@@ -8,6 +8,8 @@ const initialState = {
   findContactLoading: false,
   error: "",
   phoneNumber: "",
+  subContactPhoneNumber: "",
+  subContact: {},
 };
 
 // Async thunk for fetching filtered by user's entered phone number contacts
@@ -30,15 +32,16 @@ const fetchContact = createAsyncThunk(
 const fetchContactByPhoneNumber = createAsyncThunk(
   "contact/fetchContactByPhoneNumber",
   async (data: { token: string; phoneNumber: string }) => {
+    console.log("data", data);
     try {
-      const response = await axios.get(`${VITE_API_URL}/contacts`, {
-        params: {
-          phoneNumber: data.phoneNumber,
-        },
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-      });
+      const response = await axios.get(
+        `${VITE_API_URL}/contacts/${data.phoneNumber}`,
+        {
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       // Handle and return the error response
@@ -50,12 +53,37 @@ const fetchContactByPhoneNumber = createAsyncThunk(
   }
 );
 
+const fetchAddSubContact = createAsyncThunk(
+  "contact/fetchAddSubContact",
+  async (data: { token: string; newSubContactNumber: string }) => {
+    try {
+      const response = await axios.put(
+        `${VITE_API_URL}/contacts/addSubContact`,
+        {
+          phoneNumber: data.newSubContactNumber,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        return error.response.data;
+      }
+      throw error;
+    }
+  }
+);
+
 const contactSlice = createSlice({
   name: "contact",
   initialState,
   reducers: {
     setPhoneNumber: (state, action) => {
-      state.phoneNumber = action.payload;
+      state.subContactPhoneNumber = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -76,7 +104,7 @@ const contactSlice = createSlice({
     /** getContactByPhoneNumber */
     builder.addCase(fetchContactByPhoneNumber.fulfilled, (state, action) => {
       state.findContactLoading = false;
-      state.contact = action.payload;
+      state.subContact = action.payload;
     });
     builder.addCase(fetchContactByPhoneNumber.pending, (state) => {
       state.findContactLoading = true;
@@ -85,10 +113,24 @@ const contactSlice = createSlice({
       state.findContactLoading = false;
       state.error = action.payload;
     });
+
+    /** fetchAddSubContact */
+    builder.addCase(fetchAddSubContact.fulfilled, (state, action) => {
+      state.loading = false;
+    });
+
+    builder.addCase(fetchAddSubContact.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(fetchAddSubContact.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
   },
 });
 
-export { fetchContact, fetchContactByPhoneNumber };
+export { fetchContact, fetchContactByPhoneNumber, fetchAddSubContact };
 export const { setPhoneNumber } = contactSlice.actions;
 
 export default contactSlice.reducer;
