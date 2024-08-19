@@ -4,21 +4,46 @@ import { fetchContact } from "../redux/slices/contactSlice";
 import { useEffect, useMemo } from "react";
 import Cookies from "universal-cookie";
 
+interface SubContact {
+  _id: string;
+  name: string;
+  phoneNumber: string;
+}
+
+interface Contact {
+  name: string;
+  phoneNumber: string;
+  createdAt: string;
+  updatedAt: string;
+  contacts: SubContact[];
+}
+
 const useContact = () => {
   const cookies = useMemo(() => new Cookies(), []);
   const token = cookies.get("token");
 
   const dispatch: AppDispatch = useDispatch();
 
-  const { contact, loading, error, addContactSuccess } = useSelector(
-    (state: RootState) => state.contact
+  const { currentContact, loading, error } = useSelector(
+    (state: RootState) =>
+      state.contact as {
+        currentContact: Contact | null;
+        loading: boolean;
+        error: string | null;
+      }
   );
 
-  useEffect(() => {
-    dispatch(fetchContact(token));
-  }, [dispatch, token, cookies]);
 
-  return { contact, loading, error, addContactSuccess };
+
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchContact(token));
+    }
+  }, [dispatch, token]);
+
+  
+
+  return { currentContact, loading, error };
 };
 
 export default useContact;

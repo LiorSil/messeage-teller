@@ -68,14 +68,14 @@ const findContactsByQuery = async (req: Request, res: Response) => {
 const addSubContact = async (req: Request, res: Response) => {
   const { phoneNumber: contactPhoneNumber } = req.body.contact;
   const { phoneNumber: newSubContactNumber } = req.body;
+
   console.log("contact Phone Number:", contactPhoneNumber);
-  console.log("newSubContactNumber", newSubContactNumber);
+  console.log("newSubContactNumber:", newSubContactNumber);
 
   try {
     const contact: IContact | null =
       await contactService.getContactByPhoneNumber(contactPhoneNumber);
-
-    let subContact: IContact | null =
+    const subContact: IContact | null =
       await contactService.getContactByPhoneNumber(newSubContactNumber);
 
     if (!subContact) {
@@ -86,15 +86,34 @@ const addSubContact = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Self contact not found" });
     }
 
+    console.log("contact:", contact);
+
+    // Filter out the existing sub-contact from the contacts array
+    const isSubContactAlreadyAdded = contact.contacts.some(
+      (existingSubContact) =>
+        existingSubContact.phoneNumber === newSubContactNumber
+    );
+
+    if (isSubContactAlreadyAdded) {
+      return res.status(400).json({ message: "Sub-contact already exists" });
+    }
+
+    // Create new sub-contact to add
     const newSubContact: ISubContact = {
       _id: subContact._id as Schema.Types.ObjectId,
       name: subContact.name,
       phoneNumber: subContact.phoneNumber,
+      imageUrl: subContact.imageUrl || "",
+      lastMessage: "",
     } as ISubContact;
 
+    // Add the new sub-contact to the contacts array
     contact.contacts.push(newSubContact);
+
+    // Update the contact in the database
     const id = contact._id as string;
     await contactService.updateContact(id, contact);
+
     res.status(200).json(contact);
   } catch (err: any) {
     // Handle errors and return an appropriate response

@@ -10,6 +10,7 @@ const ComboboxInput: React.FC<ComboboxInputProps> = ({
   value,
   onChange,
   onClear,
+
 }) => {
   return (
     <div className="relative">

@@ -1,5 +1,5 @@
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../redux/store";
 import { fetchAddSubContact } from "../redux/slices/contactSlice";
 
 import { useMemo } from "react";
@@ -10,6 +10,9 @@ const useModifySubContacts = () => {
   const token = cookies.get("token");
 
   const dispatch: AppDispatch = useDispatch();
+  const { addContactSuccess } = useSelector(
+    (state: RootState) => state.contact
+  );
 
   const handleAddSubContact = (newSubContactNumber: string) => {
     dispatch(fetchAddSubContact({ token, newSubContactNumber }));
@@ -17,6 +20,8 @@ const useModifySubContacts = () => {
 
   return {
     handleAddSubContact,
+    addContactSuccess,
+    
   };
 };
 

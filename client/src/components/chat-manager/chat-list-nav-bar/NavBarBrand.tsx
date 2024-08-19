@@ -3,7 +3,7 @@ import useContact from "../../../hooks/useContact";
 import Loading from "../../Loading";
 
 const NavBarBrand: React.FC = () => {
-  const { contact, loading, error } = useContact();
+  const { currentContact, loading, error } = useContact();
 
   return (
     <>
@@ -20,7 +20,7 @@ const NavBarBrand: React.FC = () => {
           alt="Flowbite Logo"
         />
         <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
-          {contact?.name}
+          {currentContact?.name || "Guest"}
         </span>
       </a>
     </>

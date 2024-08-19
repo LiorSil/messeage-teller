@@ -3,7 +3,7 @@ import ComboboxContainer from "./ComboboxContainer";
 import ComboboxInput from "./ComboboxInput";
 import ComboboxDropdown from "./ComboboxDropdown";
 import ComboboxItem from "./ComboboxItem";
-import useFindContactByPhoneNumber from "../../../../hooks/useFindContactByPhoneNumber";
+import useFindContact from "../../../../hooks/useFindContact";
 import useModifySubContacts from "../../../../hooks/useModifySubContacts";
 import useContact from "../../../../hooks/useContact";
 
@@ -13,8 +13,7 @@ interface Contact {
   phoneNumber: string;
 }
 
-// Type guard to check if an object is a Contact
-const isContact = (obj: any): obj is Contact => {
+const isContact = (obj: Contact): obj is Contact => {
   return (
     typeof obj === "object" &&
     obj !== null &&
@@ -27,38 +26,39 @@ const AddContact: React.FC = () => {
   const [query, setQuery] = useState("");
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
-  const { handleSetPhoneNumber, handleFetchContactByPhoneNumber, subContacts } =
-    useFindContactByPhoneNumber();
+  const {
+    handleSetPhoneNumber,
+    handleFetchContactByPhoneOrName,
+    subContacts,
+    handleClearAddContactSuccess,
+  } = useFindContact();
 
-  const { handleAddSubContact } = useModifySubContacts();
-  const { addContactSuccess } = useContact();
+  const { handleAddSubContact, addContactSuccess } = useModifySubContacts();
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       setQuery(value);
       handleSetPhoneNumber(value);
+      handleClearAddContactSuccess();
 
       if (value.length >= 5) {
-        handleFetchContactByPhoneNumber(value);
+        handleFetchContactByPhoneOrName(value);
       }
     },
-    [handleSetPhoneNumber, handleFetchContactByPhoneNumber]
+    [handleSetPhoneNumber, handleFetchContactByPhoneOrName]
   );
 
   const handleItemClick = useCallback((phoneNumber: string) => {
     setSelectedItem((prev) => (prev === phoneNumber ? null : phoneNumber));
   }, []);
 
-  // Ensure subContacts are valid Contacts
   const validContacts = useMemo(() => {
     return subContacts.filter(isContact);
   }, [subContacts]);
 
   return (
     <>
-      {console.log("Add contact success", addContactSuccess)}
-
       {addContactSuccess && (
         <p className="bg-green-500">Contact added successfully</p>
       )}
