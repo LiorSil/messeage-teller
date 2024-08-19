@@ -26,7 +26,7 @@ interface ContactState {
   error: string | null;
   phoneNumber: string;
   subContactPhoneNumber: string;
-  subContacts: [];
+  subContacts: SubContact[];
   addContactSuccess: boolean;
 }
 
@@ -141,7 +141,6 @@ const contactSlice = createSlice({
     /** getContactByPhoneNumber */
     builder.addCase(fetchContactByPhoneOrName.fulfilled, (state, action) => {
       state.findContactLoading = false;
-      // Filter out contacts that are already in the current contact's contacts
       state.subContacts = action.payload.filter((contact: SubContact) => {
         return !state.currentContact?.contacts.some(
           (subContact: SubContact) => {
@@ -161,11 +160,20 @@ const contactSlice = createSlice({
     /** fetchAddSubContact */
     builder.addCase(fetchAddSubContact.fulfilled, (state, action) => {
       console.log("action.payload", action.payload);
-      state.addContactSuccess = true;
+
+      // Filter out subContacts that are present in action.payload
       state.subContacts = state.subContacts.filter(
         (contact: SubContact) =>
-          contact.phoneNumber !== action.payload.phoneNumber
+          !action.payload.contacts.some(
+            (payloadContact: SubContact) =>
+              payloadContact.phoneNumber === contact.phoneNumber
+          )
       );
+      state.addContactSuccess = true;
+      if (state.currentContact !== null) {
+        state.currentContact.contacts = action.payload.contacts;
+      }
+
       state.loading = false;
     });
 

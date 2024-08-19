@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
 import { fetchAddSubContact } from "../redux/slices/contactSlice";
 
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import Cookies from "universal-cookie";
 
 const useModifySubContacts = () => {
@@ -18,10 +18,15 @@ const useModifySubContacts = () => {
     dispatch(fetchAddSubContact({ token, newSubContactNumber }));
   };
 
+  useEffect(() => {
+    if (addContactSuccess) {
+      console.log("Sub contact added successfully");
+    }
+  }, [addContactSuccess]);
+
   return {
     handleAddSubContact,
     addContactSuccess,
-    
   };
 };
 

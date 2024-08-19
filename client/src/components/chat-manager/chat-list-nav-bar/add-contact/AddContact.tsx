@@ -5,7 +5,6 @@ import ComboboxDropdown from "./ComboboxDropdown";
 import ComboboxItem from "./ComboboxItem";
 import useFindContact from "../../../../hooks/useFindContact";
 import useModifySubContacts from "../../../../hooks/useModifySubContacts";
-import useContact from "../../../../hooks/useContact";
 
 interface Contact {
   id: number;
@@ -13,7 +12,7 @@ interface Contact {
   phoneNumber: string;
 }
 
-const isContact = (obj: Contact): obj is Contact => {
+const isContact = (obj: any): obj is Contact => {
   return (
     typeof obj === "object" &&
     obj !== null &&
@@ -46,7 +45,11 @@ const AddContact: React.FC = () => {
         handleFetchContactByPhoneOrName(value);
       }
     },
-    [handleSetPhoneNumber, handleFetchContactByPhoneOrName]
+    [
+      handleSetPhoneNumber,
+      handleClearAddContactSuccess,
+      handleFetchContactByPhoneOrName,
+    ]
   );
 
   const handleItemClick = useCallback((phoneNumber: string) => {
@@ -71,12 +74,14 @@ const AddContact: React.FC = () => {
         <ComboboxDropdown
           isVisible={query.length >= 5}
           onAddContact={() => {
-            if (selectedItem) {
+            if (selectedItem && subContacts.length > 0) {
               handleAddSubContact(selectedItem);
+            } else {
+              alert("Please select a contact to add");
             }
           }}
         >
-          {validContacts.map((item: Contact, index) => {
+          {validContacts.map((item, index) => {
             if (!isContact(item)) {
               return null;
             }

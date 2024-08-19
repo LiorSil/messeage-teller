@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { Schema } from "mongoose";
 import contactService from "../services/contactService";
 import Contact, { IContact, ISubContact } from "../models/contactModel";
+import { log } from "console";
 
 const createContact = async (req: Request, res: Response) => {
   try {
@@ -47,9 +48,24 @@ const getContactByPhoneNumber = async (req: Request, res: Response) => {
 
 const findContactsByQuery = async (req: Request, res: Response) => {
   const { query } = req.params;
+  const contact = await contactService.getContactByPhoneNumber(
+    req.body.contact.phoneNumber
+  );
+
+  if (!contact) {
+    return res.status(404).json({ message: "Contact not found" });
+  }
+
+  const { contacts: ownedContacts } = contact;
 
   try {
-    const contacts = await contactService.findContacts(query as string);
+    let contacts = await contactService.findContacts(query as string);
+    // Filter out the contacts that are already in the current contact's contacts
+    contacts = contacts.filter((contact) => {
+      return !ownedContacts.some(
+        (subContact) => subContact.phoneNumber === contact.phoneNumber
+      );
+    });
 
     if (!contacts) {
       return res.status(404).json({ message: "Contacts not found" });
@@ -64,6 +80,9 @@ const findContactsByQuery = async (req: Request, res: Response) => {
     res.status(400).json({ message: err.message });
   }
 };
+
+
+
 
 const addSubContact = async (req: Request, res: Response) => {
   const { phoneNumber: contactPhoneNumber } = req.body.contact;
