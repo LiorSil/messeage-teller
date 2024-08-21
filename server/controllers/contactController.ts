@@ -48,6 +48,7 @@ const getContactByPhoneNumber = async (req: Request, res: Response) => {
 
 const findContactsByQuery = async (req: Request, res: Response) => {
   const { query } = req.params;
+  console.log("Query: ", query);
   const contact = await contactService.getContactByPhoneNumber(
     req.body.contact.phoneNumber
   );
@@ -72,8 +73,10 @@ const findContactsByQuery = async (req: Request, res: Response) => {
     }
     const safeContacts = contacts.map((contact, index) => {
       const { name, phoneNumber } = contact;
-      return { id: index, name, phoneNumber };
+      return { _id: index, name, phoneNumber, imageUrl: "", lastMessage: "" };
     });
+
+    console.log("Safe contacts: ", safeContacts);
 
     res.status(200).json(safeContacts);
   } catch (err: any) {
@@ -81,15 +84,9 @@ const findContactsByQuery = async (req: Request, res: Response) => {
   }
 };
 
-
-
-
 const addSubContact = async (req: Request, res: Response) => {
   const { phoneNumber: contactPhoneNumber } = req.body.contact;
   const { phoneNumber: newSubContactNumber } = req.body;
-
-  console.log("contact Phone Number:", contactPhoneNumber);
-  console.log("newSubContactNumber:", newSubContactNumber);
 
   try {
     const contact: IContact | null =
@@ -104,8 +101,6 @@ const addSubContact = async (req: Request, res: Response) => {
     if (!contact) {
       return res.status(404).json({ message: "Self contact not found" });
     }
-
-    console.log("contact:", contact);
 
     // Filter out the existing sub-contact from the contacts array
     const isSubContactAlreadyAdded = contact.contacts.some(

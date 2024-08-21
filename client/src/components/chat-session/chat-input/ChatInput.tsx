@@ -17,8 +17,6 @@ const ChatInput = ({
   };
 
   const handleSend = () => {
-    console.log("Input value:", inputValue);
-
     const newOutboundMessage = inputValue as string;
     onSendMessage(newOutboundMessage);
 

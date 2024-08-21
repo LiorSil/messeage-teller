@@ -5,6 +5,7 @@ import { RootState } from "../../../redux/store";
 
 const ChatListItems: React.FC = () => {
   const { currentContact } = useSelector((state: RootState) => state.contact);
+  if (!currentContact) return null;
   const chats =
     currentContact?.contacts.map((contact, index) => (
       <li key={`${index}_${contact._id}`} className="space-y-3">

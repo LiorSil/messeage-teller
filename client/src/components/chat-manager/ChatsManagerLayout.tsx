@@ -1,11 +1,11 @@
 import React from "react";
-import ChatListNavBar from "./chat-list-nav-bar/ChatListNavBar";
+import NavBar from "./chat-list-nav-bar/NavBar";
 import ChatList from "./chats-list/ChatList";
 
 const ChatsManagerLayout = () => {
   return (
     <>
-      <ChatListNavBar />
+      <NavBar />
       <ChatList />
     </>
   );

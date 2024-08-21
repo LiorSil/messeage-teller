@@ -4,18 +4,18 @@ import { fetchContact } from "../redux/slices/contactSlice";
 import { useEffect, useMemo } from "react";
 import Cookies from "universal-cookie";
 
-interface SubContact {
-  _id: string;
-  name: string;
-  phoneNumber: string;
-}
+// interface SubContact {
+//   _id: string;
+//   name: string;
+//   phoneNumber: string;
+// }
 
 interface Contact {
+  _id: string;
   name: string;
-  phoneNumber: string;
-  createdAt: string;
-  updatedAt: string;
-  contacts: SubContact[];
+  phoneNumber?: string;
+  avatar?: string; // Add the avatar property
+  // other properties...
 }
 
 const useContact = () => {

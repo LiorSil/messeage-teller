@@ -2,6 +2,7 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import Login from "./routes/Login";
 import Register from "./routes/Register";
 import ChatRoom from "./routes/ChatRoom";
+import UnauthorizedPage from "../components/UnauthorizedPage";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         element={<Register headline="Nice To Meet You!" />}
       />
       <Route path="/chat-room" element={<ChatRoom />} />
+      <Route path="/unauthorized" element={<UnauthorizedPage />} />
       <Route path="*" element={<>Not Found</>} />
     </Routes>
   );
