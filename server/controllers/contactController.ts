@@ -19,9 +19,11 @@ const getContact = async (req: Request, res: Response) => {
 
   try {
     const contact = await contactService.getContactByPhoneNumber(phoneNumber);
+  
     if (!contact) {
       return res.status(404).json({ message: "Contact not found" });
     }
+    console.log("Contact: ", contact);
     res.status(200).json(contact);
   } catch (err: any) {
     res.status(400).json({ message: err.message });

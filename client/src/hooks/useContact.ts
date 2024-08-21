@@ -1,49 +1,31 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../redux/store";
 import { fetchContact } from "../redux/slices/contactSlice";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
+
 import Cookies from "universal-cookie";
 
-// interface SubContact {
-//   _id: string;
-//   name: string;
-//   phoneNumber: string;
-// }
-
-interface Contact {
-  _id: string;
-  name: string;
-  phoneNumber?: string;
-  avatar?: string; // Add the avatar property
-  // other properties...
-}
-
 const useContact = () => {
-  const cookies = useMemo(() => new Cookies(), []);
+  const cookies = new Cookies();
   const token = cookies.get("token");
 
   const dispatch: AppDispatch = useDispatch();
 
-  const { currentContact, loading, error } = useSelector(
-    (state: RootState) =>
-      state.contact as {
-        currentContact: Contact | null;
-        loading: boolean;
-        error: string | null;
-      }
-  );
-
-
+  const { contact, loading, error } = useSelector((state: RootState) => ({
+    contact: state.contact.contact,
+    loading: state.contact.loading,
+    error: state.contact.error,
+  }));
 
   useEffect(() => {
     if (token) {
       dispatch(fetchContact(token));
+    } else {
+      console.warn("No token found");
     }
   }, [dispatch, token]);
 
-  
-
-  return { currentContact, loading, error };
+  return { contact, loading, error };
 };
 
 export default useContact;

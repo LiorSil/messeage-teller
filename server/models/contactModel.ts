@@ -11,6 +11,7 @@ interface ISubContact extends Document {
 
 interface IContact extends Document {
   name: string;
+  avatar: string;
   phoneNumber: string;
   contacts: ISubContact[];
   status?: string;
@@ -56,6 +57,12 @@ const contactSchema = new Schema<IContact>(
           `${props.value} is not a valid phone number! It should start with "05" and be 10 digits long.`,
       },
     },
+    avatar: {
+      type: String,
+      default:
+        "https://plus.unsplash.com/premium_photo-1664536392779-049ba8fde933?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+
     contacts: {
       type: [subContactSchema],
       validate: {

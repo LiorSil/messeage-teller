@@ -11,7 +11,7 @@ import {
 } from "../../types/contact";
 
 interface ContactState {
-  currentContact: Contact | null;
+  contact: Contact | null;
   loading: boolean;
   findContactLoading: boolean;
   error: string | null;
@@ -22,7 +22,7 @@ interface ContactState {
 }
 
 const initialState: ContactState = {
-  currentContact: {
+  contact: {
     _id: "",
     name: "",
     phoneNumber: "",
@@ -41,11 +41,11 @@ const initialState: ContactState = {
 };
 
 // Async thunk for fetching filtered by user's entered phone number contacts
-const fetchContact = createAsyncThunk<Contact[], string>(
+const fetchContact = createAsyncThunk<Contact, string>(
   "contact/fetchContact",
   async (token: string, { rejectWithValue }) => {
     try {
-      const response = await axios.get<Contact[]>(`${VITE_API_URL}/contacts`, {
+      const response = await axios.get<Contact>(`${VITE_API_URL}/contacts`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -119,17 +119,13 @@ const contactSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    /** fetchContact  */
     builder.addCase(fetchContact.pending, (state) => {
       state.loading = true;
     });
     builder.addCase(fetchContact.fulfilled, (state, action) => {
+      console.log("action.payload", action.payload);
       state.loading = false;
-      if (Array.isArray(action.payload)) {
-        state.currentContact = action.payload[0];
-      } else {
-        state.currentContact = action.payload;
-      }
+      state.contact = action.payload;
     });
     builder.addCase(fetchContact.rejected, (state, action) => {
       state.loading = false;
@@ -140,16 +136,13 @@ const contactSlice = createSlice({
     builder.addCase(fetchContactByPhoneOrName.fulfilled, (state, action) => {
       state.findContactLoading = false;
 
-      // Ensure action.payload.contacts is an array
       const contacts = action.payload;
 
       // Filter the contacts
       state.subContacts = contacts.filter((contact: SubContact) => {
-        return !state.currentContact?.contacts.some(
-          (subContact: SubContact) => {
-            return subContact.phoneNumber === contact.phoneNumber;
-          }
-        );
+        return !state.contact?.contacts.some((subContact: SubContact) => {
+          return subContact.phoneNumber === contact.phoneNumber;
+        });
       });
     });
     builder.addCase(fetchContactByPhoneOrName.pending, (state) => {
@@ -176,8 +169,8 @@ const contactSlice = createSlice({
 
       state.addContactSuccess = true;
 
-      if (state.currentContact !== null) {
-        state.currentContact.contacts = newContacts;
+      if (state.contact !== null) {
+        state.contact.contacts = newContacts;
       }
 
       state.loading = false;
@@ -193,7 +186,6 @@ const contactSlice = createSlice({
     });
   },
 });
-
 
 export { fetchContact, fetchContactByPhoneOrName, fetchAddSubContact };
 export const { setPhoneNumber, clearAddContactSuccess } = contactSlice.actions;

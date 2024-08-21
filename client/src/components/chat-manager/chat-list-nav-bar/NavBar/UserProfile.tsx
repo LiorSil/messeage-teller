@@ -3,7 +3,7 @@ import useContact from "../../../../hooks/useContact";
 import Loading from "../../../Loading";
 
 const UserProfile: React.FC = () => {
-  const { currentContact, loading, error } = useContact();
+  const { contact, loading, error } = useContact();
 
   if (loading) {
     return <Loading />;
@@ -20,14 +20,12 @@ const UserProfile: React.FC = () => {
   return (
     <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse">
       <img
-        src={
-          currentContact?.avatar || "https://flowbite.com/docs/images/logo.svg"
-        }
+        src={contact?.avatar || "https://flowbite.com/docs/images/logo.svg"}
         className="h-8 rounded-full"
-        alt={currentContact?.name || "UserProfile Logo"}
+        alt={contact?.name || "UserProfile Logo"}
       />
       <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
-        {currentContact?.name || "Guest"}
+        {contact?.name || "Guest"}
       </span>
     </a>
   );

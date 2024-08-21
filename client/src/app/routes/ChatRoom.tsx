@@ -11,8 +11,8 @@ const ChatRoom: React.FC = () => {
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [messages, setMessages] = useState<string[]>([]);
 
-  const { userData } = useSelector((state: any) => state.auth);
-  const { token, email, phoneNumber } = userData || {};
+  const { token } = useSelector((state: any) => state.auth);
+
   const cookies = useMemo(() => new Cookies(), []);
 
   useEffect(() => {
@@ -62,7 +62,7 @@ const ChatRoom: React.FC = () => {
   return (
     <div className="flex flex-col md:flex-row">
       <div className={getClassNames(!selectedChat, "md:w-1/3")}>
-        <ChatsManagerLayout />
+        <div>tets</div>
       </div>
       <div className={getClassNames(!!selectedChat, "md:w-2/3")}>
         <ChatLayout />
