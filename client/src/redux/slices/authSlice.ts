@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { get } from "http";
-
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
@@ -9,7 +7,8 @@ const initialState = {
   token: "",
   loading: false,
   error: "",
-  success: false,
+  redirectTo: null as null | string,
+  disconnect: false,
 };
 
 // Async thunk for registering a user
@@ -68,9 +67,9 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    
-    
-
+    clearRedirect: (state) => {
+      state.redirectTo = null;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(registerUser.pending, (state) => {
@@ -78,8 +77,6 @@ const authSlice = createSlice({
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
       state.loading = false;
-
-      state.success = true;
     });
     builder.addCase(registerUser.rejected, (state, action) => {
       state.loading = false;
@@ -90,9 +87,8 @@ const authSlice = createSlice({
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
       state.loading = false;
+      state.redirectTo = "/chat-room";
       state.token = action.payload.token;
-
-      state.success = true;
     });
     builder.addCase(loginUser.pending, (state) => {
       state.loading = true;
@@ -110,10 +106,5 @@ const authSlice = createSlice({
 
 export { registerUser, loginUser };
 
-
-
-
- 
-
-
 export default authSlice.reducer;
+export const { clearRedirect } = authSlice.actions;

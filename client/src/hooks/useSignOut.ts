@@ -1,20 +1,15 @@
-import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "../redux/store";
-
 import { useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
 
-const useSignOut = () => {
- 
+export const useSignOut = () => {
+  const cookies = new Cookies();
   const navigate = useNavigate();
-  const { loading, error, success } = useSelector(
-    (state: RootState) => state.auth
-  );
 
   const handleSignOut = () => {
-    navigate("/login");
+    console.log("handleSignOut called");
+    cookies.remove("token");
+    navigate("/login", { replace: true });
   };
 
-  return { handleSignOut, loading, error, success };
+  return { handleSignOut };
 };
-
-export default useSignOut;

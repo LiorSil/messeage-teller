@@ -1,39 +1,16 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import FormWrapper from "./FormWrapper";
 import useLoginForm from "../../hooks/useLoginForm";
-import { useEffect } from "react";
 import Loading from "../../components/Loading";
-import Cookies from "universal-cookie";
 import Button from "../../components/Button";
-
-interface IFormInputs {
-  email: string;
-  password: string;
-  // phoneNumber: string;
-}
 
 type Props = {
   headline: string;
 };
 
-const cookies = new Cookies();
-
 const Login = (props: Props) => {
-  cookies.remove("token");
-
-  const { register, handleSubmit, onSubmitHandler, error, loading, success } =
+  const { register, handleSubmit, onSubmit, errors, loading, error } =
     useLoginForm();
-  const navigate = useNavigate();
-
-  const onSubmit = (data: IFormInputs) => {
-    onSubmitHandler(data);
-  };
-
-  useEffect(() => {
-    if (success) {
-      navigate("/chat-room");
-    }
-  }, [success, navigate]);
 
   return (
     <FormWrapper headline={props.headline}>
@@ -54,11 +31,11 @@ const Login = (props: Props) => {
             id="email"
             className="app-form-input"
             placeholder="your@email.com"
-            {...register("email", {
-              required: true,
-            })}
+            {...register("email", { required: "Email is required" })}
           />
+          {errors.email && <p>{errors.email.message}</p>}
         </div>
+
         <div className="mb-4">
           <label htmlFor="password" className="app-form-label">
             Password
@@ -68,24 +45,11 @@ const Login = (props: Props) => {
             id="password"
             className="app-form-input"
             placeholder="Enter your password"
-            {...register("password", {
-              required: true,
-            })}
+            {...register("password", { required: "Password is required" })}
           />
+          {errors.password && <p>{errors.password.message}</p>}
         </div>
-        <div className="mb-4">
-          <label htmlFor="phoneNumber" className="app-form-label">
-            Phone
-          </label>
-          <input
-            disabled
-            type="tel"
-            id="phoneNumber"
-            className="app-form-input disabled:opacity-50"
-            placeholder="Enter your phone number"
-            required
-          />
-        </div>
+
         <div className="flex items-center justify-between space-x-6 md:space-x-16 mb-4">
           <div className="flex items-center">
             <input

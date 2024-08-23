@@ -2,8 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../redux/store";
 import { fetchContact } from "../redux/slices/contactSlice";
 import { useEffect } from "react";
-
 import Cookies from "universal-cookie";
+import { selectContactData } from "../redux/selectors/contactSelectors"; // Import the memoized selector
 
 const useContact = () => {
   const cookies = new Cookies();
@@ -11,21 +11,15 @@ const useContact = () => {
 
   const dispatch: AppDispatch = useDispatch();
 
-  const { contact, loading, error } = useSelector((state: RootState) => ({
-    contact: state.contact.contact,
-    loading: state.contact.loading,
-    error: state.contact.error,
-  }));
+  const { contact, getContactLoading, error } = useSelector(selectContactData);
 
   useEffect(() => {
-    if (token) {
+    if (token && !getContactLoading) {
       dispatch(fetchContact(token));
-    } else {
-      console.warn("No token found");
     }
-  }, [dispatch, token]);
+  }, [token, dispatch, getContactLoading]);
 
-  return { contact, loading, error };
+  return { contact, error, getContactLoading };
 };
 
 export default useContact;

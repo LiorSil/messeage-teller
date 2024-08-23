@@ -10,9 +10,10 @@ import {
   ContactResponse,
 } from "../../types/contact";
 
-interface ContactState {
+export interface ContactState {
   contact: Contact | null;
   loading: boolean;
+  getContactLoading: boolean;
   findContactLoading: boolean;
   error: string | null;
   phoneNumber: string;
@@ -32,6 +33,7 @@ const initialState: ContactState = {
     updatedAt: "",
   },
   loading: false,
+  getContactLoading: false,
   findContactLoading: false,
   error: "",
   phoneNumber: "",
@@ -120,15 +122,14 @@ const contactSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchContact.pending, (state) => {
-      state.loading = true;
+      state.getContactLoading = true;
     });
     builder.addCase(fetchContact.fulfilled, (state, action) => {
-      console.log("action.payload", action.payload);
-      state.loading = false;
+      state.getContactLoading = false;
       state.contact = action.payload;
     });
     builder.addCase(fetchContact.rejected, (state, action) => {
-      state.loading = false;
+      state.getContactLoading = false;
       state.error = action.payload as string;
     });
 

@@ -1,13 +1,14 @@
 import React from "react";
 import ChatItem from "./ChatItem";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
+import { SubContact } from "../../../types/subContact";
 
-const ChatListItems: React.FC = () => {
-  const { contact } = useSelector((state: RootState) => state.contact);
-  if (!contact) return null;
+interface chatListItemsProps {
+  contacts: SubContact[] | null;
+}
+
+const ChatListItems = ({ contacts }: chatListItemsProps) => {
   const chats =
-    contact?.contacts.map((contact, index) => (
+    contacts?.map((contact, index) => (
       <li key={`${index}_${contact._id}`} className="space-y-3">
         <ChatItem
           lastMessage={
