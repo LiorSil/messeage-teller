@@ -1,5 +1,5 @@
 import React from "react";
-import NavBar from "./chat-list-nav-bar/nav-bar/NavBar";
+import NavBar from "./profile-nav/nav-bar/NavBar";
 import ChatList from "./chats-list/ChatList";
 
 const ChatsManagerLayout = () => {
