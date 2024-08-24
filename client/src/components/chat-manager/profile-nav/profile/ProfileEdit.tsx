@@ -4,6 +4,7 @@ import SaveIconButton from "./SaveIconButton";
 
 type ProfileEditProps = {
   name: string;
+  isNameValid: boolean;
   onNameChange: (name: string) => void;
   onCancelClick: () => void;
   onSaveClick: () => void;
@@ -11,6 +12,7 @@ type ProfileEditProps = {
 
 const ProfileEdit: React.FC<ProfileEditProps> = ({
   name,
+  isNameValid,
   onNameChange,
   onCancelClick,
   onSaveClick,
@@ -25,7 +27,7 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({
       />
       <div className="flex items-center justify-center space-x-2 mt-4 sm:mt-0 sm:ml-2 w-full sm:w-auto">
         <CancelIconButton onClick={onCancelClick} />
-        <SaveIconButton onClick={onSaveClick} />
+        <SaveIconButton onClick={onSaveClick} isNameValid={isNameValid} />
       </div>
     </div>
   );

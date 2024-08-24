@@ -15,7 +15,7 @@ const ComboboxInput: React.FC<ComboboxInputProps> = ({
   return (
     <div className="relative">
       <input
-        className="bg-app-palette-sap-green-light-+40 py-3 ps-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-app-palette-cool-gray-+20 focus:ring-app-palette-cool-gray-+20  disabled:opacity-50 disabled:pointer-events-none"
+        className="  bg-app-palette-sap-green-light-+40 py-4 block w-full border-gray-200 rounded-lg text-xl focus:border-app-palette-cool-gray-+20 focus:ring-app-palette-cool-gray-+20  disabled:opacity-50 disabled:pointer-events-none placeholder:text-base"
         placeholder="You can type name or phone number"
         type="text"
         maxLength={10}
@@ -23,19 +23,6 @@ const ComboboxInput: React.FC<ComboboxInputProps> = ({
         aria-expanded="false"
         value={value}
         onChange={onChange}
-        // onKeyDown={(e) => {
-        //   if (
-        //     !/[0-9]/.test(e.key) &&
-        //     e.key !== "Backspace" &&
-        //     e.key !== "Delete" &&
-        //     e.key !== "ArrowLeft" &&
-        //     e.key !== "ArrowRight" &&
-        //     e.key !== "Tab" &&
-        //     e.key !== "Enter"
-        //   ) {
-        //     e.preventDefault();
-        //   }
-        // }}
         data-hs-combo-box-input=""
       />
       {value && (

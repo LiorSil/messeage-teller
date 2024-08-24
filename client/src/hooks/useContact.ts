@@ -13,6 +13,7 @@ const useContact = () => {
 
   const { contact, getContactLoading, error } = useSelector(selectContactData);
 
+
   useEffect(() => {
     if (token && !getContactLoading) {
       dispatch(fetchContact(token));

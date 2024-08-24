@@ -7,6 +7,7 @@ const Profile: React.FC = () => {
   const {
     isEditMode,
     name,
+    isNameValid,
     handleEditClick,
     handleCancelClick,
     handleSaveClick,
@@ -21,6 +22,7 @@ const Profile: React.FC = () => {
         ) : (
           <ProfileEdit
             name={name}
+            isNameValid={isNameValid}
             onNameChange={setName}
             onCancelClick={handleCancelClick}
             onSaveClick={handleSaveClick}

@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 import { Schema } from "mongoose";
 import contactService from "../services/contactService";
 import Contact, { IContact, ISubContact } from "../models/contactModel";
-import { log } from "console";
 
 const createContact = async (req: Request, res: Response) => {
   try {
@@ -19,7 +18,7 @@ const getContact = async (req: Request, res: Response) => {
 
   try {
     const contact = await contactService.getContactByPhoneNumber(phoneNumber);
-  
+
     if (!contact) {
       return res.status(404).json({ message: "Contact not found" });
     }
@@ -123,10 +122,7 @@ const addSubContact = async (req: Request, res: Response) => {
       lastMessage: "",
     } as ISubContact;
 
-    // Add the new sub-contact to the contacts array
     contact.contacts.push(newSubContact);
-
-    // Update the contact in the database
     const id = contact._id as string;
     await contactService.updateContact(id, contact);
 
@@ -137,10 +133,37 @@ const addSubContact = async (req: Request, res: Response) => {
   }
 };
 
+const updateProfile = async (req: Request, res: Response) => {
+  console.log("req.body", req.body);
+  const { ...data } = req.body;
+  const { phoneNumber } = req.body.contact;
+
+  try {
+    const contact = await contactService.getContactByPhoneNumber(phoneNumber);
+
+    if (!contact) {
+      return res.status(404).json({ message: "Contact not found" });
+    }
+
+    console.log("contact", contact);
+    Object.assign(contact, data);
+
+    console.log("contact after assign", contact);
+
+    const id = contact._id as string;
+    await contactService.updateContact(id, contact);
+
+    res.status(200).json(contact);
+  } catch (err: any) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
 export {
   createContact,
   getContact,
   getContactByPhoneNumber,
   addSubContact,
   findContactsByQuery,
+  updateProfile,
 };
