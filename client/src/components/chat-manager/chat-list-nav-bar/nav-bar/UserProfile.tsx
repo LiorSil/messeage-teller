@@ -1,6 +1,6 @@
 import React from "react";
 import useContact from "../../../../hooks/useContact";
-import Loading from "../../../Loading";
+import Loading from "../../../../shared/Loading";
 
 const UserProfile: React.FC = () => {
   const { contact, getContactLoading: loading, error } = useContact();

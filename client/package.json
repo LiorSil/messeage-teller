@@ -38,6 +38,7 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@svgr/rollup": "^8.1.0",
     "@testing-library/jest-dom": "^6.4.8",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.5.2",

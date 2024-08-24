@@ -5,18 +5,20 @@ interface DrawerMenuLinkProps {
   href: string;
   label: string;
   isActive?: boolean;
-  onClick?: () => void;
+  onSelect: () => void;
 }
 
-const DrawerMenuLink: React.FC<DrawerMenuLinkProps> = ({ label, isActive }) => {
-  const { handleSignOut } = useSignOut();
+const DrawerMenuLink: React.FC<DrawerMenuLinkProps> = ({
+  label,
+  isActive,
+  onSelect,
+}) => {
+
 
   return (
     <li
       onClick={() => {
-        if (label === "Sign Out") {
-          handleSignOut();
-        }
+        onSelect();
       }}
     >
       <button

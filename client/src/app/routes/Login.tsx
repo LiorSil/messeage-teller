@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import FormWrapper from "./FormWrapper";
 import useLoginForm from "../../hooks/useLoginForm";
-import Loading from "../../components/Loading";
-import Button from "../../components/Button";
+import Loading from "../../shared/Loading";
+import Button from "../../shared/Button";
 
 type Props = {
   headline: string;

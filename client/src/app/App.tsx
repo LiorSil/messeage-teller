@@ -2,7 +2,7 @@ import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import Login from "./routes/Login";
 import Register from "./routes/Register";
 import ChatRoom from "./routes/ChatRoom";
-import UnauthorizedPage from "../components/UnauthorizedPage";
+import UnauthorizedPage from "../shared/UnauthorizedPage";
 
 const App = () => {
   const location = useLocation(); // Added to get current location

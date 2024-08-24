@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { SubmitHandler } from "react-hook-form";
 import useRegisterForm from "../../hooks/useRegisterForm";
-import Loading from "../../components/Loading";
+import Loading from "../../shared/Loading";
 import FormWrapper from "./FormWrapper";
-import Button from "../../components/Button";
+import Button from "../../shared/Button";
 
 interface IFormInputs {
   email: string;

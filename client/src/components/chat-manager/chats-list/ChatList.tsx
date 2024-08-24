@@ -1,8 +1,8 @@
 import React from "react";
 import ChatListItems from "./ChatListItems";
 import useContact from "../../../hooks/useContact";
-import Loading from "../../Loading";
-import ErrorMessage from "../../ErrorMessage";
+import Loading from "../../../shared/Loading";
+import ErrorMessage from "../../../shared/ErrorMessage";
 
 const ChatList: React.FC = () => {
   const { contact, error, loading } = useContact();
