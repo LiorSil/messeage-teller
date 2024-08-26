@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import { Schema } from "mongoose";
 import contactService from "../services/contactService";
-import Contact, { IContact, ISubContact } from "../models/contactModel";
+import { IContact, ISubContact } from "../models/contactModel";
 
 const createContact = async (req: Request, res: Response) => {
   try {
@@ -49,7 +49,7 @@ const getContactByPhoneNumber = async (req: Request, res: Response) => {
 
 const findContactsByQuery = async (req: Request, res: Response) => {
   const { query } = req.params;
-  console.log("Query: ", query);
+
   const contact = await contactService.getContactByPhoneNumber(
     req.body.contact.phoneNumber
   );
@@ -58,23 +58,27 @@ const findContactsByQuery = async (req: Request, res: Response) => {
     return res.status(404).json({ message: "Contact not found" });
   }
 
-  const { contacts: ownedContacts } = contact;
+  const { subContacts: ownedContacts } = contact;
 
   try {
     let contacts = await contactService.findContacts(query as string);
-    // Filter out the contacts that are already in the current contact's contacts
+
     contacts = contacts.filter((contact) => {
       return !ownedContacts.some(
         (subContact) => subContact.phoneNumber === contact.phoneNumber
       );
     });
+    //filter out self contact
+    contacts = contacts.filter(
+      (contact) => contact.phoneNumber !== req.body.contact.phoneNumber
+    );
 
     if (!contacts) {
       return res.status(404).json({ message: "Contacts not found" });
     }
     const safeContacts = contacts.map((contact, index) => {
       const { name, phoneNumber } = contact;
-      return { _id: index, name, phoneNumber, imageUrl: "", lastMessage: "" };
+      return { _id: index, name, phoneNumber, avatar: "", lastMessage: "" };
     });
 
     console.log("Safe contacts: ", safeContacts);
@@ -104,7 +108,7 @@ const addSubContact = async (req: Request, res: Response) => {
     }
 
     // Filter out the existing sub-contact from the contacts array
-    const isSubContactAlreadyAdded = contact.contacts.some(
+    const isSubContactAlreadyAdded = contact.subContacts.some(
       (existingSubContact) =>
         existingSubContact.phoneNumber === newSubContactNumber
     );
@@ -118,11 +122,11 @@ const addSubContact = async (req: Request, res: Response) => {
       _id: subContact._id as Schema.Types.ObjectId,
       name: subContact.name,
       phoneNumber: subContact.phoneNumber,
-      imageUrl: subContact.imageUrl || "",
+      avatar: subContact.avatar || "",
       lastMessage: "",
     } as ISubContact;
 
-    contact.contacts.push(newSubContact);
+    contact.subContacts.push(newSubContact);
     const id = contact._id as string;
     await contactService.updateContact(id, contact);
 

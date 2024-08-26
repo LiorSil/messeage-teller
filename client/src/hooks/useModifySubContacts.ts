@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
-import { fetchAddSubContact } from "../redux/slices/contactSlice";
+import { fetchAddSubContact } from "../redux/slices/contactOperationsSlice";
 
 import { useEffect, useMemo } from "react";
 import Cookies from "universal-cookie";

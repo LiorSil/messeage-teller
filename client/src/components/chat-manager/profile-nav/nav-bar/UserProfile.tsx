@@ -3,7 +3,8 @@ import useContact from "../../../../hooks/useContact";
 import Loading from "../../../../shared/Loading";
 
 const UserProfile: React.FC = () => {
-  const { contact, getContactLoading: loading, error } = useContact();
+  const { contact, loading, error } = useContact();
+
 
   if (loading) {
     return <Loading />;

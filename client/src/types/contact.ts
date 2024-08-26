@@ -9,7 +9,7 @@ export interface Contact {
   avatar: string;
   createdAt: string;
   updatedAt: string;
-  contacts: SubContact[]; // Ensure this is typed as an array of SubContact
+  subContacts: SubContact[]; // Ensure this is typed as an array of SubContact
 }
 
 // src/types/contactTypes.ts

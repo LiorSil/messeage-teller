@@ -1,6 +1,6 @@
 import { createSelector } from "reselect";
 import { RootState } from "../store";
-import { ContactState } from "../slices/contactSlice";
+import { ContactState } from "../states/contactState";
 
 // Basic selectors
 const selectContactState = (state: RootState): ContactState => state.contact;
@@ -10,22 +10,22 @@ export const selectContact = createSelector(
   (contactState) => contactState.contact
 );
 
-export const selectSubContacts = createSelector(
-  [selectContactState],
-  (contactState) => contactState.subContacts
-);
-
 export const selectLoading = createSelector(
   [selectContactState],
   (contactState) => contactState.loading
 );
 
+export const selectError = createSelector(
+  [selectContactState],
+  (contactState) => contactState.error
+);
+
 // You can also create a combined selector if necessary
 export const selectContactData = createSelector(
-  [selectContact, selectSubContacts, selectLoading],
-  (contact, subContacts, getContactLoading) => ({
+  [selectContact, selectLoading, selectError],
+  (contact, loading, error) => ({
     contact,
-    subContacts,
-    getContactLoading,
+    loading,
+    error,
   })
 );

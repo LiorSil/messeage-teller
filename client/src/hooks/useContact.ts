@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "../redux/store";
+import { AppDispatch } from "../redux/store";
 import { fetchContact } from "../redux/slices/contactSlice";
 import { useEffect } from "react";
 import Cookies from "universal-cookie";
@@ -11,16 +11,15 @@ const useContact = () => {
 
   const dispatch: AppDispatch = useDispatch();
 
-  const { contact, getContactLoading, error } = useSelector(selectContactData);
-
+  const { contact, loading, error } = useSelector(selectContactData);
 
   useEffect(() => {
-    if (token && !getContactLoading) {
+    if (token && !loading) {
       dispatch(fetchContact(token));
     }
-  }, [token, dispatch, getContactLoading]);
+  }, [token, dispatch, loading]);
 
-  return { contact, error, getContactLoading };
+  return { contact, error, loading };
 };
 
 export default useContact;

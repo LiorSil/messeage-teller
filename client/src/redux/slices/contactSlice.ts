@@ -1,26 +1,8 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { ContactState } from "../states/contactState";
 import axios from "axios";
-
 const VITE_API_URL = import.meta.env.VITE_API_URL;
-import { SubContact } from "../../types/subContact";
-import {
-  Contact,
-  FetchAddSubContactParams,
-  FetchContactByPhoneOrNameParams,
-  ContactResponse,
-} from "../../types/contact";
-
-export interface ContactState {
-  contact: Contact | null;
-  loading: boolean;
-  getContactLoading: boolean;
-  findContactLoading: boolean;
-  error: string | null;
-  phoneNumber: string;
-  subContactPhoneNumber: string;
-  subContacts: SubContact[];
-  addContactSuccess: boolean;
-}
+import { Contact } from "../../types/contact";
 
 const initialState: ContactState = {
   contact: {
@@ -29,16 +11,13 @@ const initialState: ContactState = {
     phoneNumber: "",
     avatar: "",
     createdAt: "",
-    contacts: [], // Ensure this is an empty array initially
+    subContacts: [],
     updatedAt: "",
   },
   loading: false,
-  getContactLoading: false,
-  findContactLoading: false,
-  error: "",
   phoneNumber: "",
-  subContactPhoneNumber: "",
-  subContacts: [],
+  getContactLoading: false,
+  error: "",
   addContactSuccess: false,
 };
 
@@ -62,64 +41,10 @@ const fetchContact = createAsyncThunk<Contact, string>(
   }
 );
 
-const fetchContactByPhoneOrName = createAsyncThunk<
-  SubContact[],
-  FetchContactByPhoneOrNameParams
->("contact/fetchContactByPhoneOrName", async (data, { rejectWithValue }) => {
-  try {
-    const response = await axios.get<SubContact[]>(
-      `${VITE_API_URL}/contacts/${data.phoneNumber}`,
-      {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-      }
-    );
-    return response.data;
-  } catch (error: unknown) {
-    if (axios.isAxiosError(error) && error.response) {
-      return rejectWithValue(error.response.data || "");
-    }
-    return rejectWithValue("An unexpected error occurred");
-  }
-});
-
-const fetchAddSubContact = createAsyncThunk<
-  ContactResponse,
-  FetchAddSubContactParams
->("contact/fetchAddSubContact", async (data, { rejectWithValue }) => {
-  try {
-    const response = await axios.put<ContactResponse>(
-      `${VITE_API_URL}/contacts/addSubContact`,
-      {
-        phoneNumber: data.newSubContactNumber,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-      }
-    );
-    return response.data;
-  } catch (error: unknown) {
-    if (axios.isAxiosError(error) && error.response) {
-      return rejectWithValue(error.response.data);
-    }
-    return rejectWithValue("An unexpected error occurred");
-  }
-});
-
 const contactSlice = createSlice({
   name: "contact",
   initialState,
-  reducers: {
-    setPhoneNumber: (state, action) => {
-      state.subContactPhoneNumber = action.payload;
-    },
-    clearAddContactSuccess: (state) => {
-      state.addContactSuccess = false;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchContact.pending, (state) => {
       state.getContactLoading = true;
@@ -132,63 +57,8 @@ const contactSlice = createSlice({
       state.getContactLoading = false;
       state.error = action.payload as string;
     });
-
-    /** getContactByQuery */
-    builder.addCase(fetchContactByPhoneOrName.fulfilled, (state, action) => {
-      state.findContactLoading = false;
-
-      const contacts = action.payload;
-
-      // Filter the contacts
-      state.subContacts = contacts.filter((contact: SubContact) => {
-        return !state.contact?.contacts.some((subContact: SubContact) => {
-          return subContact.phoneNumber === contact.phoneNumber;
-        });
-      });
-    });
-    builder.addCase(fetchContactByPhoneOrName.pending, (state) => {
-      state.findContactLoading = true;
-    });
-    builder.addCase(fetchContactByPhoneOrName.rejected, (state, action) => {
-      state.findContactLoading = false;
-      state.error = action.payload as string;
-    });
-
-    /** fetchAddSubContact */
-    builder.addCase(fetchAddSubContact.fulfilled, (state, action) => {
-      const newContacts = Array.isArray(action.payload.contacts)
-        ? action.payload.contacts
-        : [];
-
-      state.subContacts = state.subContacts.filter(
-        (contact: SubContact) =>
-          !newContacts.some(
-            (payloadContact: SubContact) =>
-              payloadContact.phoneNumber === contact.phoneNumber
-          )
-      );
-
-      state.addContactSuccess = true;
-
-      if (state.contact !== null) {
-        state.contact.contacts = newContacts;
-      }
-
-      state.loading = false;
-    });
-
-    builder.addCase(fetchAddSubContact.pending, (state) => {
-      state.loading = true;
-    });
-
-    builder.addCase(fetchAddSubContact.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload as string | null;
-    });
   },
 });
 
-export { fetchContact, fetchContactByPhoneOrName, fetchAddSubContact };
-export const { setPhoneNumber, clearAddContactSuccess } = contactSlice.actions;
-
+export { fetchContact };
 export default contactSlice.reducer;

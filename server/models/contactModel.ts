@@ -6,19 +6,17 @@ interface ISubContact extends Document {
   name: string;
   phoneNumber: string;
   lastMessage: string;
-  imageUrl: string;
+  avatar: string;
 }
 
 interface IContact extends Document {
   name: string;
   avatar: string;
   phoneNumber: string;
-  contacts: ISubContact[];
+  subContacts: ISubContact[];
   status?: string;
   createdAt?: string;
-  imageUrl: string;
 }
-
 const subContactSchema = new Schema<ISubContact>(
   {
     name: {
@@ -27,8 +25,7 @@ const subContactSchema = new Schema<ISubContact>(
     },
     phoneNumber: {
       type: String,
-      unique: true,
-      required: true,
+      required: true, // Removed unique: true
       validate: {
         validator: (v: string) => phoneNumberRegex.test(v),
         message: (props) =>
@@ -36,10 +33,10 @@ const subContactSchema = new Schema<ISubContact>(
       },
     },
     lastMessage: String,
-    imageUrl: String,
+    avatar: String,
   },
   { _id: true }
-); // Keep _id field
+);
 
 const contactSchema = new Schema<IContact>(
   {
@@ -62,16 +59,17 @@ const contactSchema = new Schema<IContact>(
       default:
         "https://plus.unsplash.com/premium_photo-1664536392779-049ba8fde933?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
-
-    contacts: {
+    subContacts: {
       type: [subContactSchema],
-      validate: {
-        validator: function (contacts: ISubContact[]) {
-          const phoneNumbers = contacts.map((contact) => contact.phoneNumber);
-          return phoneNumbers.length === new Set(phoneNumbers).size;
-        },
-        message: "A sub-contact with the same phone number already exists.",
-      },
+      // validate: {
+      //   validator: function (subContacts: ISubContact[]) {
+      //     const phoneNumbers = subContacts.map(
+      //       (subContacts) => subContacts.phoneNumber
+      //     );
+      //     return phoneNumbers.length === new Set(phoneNumbers).size;
+      //   },
+      //   message: "A sub-contact with the same phone number already exists.",
+      // },
     },
   },
   {

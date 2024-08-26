@@ -1,10 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../redux/store";
-import {
-  fetchContactByPhoneOrName,
-  setPhoneNumber,
-  clearAddContactSuccess,
-} from "../redux/slices/contactSlice";
+import { fetchContactByPhoneOrName } from "../redux/slices/subContactFinderSlice";
 import { useMemo, useCallback } from "react";
 import Cookies from "universal-cookie";
 
@@ -14,15 +10,13 @@ const useFindContact = () => {
 
   const dispatch: AppDispatch = useDispatch();
 
-  const { subContacts, findContactLoading, error } = useSelector(
-    (state: RootState) => state.contact
+  const { subContacts, loading, error } = useSelector(
+    (state: RootState) => state.subContact
   );
 
   const handleSetPhoneNumber = useCallback(
-    (phoneNumber: string) => {
-      dispatch(setPhoneNumber(phoneNumber));
-    },
-    [dispatch]
+    (phoneNumber: string) => console.log(phoneNumber),
+    []
   );
 
   const handleFetchContactByPhoneOrName = useCallback(
@@ -33,12 +27,12 @@ const useFindContact = () => {
   );
 
   const handleClearAddContactSuccess = useCallback(() => {
-    dispatch(clearAddContactSuccess());
-  }, [dispatch]);
+    console.log("Clearing add contact success");
+  }, []);
 
   return {
     subContacts,
-    findContactLoading,
+    loading,
     error,
     handleSetPhoneNumber,
     handleFetchContactByPhoneOrName,

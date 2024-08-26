@@ -26,7 +26,6 @@ const AddContact: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
   const {
-    handleSetPhoneNumber,
     handleFetchContactByPhoneOrName,
     subContacts,
     handleClearAddContactSuccess,
@@ -35,23 +34,15 @@ const AddContact: React.FC = () => {
   const { handleAddSubContact, addContactSuccess } = useModifySubContacts();
 
   const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      setQuery(value);
-      handleSetPhoneNumber(value);
+    ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
       handleClearAddContactSuccess();
-
+      setQuery(value);
       if (value.length >= 5) {
         handleFetchContactByPhoneOrName(value);
       }
     },
-    [
-      handleSetPhoneNumber,
-      handleClearAddContactSuccess,
-      handleFetchContactByPhoneOrName,
-    ]
+    [handleClearAddContactSuccess, handleFetchContactByPhoneOrName]
   );
-
   const handleItemClick = useCallback((phoneNumber: string) => {
     setSelectedItem((prev) => (prev === phoneNumber ? null : phoneNumber));
   }, []);
