@@ -5,14 +5,14 @@ import { useSocket } from "../../hooks/useSocket";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
-import { selectToken } from "../../redux/selectors/authSelectors";
+import { RootState } from "../../redux/store";
 
 const ChatRoom: React.FC = () => {
   const navigate = useNavigate();
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [messages, setMessages] = useState<string[]>([]);
 
-  const token = useSelector(selectToken);
+  const token = useSelector((state: RootState) => state.auth.token);
 
   const cookies = useMemo(() => new Cookies(), []);
 

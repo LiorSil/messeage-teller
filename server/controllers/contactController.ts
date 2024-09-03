@@ -22,7 +22,6 @@ const getContact = async (req: Request, res: Response) => {
     if (!contact) {
       return res.status(404).json({ message: "Contact not found" });
     }
-    console.log("Contact: ", contact);
     res.status(200).json(contact);
   } catch (err: any) {
     res.status(400).json({ message: err.message });
@@ -81,8 +80,6 @@ const findContactsByQuery = async (req: Request, res: Response) => {
       return { _id: index, name, phoneNumber, avatar: "", lastMessage: "" };
     });
 
-    console.log("Safe contacts: ", safeContacts);
-
     res.status(200).json(safeContacts);
   } catch (err: any) {
     res.status(400).json({ message: err.message });
@@ -138,7 +135,6 @@ const addSubContact = async (req: Request, res: Response) => {
 };
 
 const updateProfile = async (req: Request, res: Response) => {
-  console.log("req.body", req.body);
   const { ...data } = req.body;
   const { phoneNumber } = req.body.contact;
 
@@ -149,10 +145,8 @@ const updateProfile = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Contact not found" });
     }
 
-    console.log("contact", contact);
     Object.assign(contact, data);
 
-    console.log("contact after assign", contact);
 
     const id = contact._id as string;
     await contactService.updateContact(id, contact);

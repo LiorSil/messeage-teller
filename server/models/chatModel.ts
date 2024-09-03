@@ -1,40 +1,55 @@
-import { Schema, model, Document, Types } from "mongoose";
+import exp from "constants";
+import mongoose, { Schema, Document } from "mongoose";
 
+// Define the message subdocument schema
+interface IMessage extends Document {
+  sender: Schema.Types.ObjectId;
+  content: string;
+  timestamp: string;
+  read: boolean;
+}
+ 
 interface IChat extends Document {
-  participants: Types.ObjectId[];
-  lastMessage?: Types.ObjectId;
-  createdAt?: Date;
-  updatedAt?: Date;
+  participants: Schema.Types.ObjectId[];
+  messages: IMessage[];
+  createdAt: Date;
+  updatedAt: Date;
+  isGroupChat: boolean;
+  groupName: string;
 }
 
-const chatSchema = new Schema<IChat>(
-  {
-    participants: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Contact",
-        required: true,
-      },
-    ],
-    lastMessage: {
-      type: Schema.Types.ObjectId,
-      ref: "Message",
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now,
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
+const messageSchema = new Schema<IMessage>({
+  sender: { type: Schema.Types.ObjectId, ref: "Contact", required: true },
+  content: { type: String, required: true },
+  timestamp: { type: String, required: true },
+  read: { type: Boolean, default: false },
+});
 
-const Chat = model<IChat>("Chat", chatSchema, "chats");
 
+
+// Define the chat schema
+const chatSchema = new Schema<IChat>({
+  participants: [
+    { type: Schema.Types.ObjectId, ref: "Contact", required: true },
+  ],
+  messages: { type: [messageSchema], default: [] },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+  isGroupChat: { type: Boolean, default: false },
+  groupName: {
+    type: String,
+    required: function () {
+      return (this as any).isGroupChat;
+    },
+  }, // Name of the group if it's a group chat
+});
+
+// Pre-save hook to update the updatedAt field
+chatSchema.pre("save", function (next) {
+  this.updatedAt = new Date(Date.now());
+  next();
+});
+
+export const Chat = mongoose.model("Chat", chatSchema, "chats");
 export default Chat;
-export { IChat };
+export { IMessage, IChat };

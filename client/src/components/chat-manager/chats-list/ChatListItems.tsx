@@ -3,12 +3,12 @@ import ChatItem from "./ChatItem";
 import { SubContact } from "../../../types/subContact";
 
 interface chatListItemsProps {
-  contacts: SubContact[] | null;
+  subContacts: SubContact[] | null;
 }
 
-const ChatListItems = ({ contacts }: chatListItemsProps) => {
+const ChatListItems = ({ subContacts }: chatListItemsProps) => {
   const chats =
-    contacts?.map((contact, index) => (
+    subContacts?.map((contact, index) => (
       <li key={`${index}_${contact._id}`} className="space-y-3">
         <ChatItem
           lastMessage={

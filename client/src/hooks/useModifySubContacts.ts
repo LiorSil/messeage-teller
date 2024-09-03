@@ -1,32 +1,57 @@
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../redux/store";
-import { fetchAddSubContact } from "../redux/slices/contactOperationsSlice";
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 
-import { useEffect, useMemo } from "react";
+import axios from "axios";
+
+import { useState, useEffect, useMemo, useCallback } from "react";
+import { updateContact } from "../redux/slices/contactSlice";
+import { updateSubContacts } from "../redux/slices/subContactFinderSlice";
 import Cookies from "universal-cookie";
+import { useDispatch } from "react-redux";
 
 const useModifySubContacts = () => {
+  const [showNotice, setShowNotice] = useState(false);
+  const handleShowNotice = useCallback(() => {
+    setShowNotice((prev) => !prev);
+  }, []);
+
+  const dispatch = useDispatch();
   const cookies = useMemo(() => new Cookies(), []);
   const token = cookies.get("token");
 
-  const dispatch: AppDispatch = useDispatch();
-  const { addContactSuccess } = useSelector(
-    (state: RootState) => state.contact
-  );
-
   const handleAddSubContact = (newSubContactNumber: string) => {
-    dispatch(fetchAddSubContact({ token, newSubContactNumber }));
+    axios
+      .put(
+        `${VITE_API_URL}/contacts/addSubContact`,
+        {
+          phoneNumber: newSubContactNumber,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        dispatch(updateContact(response.data));
+        dispatch(updateSubContacts(response.data.subContacts));
+        setShowNotice(true);
+      })
+      .catch((error) => {
+        console.error(error);
+        setShowNotice(true);
+      });
   };
 
   useEffect(() => {
-    if (addContactSuccess) {
+    if (showNotice) {
       console.log("Sub contact added successfully");
     }
-  }, [addContactSuccess]);
+  }, [showNotice]);
 
   return {
     handleAddSubContact,
-    addContactSuccess,
+    showNotice,
+    handleShowNotice,
   };
 };
 

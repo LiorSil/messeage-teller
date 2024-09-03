@@ -5,6 +5,7 @@ import ComboboxDropdown from "./ComboboxDropdown";
 import ComboboxItem from "./ComboboxItem";
 import useFindContact from "../../../../hooks/useFindContact";
 import useModifySubContacts from "../../../../hooks/useModifySubContacts";
+import NoticeComponent from "../../../../shared/NoticeMessage";
 
 interface Contact {
   id: number;
@@ -23,6 +24,7 @@ const isContact = (obj: any): obj is Contact => {
 
 const AddContact: React.FC = () => {
   const [query, setQuery] = useState("");
+
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
   const {
@@ -31,7 +33,8 @@ const AddContact: React.FC = () => {
     handleClearAddContactSuccess,
   } = useFindContact();
 
-  const { handleAddSubContact, addContactSuccess } = useModifySubContacts();
+  const { handleAddSubContact, showNotice, handleShowNotice } =
+    useModifySubContacts();
 
   const handleInputChange = useCallback(
     ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,9 +56,13 @@ const AddContact: React.FC = () => {
 
   return (
     <>
-      {addContactSuccess && (
-        <p className="bg-green-500">Contact added successfully</p>
+      {showNotice && (
+        <NoticeComponent
+          message="Contact added successfully"
+          onClose={() => handleShowNotice()}
+        />
       )}
+
       <ComboboxContainer>
         <ComboboxInput
           value={query}

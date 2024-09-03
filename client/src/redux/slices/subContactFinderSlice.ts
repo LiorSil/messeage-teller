@@ -3,6 +3,7 @@ import axios from "axios";
 import { SubContact } from "../../types/subContact";
 import { FetchContactByPhoneOrNameParams } from "../../types/contact";
 import { SubContactState } from "../states/subContactState";
+import { updateContact } from "./contactSlice";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 const initialState: SubContactState = {
@@ -15,9 +16,21 @@ const initialState: SubContactState = {
 const subContactsFinderSlice = createSlice({
   name: "subContactsFinder",
   initialState,
-  reducers: {},
+  reducers: {
+    updateSubContacts: (state, action) => {
+      //action.payload is array of subContacts that we need to drop from subContacts array in state
+      state.subContacts = state.subContacts.filter(
+        (subContact) =>
+          !action.payload.some(
+            (subContactToRemove: SubContact) =>
+              subContactToRemove.phoneNumber === subContact.phoneNumber
+          )
+      );
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchContactByPhoneOrName.fulfilled, (state, action) => {
+      console.log("action.payload", action.payload);
       state.loading = false;
       state.subContacts = action.payload;
     });
@@ -56,4 +69,5 @@ export const fetchContactByPhoneOrName = createAsyncThunk<
   }
 );
 
+export const { updateSubContacts } = subContactsFinderSlice.actions;
 export default subContactsFinderSlice.reducer;

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ContactState } from "../states/contactState";
 import axios from "axios";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
@@ -44,7 +44,11 @@ const fetchContact = createAsyncThunk<Contact, string>(
 const contactSlice = createSlice({
   name: "contact",
   initialState,
-  reducers: {},
+  reducers: {
+    updateContact: (state, action: PayloadAction<Contact>) => {
+      state.contact = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchContact.pending, (state) => {
       state.getContactLoading = true;
@@ -61,4 +65,5 @@ const contactSlice = createSlice({
 });
 
 export { fetchContact };
+export const { updateContact } = contactSlice.actions;
 export default contactSlice.reducer;

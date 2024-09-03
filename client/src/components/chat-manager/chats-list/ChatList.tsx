@@ -6,14 +6,15 @@ import ErrorMessage from "../../../shared/ErrorMessage";
 
 const ChatList: React.FC = () => {
   const { contact, error, loading } = useContact();
+  console.log("contact", contact);
 
   if (loading) <Loading />;
   if (error) <ErrorMessage error="Can't get user's contacts" />;
-  if (!contact?.contacts) return null;
+  if (!contact?.subContacts) return null;
 
   return (
     <div className="overflow-y-auto h-screen p-3 mb-9 pb-6">
-      <ChatListItems contacts={contact?.contacts} />
+      <ChatListItems subContacts={contact?.subContacts} />
       <div className="flex justify-center items-center mt-4">
         <p className="text-center">
           <span className="text-gray-800 bg-white">You have no more chats</span>
