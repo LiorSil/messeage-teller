@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
-import Chat, { IMessage, IChat } from "../models/chatModel";
-import exp from "constants";
+import { IMessage, IChat } from "../models/model.interfaces";
+import Chat from "../models/chatModel";
 
 const createChat = async (chatData: Partial<IChat>): Promise<IChat> => {
   const chat = new Chat(chatData);
@@ -11,9 +11,36 @@ const createChat = async (chatData: Partial<IChat>): Promise<IChat> => {
 const getChatById = async (
   chatId: Types.ObjectId | string
 ): Promise<IChat | null> => {
-  const chat = await Chat.findById(chatId).populate("participants").exec();
+  const chat = await Chat.findById(chatId).exec();
 
   return chat;
 };
 
-export default { createChat, getChatById };
+const getChats = async (): Promise<IChat[]> => {
+  return await Chat.find().exec();
+};
+
+const updateChat = async (
+  chatId: Types.ObjectId | string,
+  updateData: Partial<IChat>
+): Promise<IChat | null> => {
+  return await Chat.findByIdAndUpdate(chatId, updateData, { new: true }).exec();
+};
+
+const deleteChat = async (
+  chatId: Types.ObjectId | string
+): Promise<IChat | null> => {
+  return await Chat.findByIdAndDelete(chatId).exec();
+};
+
+export default {
+  createChat,
+  getChatById,
+  getChats,
+  updateChat,
+  deleteChat,
+};
+
+
+
+

@@ -9,12 +9,12 @@ import { initializeSocket } from "./config/socket";
 import contactRoute from "./routes/contactRoute";
 import authRoute from "./routes/authRoute";
 import userRoute from "./routes/userRoute";
+import chatRoute from "./routes/chatRoute";
 
 const port = process.env.PORT || 3000;
 const app = express();
 const server = http.createServer(app);
 dbConnect();
-
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -27,6 +27,7 @@ app.get("/", (req: any, res: { send: (arg0: string) => void }) => {
 app.use("/contacts", contactRoute);
 app.use("/auth", authRoute);
 app.use("/users", userRoute);
+app.use("/chats", chatRoute);
 
 // Initialize Socket.io with the server
 initializeSocket(server);

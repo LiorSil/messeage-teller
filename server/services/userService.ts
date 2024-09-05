@@ -7,8 +7,7 @@ import {
   getUserById,
   getUserByPhoneNumber,
 } from "../repos/userRepo";
-import { IUser } from "../models/userModel";
-import { IContact } from "../models/contactModel";
+import { IUser, IContact } from "../models/model.interfaces";
 import contactService from "../services/contactService";
 
 const registerUser = async (

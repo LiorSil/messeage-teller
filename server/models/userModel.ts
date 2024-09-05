@@ -1,14 +1,7 @@
 import { Schema, model, Document } from "mongoose";
 import bcrypt from "bcrypt";
 import phoneNumberRegex from "../utils/phoneNumberRegex";
-
-interface IUser extends Document {
-  email: string;
-  password: string;
-  phoneNumber: string;
-
-  comparePassword: (candidatePassword: string) => Promise<boolean>;
-}
+import { IUser } from "./model.interfaces";
 
 const userSchema = new Schema<IUser>(
   {
@@ -54,4 +47,3 @@ userSchema.methods.comparePassword = async function (
 const User = model<IUser>("User", userSchema, "users");
 
 export default User;
-export { IUser };

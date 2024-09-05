@@ -1,22 +1,7 @@
 import { Schema, model, Document } from "mongoose";
 import phoneNumberRegex from "../utils/phoneNumberRegex";
+import { ISubContact, IContact } from "./model.interfaces";
 
-interface ISubContact extends Document {
-  _id: Schema.Types.ObjectId;
-  name: string;
-  phoneNumber: string;
-  lastMessage: string;
-  avatar: string;
-}
-
-interface IContact extends Document {
-  name: string;
-  avatar: string;
-  phoneNumber: string;
-  subContacts: ISubContact[];
-  status?: string;
-  createdAt?: string;
-}
 const subContactSchema = new Schema<ISubContact>(
   {
     name: {
@@ -80,4 +65,4 @@ const contactSchema = new Schema<IContact>(
 const Contact = model<IContact>("Contact", contactSchema, "contacts");
 
 export default Contact;
-export { IContact, ISubContact };
+

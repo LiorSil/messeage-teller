@@ -1,4 +1,5 @@
-import User, { IUser } from "../models/userModel";
+import User from "../models/userModel";
+import { IUser } from "../models/model.interfaces";
 
 const createUser = async (
   email: string,

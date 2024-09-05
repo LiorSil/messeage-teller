@@ -1,5 +1,5 @@
 import contactRepo from "../repos/contactRepo";
-import { IContact } from "../models/contactModel";
+import { IContact } from "../models/model.interfaces";
 import { Types } from "mongoose";
 
 const createContact = async (

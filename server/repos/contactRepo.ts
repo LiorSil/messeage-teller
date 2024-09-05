@@ -1,4 +1,5 @@
-import Contact, { IContact } from "../models/contactModel";
+import Contact from "../models/contactModel";
+import { IContact } from "../models/model.interfaces";
 import { Types } from "mongoose";
 
 const createContact = async (
@@ -12,17 +13,15 @@ const createContact = async (
 const getContactById = async (
   contactId: Types.ObjectId | string
 ): Promise<IContact | null> => {
-  
   const contact = await Contact.findById(contactId).exec();
 
   return contact;
-  
 };
 
 const getContactByPhoneNumber = async (phoneNumber: string) => {
   try {
     const contact = await Contact.findOne({ phoneNumber: phoneNumber });
-    return contact; // This will be the document if found, or null if not found
+    return contact; 
   } catch (error) {
     console.error("Error finding contact by phone number:", error);
     throw error;
@@ -30,7 +29,6 @@ const getContactByPhoneNumber = async (phoneNumber: string) => {
 };
 
 const getContactsByName = async (name: string): Promise<IContact[]> => {
-  
   return await Contact.find({ name: { $regex: name, $options: "i" } }).exec();
 };
 

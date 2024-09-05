@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import { Schema } from "mongoose";
 import contactService from "../services/contactService";
-import { IContact, ISubContact } from "../models/contactModel";
+import { IContact, ISubContact } from "../models/model.interfaces";
 
 const createContact = async (req: Request, res: Response) => {
   try {
@@ -64,7 +64,8 @@ const findContactsByQuery = async (req: Request, res: Response) => {
 
     contacts = contacts.filter((contact) => {
       return !ownedContacts.some(
-        (subContact) => subContact.phoneNumber === contact.phoneNumber
+        (subContact: ISubContact) =>
+          subContact.phoneNumber === contact.phoneNumber
       );
     });
     //filter out self contact
@@ -147,7 +148,6 @@ const updateProfile = async (req: Request, res: Response) => {
 
     Object.assign(contact, data);
 
-
     const id = contact._id as string;
     await contactService.updateContact(id, contact);
 
@@ -157,7 +157,7 @@ const updateProfile = async (req: Request, res: Response) => {
   }
 };
 
-export {
+export default {
   createContact,
   getContact,
   getContactByPhoneNumber,
