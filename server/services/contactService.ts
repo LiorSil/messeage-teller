@@ -11,7 +11,6 @@ const createContact = async (
 const getContactById = async (
   contactId: Types.ObjectId | string
 ): Promise<IContact | null> => {
-  
   const contact = await contactRepo.getContactById(contactId);
 
   return contact;
@@ -20,10 +19,24 @@ const getContactById = async (
 const getContactByPhoneNumber = async (
   phoneNumber: string
 ): Promise<IContact | null> => {
+  return await contactRepo.getContactByPhoneNumber(phoneNumber);
+};
 
-  const contact = await contactRepo.getContactByPhoneNumber(phoneNumber);
+const getContactsByPhoneNumber = async (
+  phoneNumbers: string[]
+): Promise<IContact[] | null> => {
+  const contacts = await Promise.all(
+    phoneNumbers.map(async (phoneNumber) => {
+      return await contactRepo.getContactByPhoneNumber(phoneNumber);
+    })
+  );
 
-  return contact;
+  // If any contact is null, return null for the entire operation
+  if (contacts.some((contact) => contact === null)) {
+    return null;
+  }
+  // Otherwise, return the valid contacts
+  return contacts as IContact[];
 };
 
 const getContactsByName = async (name: string): Promise<IContact[] | null> => {
@@ -55,6 +68,7 @@ export default {
   createContact,
   getContactById,
   getContactByPhoneNumber,
+  getContactsByPhoneNumber,
   getContactsByName,
   findContacts,
   getContacts,

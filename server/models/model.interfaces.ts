@@ -3,19 +3,19 @@ import { Document, Schema, Types } from "mongoose";
 interface IMessage extends Document {
   fromId: Types.ObjectId;
   toId: Types.ObjectId;
-  sentTD: Date;
-  read: boolean;
-  readTD: Date;
-  messageText: string;
+  sentTD?: Date;
+  read?: boolean;
+  readTD?: Date;
+  content: string;
 }
 
 interface IChat extends Document {
-  participants: Schema.Types.ObjectId[];
+  participants: Types.ObjectId[];
   messages: IMessage[];
 }
 
 interface ISubContact extends Document {
-  _id: Schema.Types.ObjectId;
+  _id: Types.ObjectId;
   name: string;
   phoneNumber: string;
   lastMessage: string;
@@ -23,6 +23,7 @@ interface ISubContact extends Document {
 }
 
 interface IContact extends Document {
+  _id: Types.ObjectId;
   name: string;
   avatar: string;
   phoneNumber: string;

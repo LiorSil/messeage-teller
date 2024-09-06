@@ -2,7 +2,10 @@ import { Types } from "mongoose";
 import { IMessage, IChat } from "../models/model.interfaces";
 import Chat from "../models/chatModel";
 
-const createChat = async (chatData: Partial<IChat>): Promise<IChat> => {
+const createChat = async (chatData: {
+  participants: Types.ObjectId[];
+  messages: IMessage[];
+}): Promise<IChat> => {
   const chat = new Chat(chatData);
 
   return await chat.save();

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
+import { Schema, Types } from "mongoose";
 
-import { Schema } from "mongoose";
 import contactService from "../services/contactService";
 import { IContact, ISubContact } from "../models/model.interfaces";
 
@@ -117,7 +117,7 @@ const addSubContact = async (req: Request, res: Response) => {
 
     // Create new sub-contact to add
     const newSubContact: ISubContact = {
-      _id: subContact._id as Schema.Types.ObjectId,
+      _id: subContact._id,
       name: subContact.name,
       phoneNumber: subContact.phoneNumber,
       avatar: subContact.avatar || "",
@@ -125,7 +125,7 @@ const addSubContact = async (req: Request, res: Response) => {
     } as ISubContact;
 
     contact.subContacts.push(newSubContact);
-    const id = contact._id as string;
+    const id = contact._id;
     await contactService.updateContact(id, contact);
 
     res.status(200).json(contact);
@@ -148,7 +148,7 @@ const updateProfile = async (req: Request, res: Response) => {
 
     Object.assign(contact, data);
 
-    const id = contact._id as string;
+    const id = contact._id;
     await contactService.updateContact(id, contact);
 
     res.status(200).json(contact);

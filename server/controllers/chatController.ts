@@ -1,27 +1,39 @@
 import chatService from "../services/chatService";
 import contactService from "../services/contactService";
+import messageService from "../services/messageService";
 import { Request, Response } from "express";
 
 const createChat = async (req: Request, res: Response) => {
   try {
-    const contacts = req.body?.contacts || [];
-    const dbContacts = await contacts.map(async (contact: any) => {
-      return await contactService.getContactByPhoneNumber(contact.phoneNumber);
+    const { fromNumber, toNumber, content } = req.body;
+
+    const contacts = await contactService.getContactsByPhoneNumber([
+      fromNumber,
+      toNumber,
+    ]);
+
+    const [from, to] = [0, 1];
+
+    if (!contacts) {
+      return res.status(404).json({ error: "Contacts not found" });
+    }
+
+    const message = await messageService.createMessage({
+      fromId: contacts[from]._id,
+      toId: contacts[to]._id,
+      content,
     });
 
-    const message = req.body?.message || [];
+    console.log("message", message);
 
-    console.log("dbContacts", dbContacts);
-    console.log("messages", message);
+    const chat = await chatService.createChat(
+      [message.fromId, message.toId],
+      message
+    );
 
-    if (!dbContacts || !(dbContacts.length > 2)) {
-      return res.status(404).json({ message: "Contacts not found" });
-    } else {
-      const newChat = await chatService.createChat(dbContacts, message);
-      res.status(201).json(newChat);
-    }
-  } catch (err: any) {
-    res.status(400).json({ message: err.message });
+    res.status(201).json(chat);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message as string });
   }
 };
 

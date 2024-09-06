@@ -22,8 +22,9 @@ const messageSchema = new Schema<IMessage>({
   },
   readTD: {
     type: Date,
+    default: null,
   },
-  messageText: {
+  content: {
     type: String,
     required: true,
   },
