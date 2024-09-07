@@ -22,7 +22,7 @@ const UserProfile: React.FC = () => {
     <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse">
       <img
         src={contact?.avatar || "https://flowbite.com/docs/images/logo.svg"}
-        className="h-8 rounded-full"
+        className="w-14 h-14 rounded-full border-2 border-black object-cover object-center"
         alt={contact?.name || "UserProfile Logo"}
       />
       <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">

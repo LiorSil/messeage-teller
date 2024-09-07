@@ -1,12 +1,17 @@
-import React from "react";
 import NavBar from "./profile-nav/nav-bar/NavBar";
 import ChatList from "./chats-list/ChatList";
+import { SubContact } from "../../types/subContact";
 
-const ChatsManagerLayout = () => {
+interface ChatsManagerLayoutProps {
+  handleChatSelection: (chatRoom: SubContact | null) => void;
+}
+const ChatsManagerLayout = ({
+  handleChatSelection,
+}: ChatsManagerLayoutProps) => {
   return (
     <>
       <NavBar />
-      <ChatList />
+      <ChatList handleChatSelection={handleChatSelection} />
     </>
   );
 };

@@ -1,41 +1,30 @@
-import { useState, useMemo, useCallback, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import Cookies from "universal-cookie";
+import { useChatRoom } from "./useChatRoom";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 const useProfile = () => {
-  const cookies = useMemo(() => new Cookies(), []);
-  const token = useMemo(() => cookies.get("token"), [cookies]);
+  const { token, contact } = useChatRoom();
 
-  const baseName = useSelector(
-    (state: RootState) => state.contact.contact?.name || ""
-  );
+  const baseName = contact?.name || "";
 
   const [isEditMode, setIsEditMode] = useState(false);
   const [name, setName] = useState(baseName);
-
-  const handleEditClick = useCallback(() => setIsEditMode(true), []);
-  const handleCancelClick = useCallback(() => setIsEditMode(false), []);
   const [isNameValid, setIsNameValid] = useState(false);
 
-  useEffect(() => {
-    switch (name) {
-      case "":
-        setIsNameValid(false);
-        break;
-      case baseName:
-        setIsNameValid(false);
-        break;
+  // Handle edit and cancel clicks with memoized functions
+  const handleEditClick = useCallback(() => setIsEditMode(true), []);
+  const handleCancelClick = useCallback(() => setIsEditMode(false), []);
 
-      default:
-        setIsNameValid(true);
-        break;
-    }
+  // Validate the name whenever it changes
+  useEffect(() => {
+    setIsNameValid(name !== "" && name !== baseName);
   }, [name, baseName]);
 
+  // Handle saving the profile name
   const handleSaveClick = useCallback(async () => {
     try {
       const response = await axios.put(
@@ -46,8 +35,9 @@ const useProfile = () => {
 
       if (response.data) {
         window.alert("Changes saved successfully!");
-        window.location.reload();
         setIsEditMode(false);
+        // Optionally, update local state instead of reloading the page
+        setName(baseName);
       } else {
         throw new Error("Failed to save changes.");
       }
@@ -55,7 +45,7 @@ const useProfile = () => {
       console.error(error.message);
       window.alert("Failed to save changes. Please try again.");
     }
-  }, [name, token]);
+  }, [name, token, baseName]);
 
   return {
     isEditMode,

@@ -3,7 +3,7 @@ import AddContact from "../add-contact/AddContact";
 
 interface DrawerProps {
   isOpen: boolean;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   selectedComponent: React.ReactNode;
 }
 

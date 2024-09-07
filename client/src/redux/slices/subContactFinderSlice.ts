@@ -3,7 +3,6 @@ import axios from "axios";
 import { SubContact } from "../../types/subContact";
 import { FetchContactByPhoneOrNameParams } from "../../types/contact";
 import { SubContactState } from "../states/subContactState";
-import { updateContact } from "./contactSlice";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 const initialState: SubContactState = {

@@ -3,7 +3,7 @@ import useProfile from "../../../../hooks/useProfile";
 import ProfileView from "./ProfileView";
 import ProfileEdit from "./ProfileEdit";
 
-const Profile: React.FC = () => {
+const Profile = () => {
   const {
     isEditMode,
     name,

@@ -1,7 +1,8 @@
 export interface SubContact {
   _id: string;
+
   name: string;
   phoneNumber: string;
-  imageUrl: string;
+  avatar: string;
   lastMessage: string;
 }

@@ -1,18 +1,24 @@
-import React from "react";
 import ChatHeader from "./chat-header/ChatHeader";
 import MessageList from "./chat-messages/MessageList ";
 import ChatInput from "./chat-input/ChatInput";
 import { useScrollToBottom } from "../../hooks/useScrollToBottom";
-import { useChatMessages } from "../../hooks/useChatMessages";
+import { useChatLogic } from "../../hooks/useChatSocket";
+import { SubContact } from "../../types/subContact";
 
-const ChatLayout: React.FC = () => {
+interface ChatLayoutProps {
+  selectedChat: SubContact | null;
+}
+
+const ChatLayout = ({ selectedChat }: ChatLayoutProps) => {
   const messagesEndRef = useScrollToBottom();
-  const { messages, handleSendMessage } = useChatMessages();
+
+  const { messages, inputValue, handleInputChange, sendMessage } =
+    useChatLogic();
 
   return (
     <div className="flex-1 p-2 sm:p-6 justify-between flex flex-col h-screen">
       <div className="sticky top-0 z-10 bg-app-palette-sap-green-light-+30">
-        <ChatHeader />
+        <ChatHeader selectedChat={selectedChat} />
       </div>
       <div
         id="messages"
@@ -22,7 +28,11 @@ const ChatLayout: React.FC = () => {
         <div ref={messagesEndRef} />
       </div>
       <div className="sticky bottom-0 z-10 bg-app-palette-sap-green-light-+30">
-        <ChatInput onSendMessage={handleSendMessage} />
+        <ChatInput
+          inputValue={inputValue}
+          onInputChange={handleInputChange}
+          onSendMessage={sendMessage}
+        />
       </div>
     </div>
   );

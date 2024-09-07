@@ -1,19 +1,28 @@
 import React from "react";
 
-interface Props {
+interface ChatItemProps {
   contactName: string;
   lastMessage: string;
   imageUrl: string;
+  onSelectChatItem: () => void;
 }
 
-const ChatItem: React.FC<Props> = ({ contactName, lastMessage, imageUrl }) => {
+const ChatItem = ({
+  contactName,
+  lastMessage,
+  imageUrl,
+  onSelectChatItem,
+}: ChatItemProps) => {
   return (
-    <div className="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md">
+    <div
+      onClick={onSelectChatItem}
+      className="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md"
+    >
       <div className="w-12 h-12 bg-gray-300 rounded-full mr-3">
         <img
           src={imageUrl}
           alt={`${contactName}'s Avatar`}
-          className="w-12 h-12 rounded-full border-2 border-black object-cover"
+          className="w-12 h-12 rounded-full border-2 border-black object-cover object-center"
         />
       </div>
       <div className="flex-1">

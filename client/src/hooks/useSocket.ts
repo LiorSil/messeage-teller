@@ -1,3 +1,4 @@
+// hooks/useSocket.ts
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
@@ -7,12 +8,14 @@ export const useSocket = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
+    // Initialize the socket connection
     const socketInstance = io(SERVER_URL, {
-      withCredentials: true,
+      withCredentials: true, // Optional, if you need CORS support
     });
 
     setSocket(socketInstance);
 
+    // Clean up the socket connection on unmount
     return () => {
       socketInstance.disconnect();
     };

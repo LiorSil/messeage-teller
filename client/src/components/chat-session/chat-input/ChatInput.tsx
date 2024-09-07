@@ -1,28 +1,20 @@
-import React, { useState } from "react";
 import ActionButtons from "./ActionButtons";
 import SendButton from "./SendButton";
 import RecordButton from "./RecordButton";
 import InputField from "./InputField";
-import OutboundMessage from "../chat-messages/OutboundMessage";
 
-const ChatInput = ({
+
+interface ChatInputProps {
+  inputValue: string;
+  onInputChange: (value: string) => void;
+  onSendMessage: () => void;
+}
+
+const ChatInput: React.FC<ChatInputProps> = ({
+  inputValue,
+  onInputChange,
   onSendMessage,
-}: {
-  onSendMessage: (message: string) => void;
 }) => {
-  const [inputValue, setInputValue] = useState("");
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
-
-  const handleSend = () => {
-    const newOutboundMessage = inputValue as string;
-    onSendMessage(newOutboundMessage);
-
-    setInputValue(""); // Clear input after sending if desired
-  };
-
   return (
     <div className="  my-2 rounded-lg">
       <div
@@ -30,10 +22,10 @@ const ChatInput = ({
        border-black "
       >
         <RecordButton />
-        <InputField value={inputValue} onChange={handleInputChange} />
+        <InputField value={inputValue} onChange={onInputChange} />
         <div className="flex bg-gray-200 items-center ml-2 rounded-md ">
           <ActionButtons />
-          <SendButton onSend={handleSend} isInputEmpty={!inputValue} />
+          <SendButton onSend={onSendMessage} isInputEmpty={!inputValue} />
         </div>
       </div>
     </div>

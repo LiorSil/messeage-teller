@@ -6,12 +6,14 @@ import userSlice from "./slices/userSlice";
 import authSlice from "./slices/authSlice";
 import contactSlice from "./slices/contactSlice";
 import subContactFinderSlice from "./slices/subContactFinderSlice";
+import chatSlice from "./slices/chatSlice";
 
 const rootReducer = combineReducers({
   user: userSlice,
   auth: authSlice,
   contact: contactSlice,
   subContact: subContactFinderSlice,
+  chat: chatSlice,
 });
 
 const store = configureStore({

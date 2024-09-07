@@ -3,10 +3,14 @@ import ChatListItems from "./ChatListItems";
 import useContact from "../../../hooks/useContact";
 import Loading from "../../../shared/Loading";
 import ErrorMessage from "../../../shared/ErrorMessage";
+import { SubContact } from "../../../types/subContact";
 
-const ChatList: React.FC = () => {
+interface ChatListProps {
+  handleChatSelection: (chatRoom: SubContact | null) => void;
+}
+
+const ChatList = ({ handleChatSelection }: ChatListProps) => {
   const { contact, error, loading } = useContact();
-  console.log("contact", contact);
 
   if (loading) <Loading />;
   if (error) <ErrorMessage error="Can't get user's contacts" />;
@@ -14,7 +18,10 @@ const ChatList: React.FC = () => {
 
   return (
     <div className="overflow-y-auto h-screen p-3 mb-9 pb-6">
-      <ChatListItems subContacts={contact?.subContacts} />
+      <ChatListItems
+        subContacts={contact?.subContacts}
+        handleChatSelection={handleChatSelection}
+      />
       <div className="flex justify-center items-center mt-4">
         <p className="text-center">
           <span className="text-gray-800 bg-white">You have no more chats</span>

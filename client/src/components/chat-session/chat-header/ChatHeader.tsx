@@ -1,4 +1,10 @@
-const ChatHeader = () => {
+import { SubContact } from "../../../types/subContact";
+
+interface ChatHeaderProps {
+  selectedChat: SubContact | null;
+}
+
+const ChatHeader = ({ selectedChat }: ChatHeaderProps) => {
   return (
     <div className="flex sm:items-center justify-between py-3 border-b-2  border-black    ">
       <div className="relative flex items-center space-x-4 ">
@@ -9,16 +15,16 @@ const ChatHeader = () => {
             </svg>
           </span>
           <img
-            src="https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=144&h=144"
-            alt=""
-            className="w-10 sm:w-16 h-10 sm:h-16 rounded-full"
+            src={selectedChat?.avatar}
+            alt="chat-avatar"
+            className="w-16 h-16 rounded-full border-2 border-black object-cover object-center"
           />
         </div>
         <div className="flex flex-col leading-tight">
           <div className="text-2xl mt-1 flex items-center">
-            <span className="text-gray-700 mr-3">Anderson Vanhron</span>
+            <span className="text-gray-700 mr-3">{selectedChat?.name}</span>
           </div>
-          <span className="text-lg text-gray-600">Junior Developer</span>
+          <span className="text-lg text-gray-600">{selectedChat?._id}</span>
         </div>
       </div>
       <div className="flex items-center space-x-2">

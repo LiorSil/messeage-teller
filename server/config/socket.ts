@@ -1,5 +1,6 @@
 import { Server as HttpServer } from "http";
 import { Server } from "socket.io";
+import { Message } from "../types/message";
 
 export const initializeSocket = (server: HttpServer) => {
   const io = new Server(server, {
@@ -19,6 +20,13 @@ export const initializeSocket = (server: HttpServer) => {
 
     socket.on("disconnect", () => {
       console.log("A user disconnected: ", socket.id);
+    });
+
+    socket.on("send_message", (message: Message) => {
+      console.log("Message received:", message);
+
+      // Broadcast the message to all connected clients
+      io.emit("receive_message", message);
     });
   });
 

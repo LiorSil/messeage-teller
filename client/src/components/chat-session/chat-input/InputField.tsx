@@ -5,7 +5,7 @@ const InputField = ({
   onChange,
 }: {
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (message: string) => void;
 }) => {
   return (
     <input
@@ -13,7 +13,7 @@ const InputField = ({
       placeholder="Write your message!"
       className="flex-1 min-w-0  focus:outline-none focus:ring-0 text-gray-600 placeholder-gray-600 bg-gray-200 rounded-l-md py-3 pl-3 border-0"
       value={value}
-      onChange={onChange}
+      onChange={(e) => onChange(e.target.value)}
     />
   );
 };

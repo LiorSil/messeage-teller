@@ -22,7 +22,7 @@ const isContact = (obj: any): obj is Contact => {
   );
 };
 
-const AddContact: React.FC = () => {
+const AddContact = () => {
   const [query, setQuery] = useState("");
 
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
