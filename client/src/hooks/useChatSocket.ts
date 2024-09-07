@@ -1,14 +1,13 @@
 // hooks/useChatLogic.ts
 import { useState, useEffect } from "react";
 import { useSocket } from "./useSocket";
-import { useChatRoom } from "./useChatRoom";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { Message } from "../types/message";
 
 export const useChatLogic = () => {
   const socket = useSocket(); // Get the socket instance
-  const [messages, setMessages] = useState<string[]>([]); // Manage chat messages
+  const [messages, setMessages] = useState<Message[]>([]); // Manage chat messages
   const [inputValue, setInputValue] = useState<string>(""); // Manage input field
   const selectedChat = useSelector(
     (state: RootState) => state.chat.selectedChat
@@ -26,7 +25,8 @@ export const useChatLogic = () => {
         sentTD: new Date(),
       };
 
-      socket.emit("send_message", "test");
+      socket.emit("send_message", message);
+
       setInputValue(""); // Clear the input after sending
     }
   };
@@ -36,7 +36,7 @@ export const useChatLogic = () => {
     console.log("triggered");
     if (!socket) return;
 
-    socket.on("receive_message", (message: string) => {
+    socket.on("receive_message", (message: Message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });
 

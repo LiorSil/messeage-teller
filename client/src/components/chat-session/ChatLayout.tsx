@@ -20,10 +20,7 @@ const ChatLayout = ({ selectedChat }: ChatLayoutProps) => {
       <div className="sticky top-0 z-10 bg-app-palette-sap-green-light-+30">
         <ChatHeader selectedChat={selectedChat} />
       </div>
-      <div
-        id="messages"
-        className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
-      >
+      <div className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
         <MessageList messages={messages} />
         <div ref={messagesEndRef} />
       </div>

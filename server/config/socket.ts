@@ -23,9 +23,6 @@ export const initializeSocket = (server: HttpServer) => {
     });
 
     socket.on("send_message", (message: Message) => {
-      console.log("Message received:", message);
-
-      // Broadcast the message to all connected clients
       io.emit("receive_message", message);
     });
   });

@@ -1,7 +1,8 @@
 import React from "react";
+import { Message } from "../../../types/message";
 
 interface InboundMessageProps {
-  message: string;
+  message: Message;
 }
 
 const InboundMessage: React.FC<InboundMessageProps> = ({ message }) => {
@@ -15,7 +16,7 @@ const InboundMessage: React.FC<InboundMessageProps> = ({ message }) => {
         >
           <div>
             <span className="px-4 py-2 rounded-xl rounded-br-none inline-block bg-blue-600 text-white text-lg  border-2 border-black">
-              {message}
+              {message.content}
             </span>
           </div>
         </div>

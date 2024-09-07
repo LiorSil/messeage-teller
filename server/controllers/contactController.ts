@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import { Schema, Types } from "mongoose";
 
 import contactService from "../services/contactService";
-import { IContact, ISubContact } from "../models/model.interfaces";
+import { IContact, IMessage, ISubContact } from "../models/model.interfaces";
+import chatService from "../services/chatService";
 
 const createContact = async (req: Request, res: Response) => {
   try {
@@ -127,6 +128,10 @@ const addSubContact = async (req: Request, res: Response) => {
     contact.subContacts.push(newSubContact);
     const id = contact._id;
     await contactService.updateContact(id, contact);
+
+    //create a chat between the two contacts
+    const chat = await chatService.createChat([contact._id, subContact._id]);
+    console.log("chat created:", chat);
 
     res.status(200).json(contact);
   } catch (err: any) {
