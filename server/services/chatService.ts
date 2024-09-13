@@ -29,6 +29,26 @@ const createMessage = async (
   return await chatRepo.pushMessage(chatId, messageData);
 }
 
-export default { createChat, createMessage
 
- };
+
+const getChatByParticipantsIds = async (
+  participants: string | string[]
+): Promise<IChat[] | null> => {
+  // Ensure participants is an array
+  const participantIds = Array.isArray(participants)
+    ? participants
+    : [participants];
+
+  const chats = await chatRepo.getChats();
+
+  // Filter chats that contain all participants
+  const matchingChats = chats.filter((chat) =>
+    participantIds.every((participant) =>
+      chat.participants.includes(participant as any)
+    )
+  );
+
+  return matchingChats.length > 0 ? matchingChats : null;
+};
+
+export default { createChat, createMessage, getChatByParticipantsIds };

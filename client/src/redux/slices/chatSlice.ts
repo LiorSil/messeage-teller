@@ -2,10 +2,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SubContact } from "../../types/subContact";
 
+import { getChatByParticipantsIds } from "./asyncThunks";
+import { Chat } from "../../types/chat";
+
 const initialState = {
   messages: [] as string[],
   inputValue: "",
   selectedChat: null as SubContact | null,
+  chats: [] as Chat[],
 };
 
 const chatSlice = createSlice({
@@ -22,13 +26,23 @@ const chatSlice = createSlice({
       state.inputValue = action.payload;
     },
     updateSelectedChat: (state, action: PayloadAction<SubContact | null>) => {
-      console.log("action.payload", action.payload);
       if (action.payload) {
         state.selectedChat = action.payload;
       } else {
         state.selectedChat = null;
       }
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getChatByParticipantsIds.fulfilled, (state, action) => {
+      state.chats = action.payload;
+    });
+    builder.addCase(getChatByParticipantsIds.rejected, (state, action) => {
+      console.error("Failed to fetch chats:", action.payload);
+    });
+    builder.addCase(getChatByParticipantsIds.pending, () => {
+      console.log("Fetching chats, pending...");
+    });
   },
 });
 

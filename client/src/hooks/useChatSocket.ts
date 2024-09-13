@@ -1,15 +1,22 @@
 // hooks/useChatLogic.ts
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSocket } from "./useSocket";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/store";
+import { AppDispatch } from "../redux/store";
+import { getChatByParticipantsIds } from "../redux/slices/asyncThunks";
+import Cookies from "universal-cookie";
+
 import { Message } from "../types/message";
 
 export const useChatLogic = () => {
   const contactId = useSelector(
     (state: RootState) => state.contact.contact?._id || ""
   );
-  const socket = useSocket(contactId); // Get the socket instance
+  const socket = useSocket(contactId);
+
+  const chats = useSelector((state: RootState) => state.chat.chats);
+
   const [messages, setMessages] = useState<Message[]>([]); // Manage chat messages
   const [inputValue, setInputValue] = useState<string>(""); // Manage input field
   const selectedChat = useSelector(
@@ -30,7 +37,6 @@ export const useChatLogic = () => {
 
       socket.emit("send_message", message);
       setMessages((prevMessages) => [...prevMessages, message]);
-
       setInputValue(""); // Clear the input after sending
     }
   };

@@ -1,41 +1,30 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../redux/store";
+import { AppDispatch, RootState } from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "universal-cookie";
 import useContact from "./useContact";
 import { SubContact } from "../types/subContact";
 import { updateSelectedChat } from "../redux/slices/chatSlice";
+import { getChatByParticipantsIds } from "../redux/slices/asyncThunks";
 
 export const useChatRoom = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const { contact } = useContact();
 
-  //const [selectedChat, setSelectedChat] = useState<SubContact | null>(null);
-
   const token = useSelector((state: RootState) => state.auth.token);
-  const selectedChat = useSelector(
-    (state: RootState) => state.chat.selectedChat
-  );
+  const { selectedChat, chats } = useSelector((state: RootState) => state.chat);
   const cookies = useMemo(() => new Cookies(), []);
 
   useEffect(() => {
-    let existingToken = cookies.get("token");
-
-    if (!existingToken && token) {
-      cookies.set("token", token, {
-        path: "/",
-        sameSite: "none",
-        secure: true,
-      });
-      existingToken = token;
-    }
+    const existingToken = cookies.get("token");
 
     if (!existingToken) {
       navigate("/unauthorized");
     }
-  }, [token, cookies, navigate]);
+    dispatch(getChatByParticipantsIds(contact?._id || ""));
+  }, [token, cookies, navigate, dispatch, contact]);
 
   const baseClass =
     "w-full flex flex-col h-screen bg-app-palette-sap-green-light-+40";
@@ -48,16 +37,15 @@ export const useChatRoom = () => {
   );
 
   useEffect(() => {
+    //default to the first chat room
     const selectedSubContact = contact?.subContacts?.[0];
-    console.log("selectedSubContact", selectedSubContact);
 
     if (selectedSubContact) {
-      console.log("triggered");
       dispatch(updateSelectedChat(selectedSubContact));
     } else {
       dispatch(updateSelectedChat(null)); // Reset to null if name is invalid
     }
-  }, [contact, dispatch]);
+  }, [contact, dispatch, token]);
 
   const handleChatSelection = (selectedSubContact: SubContact | null) => {
     if (selectedSubContact) {
