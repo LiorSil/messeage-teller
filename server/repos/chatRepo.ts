@@ -2,13 +2,25 @@ import { Types } from "mongoose";
 import { IMessage, IChat } from "../models/model.interfaces";
 import Chat from "../models/chatModel";
 
-const createChat = async (chatData: {
-  participants: Types.ObjectId[];
-  messages: IMessage[];
-}): Promise<IChat> => {
-  const chat = new Chat(chatData);
+const createChat = async (
+  participants: Types.ObjectId[] | null
+): Promise<IChat> => {
+  if (!participants) {
+    throw new Error("Participants are required to create a chat");
+  }
 
-  return await chat.save();
+  participants = participants.sort();
+
+  const isChatExisted = await Chat.findOne({ participants }).exec();
+
+  if (isChatExisted) {
+    console.log("Chat already exists");
+    return isChatExisted;
+  }
+
+  const newChat = new Chat({ participants });
+  console.log("created newChat:", newChat);
+  return await newChat.save();
 };
 
 const getChatById = async (
@@ -17,6 +29,17 @@ const getChatById = async (
   const chat = await Chat.findById(chatId).exec();
 
   return chat;
+};
+
+const pushMessage = async (
+  chatId: Types.ObjectId | string,
+  message: Partial<IMessage>
+): Promise<IChat | null> => {
+  return await Chat.findByIdAndUpdate(
+    chatId,
+    { $push: { messages: message } },
+    { new: true }
+  ).exec();
 };
 
 const getChats = async (): Promise<IChat[]> => {
@@ -38,12 +61,9 @@ const deleteChat = async (
 
 export default {
   createChat,
+  pushMessage,
   getChatById,
   getChats,
   updateChat,
   deleteChat,
 };
-
-
-
-

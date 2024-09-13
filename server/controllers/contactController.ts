@@ -129,9 +129,7 @@ const addSubContact = async (req: Request, res: Response) => {
     const id = contact._id;
     await contactService.updateContact(id, contact);
 
-    //create a chat between the two contacts
-    const chat = await chatService.createChat([contact._id, subContact._id]);
-    console.log("chat created:", chat);
+
 
     res.status(200).json(contact);
   } catch (err: any) {

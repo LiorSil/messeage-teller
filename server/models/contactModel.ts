@@ -56,6 +56,7 @@ const contactSchema = new Schema<IContact>(
       //   message: "A sub-contact with the same phone number already exists.",
       // },
     },
+    chats: [{ type: Schema.Types.ObjectId, ref: "Chat" }],
   },
   {
     timestamps: true,

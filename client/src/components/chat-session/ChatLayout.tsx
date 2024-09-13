@@ -12,7 +12,7 @@ interface ChatLayoutProps {
 const ChatLayout = ({ selectedChat }: ChatLayoutProps) => {
   const messagesEndRef = useScrollToBottom();
 
-  const { messages, inputValue, handleInputChange, sendMessage } =
+  const { messages, inputValue, handleInputChange, sendMessage, contactId } =
     useChatLogic();
 
   return (
@@ -21,7 +21,7 @@ const ChatLayout = ({ selectedChat }: ChatLayoutProps) => {
         <ChatHeader selectedChat={selectedChat} />
       </div>
       <div className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
-        <MessageList messages={messages} />
+        <MessageList messages={messages} currentUserId={contactId} />
         <div ref={messagesEndRef} />
       </div>
       <div className="sticky bottom-0 z-10 bg-app-palette-sap-green-light-+30">

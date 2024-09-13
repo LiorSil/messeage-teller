@@ -10,7 +10,6 @@ const ChatRoom: React.FC = () => {
     (state: RootState) => state.chat.selectedChat
   );
 
-  console.log("selectedChat", selectedChat);
 
   return (
     <div className="flex flex-col md:flex-row">

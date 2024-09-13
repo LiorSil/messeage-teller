@@ -6,7 +6,10 @@ import { RootState } from "../redux/store";
 import { Message } from "../types/message";
 
 export const useChatLogic = () => {
-  const socket = useSocket(); // Get the socket instance
+  const contactId = useSelector(
+    (state: RootState) => state.contact.contact?._id || ""
+  );
+  const socket = useSocket(contactId); // Get the socket instance
   const [messages, setMessages] = useState<Message[]>([]); // Manage chat messages
   const [inputValue, setInputValue] = useState<string>(""); // Manage input field
   const selectedChat = useSelector(
@@ -26,6 +29,7 @@ export const useChatLogic = () => {
       };
 
       socket.emit("send_message", message);
+      setMessages((prevMessages) => [...prevMessages, message]);
 
       setInputValue(""); // Clear the input after sending
     }
@@ -37,6 +41,7 @@ export const useChatLogic = () => {
     if (!socket) return;
 
     socket.on("receive_message", (message: Message) => {
+      console.log("Received message:", message);
       setMessages((prevMessages) => [...prevMessages, message]);
     });
 
@@ -56,5 +61,6 @@ export const useChatLogic = () => {
     inputValue,
     handleInputChange,
     sendMessage,
+    contactId,
   };
 };

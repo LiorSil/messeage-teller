@@ -64,6 +64,24 @@ const deleteContact = async (
   return await contactRepo.deleteContact(contactId);
 };
 
+const getContactsByIds = async (
+  contactIds: string[]
+): Promise<IContact[] | null> => {
+  const contacts = await Promise.all(
+    contactIds.map(async (contactId) => {
+      return await contactRepo.getContactById(contactId);
+    })
+  );
+
+  // If any contact is null, return null for the entire operation
+  if (contacts.some((contact) => contact === null)) {
+    return null;
+  }
+  // Otherwise, return the valid contacts
+  return contacts as IContact[];
+};
+
+
 export default {
   createContact,
   getContactById,
@@ -74,4 +92,5 @@ export default {
   getContacts,
   updateContact,
   deleteContact,
+  getContactsByIds,
 };

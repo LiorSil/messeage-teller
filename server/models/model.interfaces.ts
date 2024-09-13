@@ -30,6 +30,7 @@ interface IContact extends Document {
   subContacts: ISubContact[];
   status?: string;
   createdAt?: string;
+  chats: Types.ObjectId[];
 }
 
 interface IUser extends Document {
