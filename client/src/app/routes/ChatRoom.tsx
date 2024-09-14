@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 
 const ChatRoom: React.FC = () => {
+
   const { handleChatSelection, getClassNames } = useChatRoom();
   const selectedChat = useSelector(
     (state: RootState) => state.chat.selectedChat

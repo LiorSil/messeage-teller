@@ -1,9 +1,10 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../redux/store";
-import { loginUser, clearRedirect } from "../redux/slices/authSlice";
-import { useEffect } from "react";
+import { loginUser } from "../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo } from "react";
+import Cookies from "universal-cookie";
 
 type LoginFormData = {
   email: string;
@@ -17,9 +18,10 @@ const useLoginForm = () => {
     reset,
     formState: { errors },
   } = useForm<LoginFormData>();
+  const cookies = useMemo(() => new Cookies(), []);
 
   const dispatch: AppDispatch = useDispatch();
-  const { loading, error, redirectTo } = useSelector(
+  const { loading, error, token } = useSelector(
     (state: RootState) => state.auth
   );
   const navigate = useNavigate();
@@ -30,11 +32,13 @@ const useLoginForm = () => {
   };
 
   useEffect(() => {
-    if (redirectTo) {
-      navigate(redirectTo, { replace: true });
-      dispatch(clearRedirect()); // Clear the redirect path after navigation
+    const token = cookies.get("token");
+    if (token) {
+      navigate("/chat-room");
+    } else {
+      navigate("/login");
     }
-  }, [redirectTo, navigate, dispatch]);
+  }, [token, navigate, cookies]);
 
   return {
     register,
@@ -43,7 +47,6 @@ const useLoginForm = () => {
     errors,
     loading,
     error,
-    redirectTo,
   };
 };
 

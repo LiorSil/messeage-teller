@@ -1,11 +1,13 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { loginUser, registerUser } from "../thunks/authThunks";
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
 
 const initialState = {
   token: "",
   loading: false,
   error: "",
-  redirectTo: null as null | string,
   disconnect: false,
 };
 
@@ -14,11 +16,7 @@ const initialState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    clearRedirect: (state) => {
-      state.redirectTo = null;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(registerUser.pending, (state) => {
       state.loading = true;
@@ -34,8 +32,9 @@ const authSlice = createSlice({
           : "An error occurred";
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
+      const { token } = action.payload;
+      cookies.set("token", token, { path: "/" });
       state.loading = false;
-      state.redirectTo = "/chat-room";
       state.token = action.payload.token;
     });
     builder.addCase(loginUser.pending, (state) => {
@@ -55,4 +54,3 @@ const authSlice = createSlice({
 export { registerUser, loginUser };
 
 export default authSlice.reducer;
-export const { clearRedirect } = authSlice.actions;

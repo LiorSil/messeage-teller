@@ -26,7 +26,7 @@ const registerUser = createAsyncThunk(
       );
       return response.data;
     } catch (err) {
-      if (err.response && err.response.data) {
+      if (axios.isAxiosError(err) && err.response && err.response.data) {
         // Return the error message from the API response
         return rejectWithValue(err.response.data.message);
       } else {
@@ -55,9 +55,10 @@ const loginUser = createAsyncThunk(
   ) => {
     try {
       const response = await axios.post(`${VITE_API_URL}/auth/login`, userData);
+      console.log("response", response);
       return response.data;
     } catch (err) {
-      if (err.response && err.response.data) {
+      if (axios.isAxiosError(err) && err.response && err.response.data) {
         return rejectWithValue(err.response.data.message);
       } else {
         // Return a generic error message

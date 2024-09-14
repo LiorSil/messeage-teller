@@ -3,6 +3,7 @@ import axios from "axios";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 import { Contact } from "../../types/contact";
 
+
 /**
  * Async thunk for fetching a contact
  * @param token - The token to authenticate the request
