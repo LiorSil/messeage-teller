@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import http from "http";
-import { initializeSocket } from "./config/socket";
+import { initializeSocket } from "./sockets/socket";
 
 import contactRoute from "./routes/contactRoute";
 import authRoute from "./routes/authRoute";

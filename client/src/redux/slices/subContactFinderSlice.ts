@@ -1,9 +1,8 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice } from "@reduxjs/toolkit";
+
 import { SubContact } from "../../types/subContact";
-import { FetchContactByPhoneOrNameParams } from "../../types/contact";
 import { SubContactState } from "../states/subContactState";
-const VITE_API_URL = import.meta.env.VITE_API_URL;
+import { fetchContactByPhoneOrName } from "../thunks/subContactThunks";
 
 const initialState: SubContactState = {
   subContactPhoneNumber: "",
@@ -42,31 +41,6 @@ const subContactsFinderSlice = createSlice({
     });
   },
 });
-
-export const fetchContactByPhoneOrName = createAsyncThunk<
-  SubContact[],
-  FetchContactByPhoneOrNameParams
->(
-  "subContactsFinder/fetchContactByPhoneOrName",
-  async (data, { rejectWithValue }) => {
-    try {
-      const response = await axios.get<SubContact[]>(
-        `${VITE_API_URL}/contacts/${data.phoneNumber}`,
-        {
-          headers: {
-            Authorization: `Bearer ${data.token}`,
-          },
-        }
-      );
-      return response.data;
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error) && error.response) {
-        return rejectWithValue(error.response.data || "");
-      }
-      return rejectWithValue("An unexpected error occurred");
-    }
-  }
-);
 
 export const { updateSubContacts } = subContactsFinderSlice.actions;
 export default subContactsFinderSlice.reducer;

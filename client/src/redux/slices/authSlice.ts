@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-
-const VITE_API_URL = import.meta.env.VITE_API_URL;
+import { loginUser, registerUser } from "../thunks/authThunks";
 
 const initialState = {
   token: "",
@@ -12,56 +10,6 @@ const initialState = {
 };
 
 // Async thunk for registering a user
-const registerUser = createAsyncThunk(
-  "auth/registerUser",
-  async (
-    userData: {
-      email: string;
-      password: string;
-      phoneNumber: string;
-    },
-    { rejectWithValue }
-  ) => {
-    try {
-      const response = await axios.post(
-        `${VITE_API_URL}/auth/register`,
-        userData
-      );
-      return response.data;
-    } catch (err) {
-      if (err.response && err.response.data) {
-        // Return the error message from the API response
-        return rejectWithValue(err.response.data.message);
-      } else {
-        // Return a generic error message
-        return rejectWithValue("An error occurred");
-      }
-    }
-  }
-);
-
-const loginUser = createAsyncThunk(
-  "auth/loginUser",
-  async (
-    userData: {
-      email: string;
-      password: string;
-    },
-    { rejectWithValue }
-  ) => {
-    try {
-      const response = await axios.post(`${VITE_API_URL}/auth/login`, userData);
-      return response.data;
-    } catch (err) {
-      if (err.response && err.response.data) {
-        return rejectWithValue(err.response.data.message);
-      } else {
-        // Return a generic error message
-        return rejectWithValue("An error occurred");
-      }
-    }
-  }
-);
 
 const authSlice = createSlice({
   name: "auth",
@@ -76,7 +24,6 @@ const authSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
-
       state.loading = false;
     });
     builder.addCase(registerUser.rejected, (state, action) => {

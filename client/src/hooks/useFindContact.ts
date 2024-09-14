@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../redux/store";
-import { fetchContactByPhoneOrName } from "../redux/slices/subContactFinderSlice";
+import { fetchContactByPhoneOrName } from "../redux/thunks/subContactThunks";
 import { useMemo, useCallback } from "react";
 import Cookies from "universal-cookie";
 

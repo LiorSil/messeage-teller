@@ -3,11 +3,10 @@ import SendButton from "./SendButton";
 import RecordButton from "./RecordButton";
 import InputField from "./InputField";
 
-
 interface ChatInputProps {
   inputValue: string;
   onInputChange: (value: string) => void;
-  onSendMessage: () => void;
+  onSendMessage: () => void; // Ensure this fires immediately
 }
 
 const ChatInput: React.FC<ChatInputProps> = ({
@@ -16,11 +15,8 @@ const ChatInput: React.FC<ChatInputProps> = ({
   onSendMessage,
 }) => {
   return (
-    <div className="  my-2 rounded-lg">
-      <div
-        className=" bg-gray-200 relative flex items-center border-2 rounded-md
-       border-black "
-      >
+    <div className="my-2 rounded-lg">
+      <div className="bg-gray-200 relative flex items-center border-2 rounded-md border-black">
         <RecordButton />
         <InputField value={inputValue} onChange={onInputChange} />
         <div className="flex bg-gray-200 items-center ml-2 rounded-md ">

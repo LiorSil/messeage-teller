@@ -6,7 +6,6 @@ interface OutboundMessageProps {
 }
 
 const OutboundMessage = ({ message }: OutboundMessageProps) => {
-  console.log("Outbound message", message);
   return (
     <div className="chat-message">
       <div className="flex items-end">

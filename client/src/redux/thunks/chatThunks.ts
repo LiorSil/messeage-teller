@@ -1,7 +1,15 @@
+import { Chat } from "../../types/chat";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 import axios from "axios";
-import { Chat } from "../../types/chat";
+
+/**
+
+/**
+ * Get chat by participants ids using async thunk
+ * @param participantsIds : string (ids of participants)
+ * @returns
+ */
 
 const getChatByParticipantsIds = createAsyncThunk<Chat[], string>(
   "chat/getChatByParticipantsIds",

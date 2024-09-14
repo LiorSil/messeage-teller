@@ -6,7 +6,7 @@ import Cookies from "universal-cookie";
 import useContact from "./useContact";
 import { SubContact } from "../types/subContact";
 import { updateSelectedChat } from "../redux/slices/chatSlice";
-import { getChatByParticipantsIds } from "../redux/slices/asyncThunks";
+import { getChatByParticipantsIds } from "../redux/thunks/chatThunks";
 
 export const useChatRoom = () => {
   const navigate = useNavigate();
@@ -14,16 +14,27 @@ export const useChatRoom = () => {
   const { contact } = useContact();
 
   const token = useSelector((state: RootState) => state.auth.token);
-  const { selectedChat, chats } = useSelector((state: RootState) => state.chat);
+  const { selectedChat, chats, messages } = useSelector(
+    (state: RootState) => state.chat
+  );
   const cookies = useMemo(() => new Cookies(), []);
 
   useEffect(() => {
-    const existingToken = cookies.get("token");
+    let existingToken = cookies.get("token");
+
+    if (!existingToken && token) {
+      cookies.set("token", token, {
+        path: "/",
+        sameSite: "none",
+        secure: true,
+      });
+      existingToken = token;
+    }
 
     if (!existingToken) {
       navigate("/unauthorized");
     }
-    dispatch(getChatByParticipantsIds(contact?._id || ""));
+    if (contact?._id) dispatch(getChatByParticipantsIds(contact._id));
   }, [token, cookies, navigate, dispatch, contact]);
 
   const baseClass =
@@ -55,5 +66,13 @@ export const useChatRoom = () => {
     }
   };
 
-  return { contact, selectedChat, handleChatSelection, getClassNames, token };
+  return {
+    contact,
+    selectedChat,
+    handleChatSelection,
+    getClassNames,
+    token,
+    messages,
+    chats,
+  };
 };

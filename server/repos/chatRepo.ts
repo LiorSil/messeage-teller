@@ -14,7 +14,6 @@ const createChat = async (
   const isChatExisted = await Chat.findOne({ participants }).exec();
 
   if (isChatExisted) {
-    console.log("Chat already exists");
     return isChatExisted;
   }
 

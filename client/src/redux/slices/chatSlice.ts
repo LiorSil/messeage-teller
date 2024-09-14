@@ -2,11 +2,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SubContact } from "../../types/subContact";
 
-import { getChatByParticipantsIds } from "./asyncThunks";
+import { getChatByParticipantsIds } from "../thunks/chatThunks";
 import { Chat } from "../../types/chat";
+import { getMessagesForSubContact } from "../selectors/chatSelector";
+import { Message } from "../../types/message";
 
 const initialState = {
-  messages: [] as string[],
+  messages: [] as Message[],
   inputValue: "",
   selectedChat: null as SubContact | null,
   chats: [] as Chat[],
@@ -16,12 +18,6 @@ const chatSlice = createSlice({
   name: "chat",
   initialState,
   reducers: {
-    sendMessage: (state) => {
-      if (state.inputValue.trim()) {
-        state.messages.push(state.inputValue);
-        state.inputValue = ""; // Clear the input field after sending a message
-      }
-    },
     updateInputValue: (state, action: PayloadAction<string>) => {
       state.inputValue = action.payload;
     },
@@ -36,16 +32,16 @@ const chatSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getChatByParticipantsIds.fulfilled, (state, action) => {
       state.chats = action.payload;
+      const messages = getMessagesForSubContact(
+        state.chats,
+        state.selectedChat as SubContact
+      );
+      state.messages = messages || [];
     });
-    builder.addCase(getChatByParticipantsIds.rejected, (state, action) => {
-      console.error("Failed to fetch chats:", action.payload);
-    });
-    builder.addCase(getChatByParticipantsIds.pending, () => {
-      console.log("Fetching chats, pending...");
-    });
+    builder.addCase(getChatByParticipantsIds.rejected, () => {});
+    builder.addCase(getChatByParticipantsIds.pending, () => {});
   },
 });
 
-export const { sendMessage, updateInputValue, updateSelectedChat } =
-  chatSlice.actions;
+export const { updateInputValue, updateSelectedChat } = chatSlice.actions;
 export default chatSlice.reducer;

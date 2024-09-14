@@ -10,9 +10,7 @@ interface MessageListProps {
 }
 
 const MessageList = ({ messages, currentUserId }: MessageListProps) => {
-  console.log("messages", messages);
   const displayMessages = messages.map((message, index) => {
-
     if (message.fromId === currentUserId) {
       return <OutboundMessage key={index} message={message} />;
     } else {
@@ -20,12 +18,7 @@ const MessageList = ({ messages, currentUserId }: MessageListProps) => {
     }
   });
 
-  return (
-    <>
-      {/* <OutboundMessage message="You're welcome. Have a great day!" /> */}
-      {displayMessages}
-    </>
-  );
+  return <>{displayMessages}</>;
 };
 
 export default MessageList;
