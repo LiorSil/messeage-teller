@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { Schema, Types } from "mongoose";
 
 import contactService from "../services/contactService";
 import { IContact } from "../models/model.interfaces";
@@ -43,7 +42,6 @@ const getContact = async (req: Request, res: Response) => {
       createdAt,
       subContacts,
     };
-    console.log("convertContact", convertContact);
 
     res.status(200).json(convertContact);
   } catch (err: any) {
@@ -86,7 +84,9 @@ const findContactsByQuery = async (req: Request, res: Response) => {
     let contacts = await contactService.findContacts(query as string);
 
     contacts = contacts.filter((contact) => {
-      return !ownedContacts.some((subContact) => subContact === contact._id);
+      return !ownedContacts.some((subContact) =>
+        subContact.equals(contact._id)
+      );
     });
     //filter out self contact
     contacts = contacts.filter(
@@ -127,7 +127,9 @@ const addSubContact = async (req: Request, res: Response) => {
 
     // Filter out the existing sub-contact from the contacts array
     const isSubContactAlreadyAdded = contact.subContacts.some(
-      (existingSubContact) => existingSubContact === subContact._id
+      (existingSubContact) => {
+        return existingSubContact.equals(subContact._id);
+      }
     );
 
     if (isSubContactAlreadyAdded) {

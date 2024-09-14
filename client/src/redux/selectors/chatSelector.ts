@@ -13,7 +13,7 @@ const getMessagesForSubContact = (
   selectedSubContact: SubContact
 ): Message[] | null => {
   const relevantChat = chats.find((chat) =>
-    chat.participants.includes(selectedSubContact._id)
+    chat.participants.includes(selectedSubContact?._id)
   );
 
   return relevantChat ? relevantChat.messages : null;

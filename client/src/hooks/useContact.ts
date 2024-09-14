@@ -18,9 +18,9 @@ const useContact = () => {
     if (token) {
       dispatch(fetchContact(token));
     }
-  }, [token, dispatch]);
+  }, [token, dispatch, contact]);
 
-  return { contact, error, loading };
+  return { contact, error, loading, dispatch };
 };
 
 export default useContact;

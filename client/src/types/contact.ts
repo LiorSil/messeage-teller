@@ -8,7 +8,6 @@ export interface Contact {
   phoneNumber: string;
   avatar: string;
   createdAt: string;
-  updatedAt: string;
   subContacts: SubContact[]; // Ensure this is typed as an array of SubContact
 }
 
@@ -24,10 +23,4 @@ export interface FetchContactByPhoneOrNameParams {
   phoneNumber: string;
 }
 
-export interface ContactResponse {
-  contacts: any;
-  id: string;
-  name: string;
-  phoneNumber: string;
-  subContacts: Array<{ id: string; phoneNumber: string }>;
-}
+

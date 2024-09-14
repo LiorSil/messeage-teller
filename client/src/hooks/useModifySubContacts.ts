@@ -4,7 +4,6 @@ import axios from "axios";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { updateContact } from "../redux/slices/contactSlice";
-import { updateSubContacts } from "../redux/slices/subContactFinderSlice";
 import Cookies from "universal-cookie";
 import { useDispatch } from "react-redux";
 
@@ -33,7 +32,6 @@ const useModifySubContacts = () => {
       )
       .then((response) => {
         dispatch(updateContact(response.data));
-        dispatch(updateSubContacts(response.data.subContacts));
         setShowNotice(true);
       })
       .catch((error) => {

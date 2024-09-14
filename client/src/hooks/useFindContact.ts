@@ -14,10 +14,7 @@ const useFindContact = () => {
     (state: RootState) => state.subContact
   );
 
-  const handleSetPhoneNumber = useCallback(
-    (phoneNumber: string) => console.log(phoneNumber),
-    []
-  );
+
 
   const handleFetchContactByPhoneOrName = useCallback(
     (phoneNumber: string) => {
@@ -34,7 +31,7 @@ const useFindContact = () => {
     subContacts,
     loading,
     error,
-    handleSetPhoneNumber,
+
     handleFetchContactByPhoneOrName,
     handleClearAddContactSuccess,
   };
