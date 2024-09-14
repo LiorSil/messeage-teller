@@ -55,7 +55,9 @@ const updateContact = async (
   contactId: Types.ObjectId | string,
   updateData: Partial<IContact>
 ): Promise<IContact | null> => {
-  return await contactRepo.updateContact(contactId, updateData);
+  
+  const updateContact = await contactRepo.updateContact(contactId, updateData);
+  return updateContact;
 };
 
 const deleteContact = async (

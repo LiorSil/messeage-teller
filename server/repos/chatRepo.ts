@@ -2,24 +2,23 @@ import { Types } from "mongoose";
 import { IMessage, IChat } from "../models/model.interfaces";
 import Chat from "../models/chatModel";
 
-const createChat = async (
+const getChat = async (
   participants: Types.ObjectId[] | null
 ): Promise<IChat> => {
   if (!participants) {
     throw new Error("Participants are required to create a chat");
-  }
-
+  } 
+ 
   participants = participants.sort();
 
-  const isChatExisted = await Chat.findOne({ participants }).exec();
-
-  if (isChatExisted) {
-    return isChatExisted;
-  }
+  const existingChat = await Chat.findOne({ participants }).exec();
+  if (existingChat) {
+    return existingChat;
+  } else {
 
   const newChat = new Chat({ participants });
-  console.log("created newChat:", newChat);
   return await newChat.save();
+  }
 };
 
 const getChatById = async (
@@ -59,7 +58,7 @@ const deleteChat = async (
 };
 
 export default {
-  createChat,
+  getChat,
   pushMessage,
   getChatById,
   getChats,

@@ -5,6 +5,7 @@ import { IChat } from "../models/model.interfaces";
 import { Types } from "mongoose";
 import { logger } from "../utils/logger"; // Assuming you have a logger utility
 import chatService from "../services/chatService";
+import contactService from "../services/contactService";
 
 // Handle connection event
 const handleConnection = (socket: Socket, io: Server) => {
@@ -37,9 +38,8 @@ const handleConnection = (socket: Socket, io: Server) => {
 // Handle sending a message, debounced to optimize performance
 const handleSendMessage = debounce(async (message: IMessage, io: Server) => {
   try {
-    // Lazy load the chat service only when it's needed
-
-    const chat: IChat = await chatService.createChat([
+    //retrieve existing chat or create a new one
+    const chat: IChat = await chatService.getChat([
       message.fromId.toString(),
       message.toId.toString(),
     ]);
@@ -52,6 +52,31 @@ const handleSendMessage = debounce(async (message: IMessage, io: Server) => {
 
     // Add the message to the chat on the server database
     await chatService.createMessage(chat._id, message);
+
+    // Update the contacts' subContacts lists
+    const [contact1, contact2] = await Promise.all([
+      contactService.getContactById(message.fromId),
+      contactService.getContactById(message.toId),
+    ]);
+
+    if (contact1 && contact2) {
+      const hasUpdatedContact1 = !contact1.subContacts.includes(contact2._id);
+      const hasUpdatedContact2 = !contact2.subContacts.includes(contact1._id);
+
+      if (hasUpdatedContact1) contact1.subContacts.push(contact2._id);
+      if (hasUpdatedContact2) contact2.subContacts.push(contact1._id);
+
+      if (hasUpdatedContact1 || hasUpdatedContact2) {
+        await Promise.all([
+          hasUpdatedContact1
+            ? contactService.updateContact(contact1._id, contact1)
+            : null,
+          hasUpdatedContact2
+            ? contactService.updateContact(contact2._id, contact2)
+            : null,
+        ]);
+      }
+    }
 
     // Emit the message to the receiver's room
     io.to(message.toId.toString()).emit("receive_message", message);

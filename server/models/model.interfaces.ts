@@ -14,20 +14,13 @@ interface IChat extends Document {
   messages: IMessage[];
 }
 
-interface ISubContact extends Document {
-  _id: Types.ObjectId;
-  name: string;
-  phoneNumber: string;
-  lastMessage: string;
-  avatar: string;
-}
 
 interface IContact extends Document {
   _id: Types.ObjectId;
   name: string;
   avatar: string;
   phoneNumber: string;
-  subContacts: ISubContact[];
+  subContacts: Types.ObjectId[];
   status?: string;
   createdAt?: string;
   chats: Types.ObjectId[];
@@ -40,4 +33,4 @@ interface IUser extends Document {
   comparePassword: (candidatePassword: string) => Promise<boolean>;
 }
 
-export { IMessage, IChat, ISubContact, IContact, IUser };
+export { IMessage, IChat,  IContact, IUser };

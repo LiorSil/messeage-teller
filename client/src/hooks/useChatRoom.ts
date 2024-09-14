@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,25 +13,14 @@ export const useChatRoom = () => {
   const dispatch: AppDispatch = useDispatch();
   const { contact } = useContact();
 
-  const token = useSelector((state: RootState) => state.auth.token);
+  const cookies = useMemo(() => new Cookies(), []);
+  const token = cookies.get("token");
   const { selectedChat, chats, messages } = useSelector(
     (state: RootState) => state.chat
   );
-  const cookies = useMemo(() => new Cookies(), []);
 
   useEffect(() => {
-    let existingToken = cookies.get("token");
-
-    if (!existingToken && token) {
-      cookies.set("token", token, {
-        path: "/",
-        sameSite: "none",
-        secure: true,
-      });
-      existingToken = token;
-    }
-
-    if (!existingToken) {
+    if (!token) {
       navigate("/unauthorized");
     }
     if (contact?._id) dispatch(getChatByParticipantsIds(contact._id));

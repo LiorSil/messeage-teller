@@ -26,6 +26,7 @@ const useProfile = () => {
 
   // Handle saving the profile name
   const handleSaveClick = useCallback(async () => {
+    console.log("token", token);
     try {
       const response = await axios.put(
         `${VITE_API_URL}/contacts/updateProfile`,

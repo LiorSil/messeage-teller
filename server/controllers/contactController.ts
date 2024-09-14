@@ -2,8 +2,7 @@ import { Request, Response } from "express";
 import { Schema, Types } from "mongoose";
 
 import contactService from "../services/contactService";
-import { IContact, IMessage, ISubContact } from "../models/model.interfaces";
-import chatService from "../services/chatService";
+import { IContact } from "../models/model.interfaces";
 
 const createContact = async (req: Request, res: Response) => {
   try {
@@ -18,12 +17,35 @@ const getContact = async (req: Request, res: Response) => {
   const { phoneNumber } = req.body.contact;
 
   try {
-    const contact = await contactService.getContactByPhoneNumber(phoneNumber);
+    let contact = await contactService.getContactByPhoneNumber(phoneNumber);
 
     if (!contact) {
       return res.status(404).json({ message: "Contact not found" });
     }
-    res.status(200).json(contact);
+    const subContacts = await Promise.all(
+      contact.subContacts.map(async (subContact) => {
+        const fullSubContact = await contactService.getContactById(subContact);
+        return {
+          _id: fullSubContact?._id, // Assuming _id is the field name for the ObjectId
+          name: fullSubContact?.name,
+          phoneNumber: fullSubContact?.phoneNumber,
+          avatar: fullSubContact?.avatar,
+        };
+      })
+    );
+
+    const { _id, name, avatar, phoneNumber: number, createdAt } = contact;
+    const convertContact = {
+      _id,
+      name,
+      avatar,
+      phoneNumber,
+      createdAt,
+      subContacts,
+    };
+    console.log("convertContact", convertContact);
+
+    res.status(200).json(convertContact);
   } catch (err: any) {
     res.status(400).json({ message: err.message });
   }
@@ -64,10 +86,7 @@ const findContactsByQuery = async (req: Request, res: Response) => {
     let contacts = await contactService.findContacts(query as string);
 
     contacts = contacts.filter((contact) => {
-      return !ownedContacts.some(
-        (subContact: ISubContact) =>
-          subContact.phoneNumber === contact.phoneNumber
-      );
+      return !ownedContacts.some((subContact) => subContact === contact._id);
     });
     //filter out self contact
     contacts = contacts.filter(
@@ -108,8 +127,7 @@ const addSubContact = async (req: Request, res: Response) => {
 
     // Filter out the existing sub-contact from the contacts array
     const isSubContactAlreadyAdded = contact.subContacts.some(
-      (existingSubContact) =>
-        existingSubContact.phoneNumber === newSubContactNumber
+      (existingSubContact) => existingSubContact === subContact._id
     );
 
     if (isSubContactAlreadyAdded) {
@@ -117,19 +135,9 @@ const addSubContact = async (req: Request, res: Response) => {
     }
 
     // Create new sub-contact to add
-    const newSubContact: ISubContact = {
-      _id: subContact._id,
-      name: subContact.name,
-      phoneNumber: subContact.phoneNumber,
-      avatar: subContact.avatar || "",
-      lastMessage: "",
-    } as ISubContact;
-
-    contact.subContacts.push(newSubContact);
+    contact.subContacts.push(subContact._id);
     const id = contact._id;
     await contactService.updateContact(id, contact);
-
-
 
     res.status(200).json(contact);
   } catch (err: any) {
@@ -141,6 +149,9 @@ const addSubContact = async (req: Request, res: Response) => {
 const updateProfile = async (req: Request, res: Response) => {
   const { ...data } = req.body;
   const { phoneNumber } = req.body.contact;
+
+  console.log("data", data);
+  console.log("phoneNumber", phoneNumber);
 
   try {
     const contact = await contactService.getContactByPhoneNumber(phoneNumber);

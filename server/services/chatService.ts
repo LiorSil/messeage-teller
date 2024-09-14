@@ -3,7 +3,7 @@ import { IChat, IContact, IMessage } from "../models/model.interfaces";
 import { Schema, Types } from "mongoose";
 import contactService from "./contactService";
 
-const createChat = async (contacts: string[]): Promise<IChat> => {
+const getChat = async (contacts: string[]): Promise<IChat> => {
   const participants = await contactService.getContactsByIds(contacts);
 
   if (!participants || participants.length === 0) {
@@ -18,7 +18,7 @@ const createChat = async (contacts: string[]): Promise<IChat> => {
     throw new Error("One or more contacts have invalid IDs.");
   }
 
-  const chat = await chatRepo.createChat(contactIds);
+  const chat = await chatRepo.getChat(contactIds);
   return chat;
 };
 
@@ -27,9 +27,7 @@ const createMessage = async (
   messageData: Partial<IMessage>
 ): Promise<IChat | null> => {
   return await chatRepo.pushMessage(chatId, messageData);
-}
-
-
+};
 
 const getChatByParticipantsIds = async (
   participants: string | string[]
@@ -51,4 +49,4 @@ const getChatByParticipantsIds = async (
   return matchingChats.length > 0 ? matchingChats : null;
 };
 
-export default { createChat, createMessage, getChatByParticipantsIds };
+export default { getChat, createMessage, getChatByParticipantsIds };

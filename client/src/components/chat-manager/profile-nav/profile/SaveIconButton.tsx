@@ -19,7 +19,6 @@ const SaveIconButton = (props: Props) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  console.log(`props.isNameValid: ${props.isNameValid}`);
 
   return isMdScreen ? (
     <IconButtonWrapper
