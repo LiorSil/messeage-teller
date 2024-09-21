@@ -24,6 +24,8 @@ const chatSlice = createSlice({
     updateSelectedChat: (state, action: PayloadAction<SubContact | null>) => {
       if (action.payload) {
         state.selectedChat = action.payload;
+        state.messages =
+          getMessagesForSubContact(state.chats, action.payload) || [];
       } else {
         state.selectedChat = null;
       }

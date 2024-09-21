@@ -7,14 +7,17 @@ import useContact from "./useContact";
 import { SubContact } from "../types/subContact";
 import { updateSelectedChat } from "../redux/slices/chatSlice";
 import { getChatByParticipantsIds } from "../redux/thunks/chatThunks";
+import { BASE_CHAT_CLASS } from "../utils/styles/tailwindClasses";
+
+const cookies = new Cookies();
 
 export const useChatRoom = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const { contact } = useContact();
 
-  const cookies = useMemo(() => new Cookies(), []);
   const token = cookies.get("token");
+
   const { selectedChat, chats, messages } = useSelector(
     (state: RootState) => state.chat
   );
@@ -22,38 +25,35 @@ export const useChatRoom = () => {
   useEffect(() => {
     if (!token) {
       navigate("/unauthorized");
+    } else if (contact?._id && !selectedChat) {
+      dispatch(getChatByParticipantsIds(contact._id));
     }
-    if (contact?._id) dispatch(getChatByParticipantsIds(contact._id));
-  }, [token, cookies, navigate, dispatch, contact]);
+  }, [token, navigate, dispatch, contact, selectedChat]);
 
-  const baseClass =
-    "w-full flex flex-col h-screen bg-app-palette-sap-green-light-+40";
+  useEffect(() => {
+    if (contact?.subContacts?.length && !selectedChat) {
+      const firstSubContact = contact.subContacts[0];
+      dispatch(updateSelectedChat(firstSubContact));
+    }
+  }, [contact, selectedChat, dispatch]);
+
+  const handleChatSelection = (selectedSubContact: SubContact | null) => {
+    if (
+      contact?._id &&
+      selectedSubContact &&
+      selectedSubContact !== selectedChat
+    ) {
+      dispatch(getChatByParticipantsIds(contact._id));
+    }
+    dispatch(updateSelectedChat(selectedSubContact || null));
+  };
 
   const getClassNames = useMemo(
     () => (isSelected: boolean, mdWidth: string) => {
-      return `${baseClass} ${mdWidth} ${isSelected ? "flex" : "hidden md:flex"}`;
+      return `${BASE_CHAT_CLASS} ${mdWidth} ${isSelected ? "flex" : "hidden md:flex"}`;
     },
-    [baseClass]
+    []
   );
-
-  useEffect(() => {
-    //default to the first chat room
-    const selectedSubContact = contact?.subContacts?.[0];
-
-    if (selectedSubContact) {
-      dispatch(updateSelectedChat(selectedSubContact));
-    } else {
-      dispatch(updateSelectedChat(null)); // Reset to null if name is invalid
-    }
-  }, [contact, dispatch, token]);
-
-  const handleChatSelection = (selectedSubContact: SubContact | null) => {
-    if (selectedSubContact) {
-      dispatch(updateSelectedChat(selectedSubContact));
-    } else {
-      dispatch(updateSelectedChat(null)); // Reset to null if chatRoom is invalid
-    }
-  };
 
   return {
     contact,

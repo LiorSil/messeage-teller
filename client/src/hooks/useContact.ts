@@ -5,7 +5,7 @@ import { useEffect, useMemo } from "react";
 import Cookies from "universal-cookie";
 
 const useContact = () => {
-  const cookies = useMemo(() => new Cookies(), []);
+   const cookies = useMemo(() => new Cookies(), []);
   const token = cookies.get("token");
 
   const dispatch: AppDispatch = useDispatch();
@@ -14,11 +14,14 @@ const useContact = () => {
     (state: RootState) => state.contact
   );
 
+  const { _id } = contact || {};
+
   useEffect(() => {
-    if (token) {
+    console.log("contact", contact);
+    if (token && !_id) {
       dispatch(fetchContact(token));
     }
-  }, [token, dispatch, contact]);
+  }, [token, dispatch, contact, _id]);
 
   return { contact, error, loading, dispatch };
 };

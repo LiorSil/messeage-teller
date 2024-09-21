@@ -1,4 +1,3 @@
-// hooks/useChatSession.ts
 import { useState, useEffect } from "react";
 import { useSocket } from "./useSocket";
 import { useSelector } from "react-redux";
@@ -26,10 +25,16 @@ export const useChatSession = () => {
 
   // Send a message immediately when triggered
   const sendMessage = () => {
-    if (socket && inputValue.trim() && contact?._id && selectedChat?._id) {
+    // Enforce contactId to be a string
+    if (
+      socket &&
+      inputValue.trim() &&
+      typeof contact?._id === "string" &&
+      typeof selectedChat?._id === "string"
+    ) {
       const message: Message = {
-        fromId: contact._id,
-        toId: selectedChat._id,
+        fromId: contact._id, // contact._id is enforced to be a string
+        toId: selectedChat._id, // selectedChat._id is also enforced to be a string
         content: inputValue,
         sentTD: new Date(),
       };
@@ -37,6 +42,8 @@ export const useChatSession = () => {
       socket.emit("send_message", message);
       setNewMessages((prevMessages) => [...prevMessages, message]);
       setInputValue(""); // Clear the input after sending
+    } else {
+      console.error("contactId or selectedChatId is not a string");
     }
   };
 
@@ -65,6 +72,6 @@ export const useChatSession = () => {
     inputValue,
     handleInputChange,
     sendMessage, // Send message immediately
-    contactId: contact?._id,
+    contact, // Ensure this is a string
   };
 };

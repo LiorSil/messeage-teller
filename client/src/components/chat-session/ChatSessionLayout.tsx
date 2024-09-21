@@ -13,8 +13,7 @@ interface ChatLayoutProps {
 const ChatSessionLayout = ({ selectedChat }: ChatLayoutProps) => {
   const messagesEndRef = useScrollToBottom();
 
-  // Centralize state management in the ChatSessionLayout component
-  const { newMessages, inputValue, handleInputChange, sendMessage, contactId } =
+  const { newMessages, inputValue, handleInputChange, sendMessage, contact } =
     useChatSession();
 
   return (
@@ -23,7 +22,7 @@ const ChatSessionLayout = ({ selectedChat }: ChatLayoutProps) => {
         <ChatHeader selectedChat={selectedChat} />
       </div>
       <div className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
-        <MessageList messages={newMessages} currentUserId={contactId} />
+        <MessageList messages={newMessages} currentUserId={contact?._id} />
         <div ref={messagesEndRef} />
       </div>
       <div className="sticky bottom-0 z-10 bg-app-palette-sap-green-light-+30">

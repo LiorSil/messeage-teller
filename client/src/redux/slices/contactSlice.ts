@@ -12,7 +12,6 @@ const initialState: ContactState = {
     avatar: "",
     createdAt: "",
     subContacts: [],
-    updatedAt: "",
   },
   loading: false,
   phoneNumber: "",

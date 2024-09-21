@@ -1,12 +1,10 @@
-import React from "react";
 import OutboundMessage from "./OutboundMessage";
 import InboundMessage from "./InboundMessage";
 import { Message } from "../../../types/message";
 
-
 interface MessageListProps {
   messages: Message[];
-  currentUserId: string;
+  currentUserId: string | undefined;
 }
 
 const MessageList = ({ messages, currentUserId }: MessageListProps) => {

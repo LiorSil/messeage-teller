@@ -1,11 +1,13 @@
-import React from "react";
 import { Message } from "../../../types/message";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
 
 interface OutboundMessageProps {
   message: Message;
 }
 
 const OutboundMessage = ({ message }: OutboundMessageProps) => {
+  const contact = useSelector((state: RootState) => state.contact.contact);
   return (
     <div className="chat-message">
       <div className="flex items-end">
@@ -17,7 +19,7 @@ const OutboundMessage = ({ message }: OutboundMessageProps) => {
           </div>
         </div>
         <img
-          src="https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=144&h=144"
+          src={contact?.avatar}
           alt="My profile"
           className="w-10 h-10 rounded-full order-1 border-2 border-black"
         />
