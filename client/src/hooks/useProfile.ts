@@ -1,13 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
-import { useChatRoom } from "./useChatRoom";
+
+import useContact from "./useContact";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 const useProfile = () => {
-  const { token, contact } = useChatRoom();
+  const { token, contact } = useContact();
 
   const baseName = contact?.name || "";
 

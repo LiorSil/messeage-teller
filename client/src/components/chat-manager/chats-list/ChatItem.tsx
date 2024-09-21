@@ -2,14 +2,13 @@ import React from "react";
 
 interface ChatItemProps {
   contactName: string;
-  lastMessage: string;
   imageUrl: string;
   onSelectChatItem: () => void;
 }
 
 const ChatItem = ({
   contactName,
-  lastMessage,
+
   imageUrl,
   onSelectChatItem,
 }: ChatItemProps) => {
@@ -27,7 +26,6 @@ const ChatItem = ({
       </div>
       <div className="flex-1">
         <h2 className="text-lg font-semibold">{contactName}</h2>
-        <p className="text-gray-600 ">{lastMessage}</p>
       </div>
     </div>
   );

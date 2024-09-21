@@ -55,7 +55,6 @@ const loginUser = createAsyncThunk(
   ) => {
     try {
       const response = await axios.post(`${VITE_API_URL}/auth/login`, userData);
-      console.log("response", response);
       return response.data;
     } catch (err) {
       if (axios.isAxiosError(err) && err.response && err.response.data) {

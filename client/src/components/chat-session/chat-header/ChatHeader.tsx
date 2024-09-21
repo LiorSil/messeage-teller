@@ -1,10 +1,10 @@
-import { SubContact } from "../../../types/subContact";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
 
-interface ChatHeaderProps {
-  selectedChat: SubContact | null;
-}
-
-const ChatHeader = ({ selectedChat }: ChatHeaderProps) => {
+const ChatHeader = () => {
+  const selectedChat = useSelector(
+    (state: RootState) => state.chat.selectedChat
+  );
   return (
     <div className="flex sm:items-center justify-between py-3 border-b-2  border-black    ">
       <div className="relative flex items-center space-x-4 ">

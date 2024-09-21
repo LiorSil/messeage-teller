@@ -16,9 +16,6 @@ const ChatListItems = ({
       <li key={`${index}_${contact._id}`} className="space-y-3">
         <ChatItem
           onSelectChatItem={() => handleChatSelection(contact)}
-          lastMessage={
-            contact.lastMessage || "Hi There, I'm using Message Teller"
-          }
           contactName={contact.name}
           imageUrl={
             contact.avatar ||

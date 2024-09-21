@@ -12,6 +12,7 @@ const initialState = {
   inputValue: "",
   selectedChat: null as SubContact | null,
   chats: [] as Chat[],
+  isChatMangerView: true,
 };
 
 const chatSlice = createSlice({
@@ -30,6 +31,9 @@ const chatSlice = createSlice({
         state.selectedChat = null;
       }
     },
+    toggleChatManagerView: (state) => {
+      state.isChatMangerView = !state.isChatMangerView;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getChatByParticipantsIds.fulfilled, (state, action) => {
@@ -45,5 +49,6 @@ const chatSlice = createSlice({
   },
 });
 
-export const { updateInputValue, updateSelectedChat } = chatSlice.actions;
+export const { updateInputValue, updateSelectedChat, toggleChatManagerView } =
+  chatSlice.actions;
 export default chatSlice.reducer;

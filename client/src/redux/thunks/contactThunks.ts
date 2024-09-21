@@ -22,6 +22,7 @@ const fetchContact = createAsyncThunk<Contact, string>(
       });
       return response.data;
     } catch (error: unknown) {
+      console.log("error", error);
       if (axios.isAxiosError(error) && error.response) {
         return rejectWithValue(error.response.data as string);
       }

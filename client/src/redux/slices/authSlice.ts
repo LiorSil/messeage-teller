@@ -6,6 +6,7 @@ const cookies = new Cookies();
 
 const initialState = {
   token: "",
+  expiresIn: 0,
   loading: false,
   error: "",
   disconnect: false,
@@ -33,7 +34,12 @@ const authSlice = createSlice({
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
       const { token } = action.payload;
-      cookies.set("token", token, { path: "/" });
+
+      cookies.set("token", token, {
+        path: "/",
+        expires: new Date(Date.now() + 1000 * 3600),
+      });
+
       state.loading = false;
       state.token = action.payload.token;
     });

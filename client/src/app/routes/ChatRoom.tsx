@@ -5,19 +5,16 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 
 const ChatRoom: React.FC = () => {
-
-  const { handleChatSelection, getClassNames } = useChatRoom();
-  const selectedChat = useSelector(
-    (state: RootState) => state.chat.selectedChat
-  );
+  const { getClassNames } = useChatRoom();
+  const { isChatMangerView } = useSelector((state: RootState) => state.chat);
 
   return (
     <div className="flex flex-col md:flex-row">
-      <div className={getClassNames(!selectedChat, "md:w-1/3")}>
-        <ChatsManagerLayout handleChatSelection={handleChatSelection} />
+      <div className={getClassNames(isChatMangerView, "md:w-1/3")}>
+        <ChatsManagerLayout />
       </div>
-      <div className={getClassNames(!!selectedChat, "md:w-2/3")}>
-        <ChatSessionLayout selectedChat={selectedChat} />
+      <div className={getClassNames(!isChatMangerView, "md:w-2/3")}>
+        <ChatSessionLayout />
       </div>
     </div>
   );

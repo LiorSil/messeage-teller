@@ -17,13 +17,12 @@ const useContact = () => {
   const { _id } = contact || {};
 
   useEffect(() => {
-    console.log("contact", contact);
     if (token && !_id) {
       dispatch(fetchContact(token));
     }
   }, [token, dispatch, contact, _id]);
 
-  return { contact, error, loading, dispatch };
+  return { contact, error, loading, dispatch, token };
 };
 
 export default useContact;

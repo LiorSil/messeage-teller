@@ -1,16 +1,13 @@
-import React from "react";
 import ChatListItems from "./ChatListItems";
 import useContact from "../../../hooks/useContact";
 import Loading from "../../../shared/Loading";
 import ErrorMessage from "../../../shared/ErrorMessage";
-import { SubContact } from "../../../types/subContact";
+import { useChatManager } from "../../../hooks/useChatManager";
 
-interface ChatListProps {
-  handleChatSelection: (chatRoom: SubContact | null) => void;
-}
-
-const ChatList = ({ handleChatSelection }: ChatListProps) => {
+const ChatList = () => {
   const { contact, error, loading } = useContact();
+
+  const { handleChatSelection } = useChatManager();
 
   if (loading) <Loading />;
   if (error) <ErrorMessage error="Can't get user's contacts" />;
