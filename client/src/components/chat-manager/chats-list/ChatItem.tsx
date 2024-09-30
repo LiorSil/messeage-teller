@@ -1,14 +1,17 @@
 import React from "react";
 
 interface ChatItemProps {
+  isIncomingMessage: boolean;
   contactName: string;
   imageUrl: string;
-  onSelectChatItem: () => void;
+  onSelectChatItem: () => void; 
+  
+
 }
 
 const ChatItem = ({
+  isIncomingMessage,
   contactName,
-
   imageUrl,
   onSelectChatItem,
 }: ChatItemProps) => {
@@ -27,6 +30,9 @@ const ChatItem = ({
       <div className="flex-1">
         <h2 className="text-lg font-semibold">{contactName}</h2>
       </div>
+      {isIncomingMessage && (
+        <div className="w-4 h-4 bg-green-500 rounded-full"></div>
+      )}
     </div>
   );
 };

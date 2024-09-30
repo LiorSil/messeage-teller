@@ -1,5 +1,4 @@
 import React from "react";
-import AddContact from "../add-contact/AddContact";
 
 interface DrawerProps {
   isOpen: boolean;

@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
 import { useSocket } from "./useSocket";
-import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "../redux/store";
 import { Message } from "../types/message";
+import { updateContact } from "../redux/slices/contactSlice";
 
 export const useChatSession = () => {
   const socket = useSocket();
+  const dispatch = useDispatch<AppDispatch>();
 
   // Memoize the results of useSelector to prevent unnecessary re-renders
-  const { messages, selectedChat } = useSelector(
-    (state: RootState) => state.chat
+  const messages = useSelector((state: RootState) => state.chat.messages);
+  const selectedChat = useSelector(
+    (state: RootState) => state.chat.selectedChat
   );
   const contact = useSelector((state: RootState) => state.contact.contact);
 
@@ -20,6 +23,8 @@ export const useChatSession = () => {
   useEffect(() => {
     if (messages.length > 0) {
       setNewMessages(messages);
+    } else {
+      setNewMessages([]);
     }
   }, [messages]);
 
@@ -64,7 +69,44 @@ export const useChatSession = () => {
   };
 
   const handleMessageReceive = (message: Message) => {
-    setNewMessages((prevMessages) => [...prevMessages, message]);
+    // Update messages only if the message is from the selected chat
+    setNewMessages((prevMessages) => {
+      if (
+        prevMessages.length > 0 &&
+        prevMessages[0].fromId === message.fromId
+      ) {
+        return [...prevMessages, message];
+      }
+      return prevMessages; // No update if message is from another chat
+    });
+
+    // Handle subContact update if the message is from a different chat
+    if (contact?.subContacts) {
+      handleIncomingMessageNotification(message);
+    }
+  };
+
+  // Separate function to handle the subContact notification logic
+  const handleIncomingMessageNotification = (message: Message) => {
+    if (!contact) return;
+    const subContactIndex = contact.subContacts.findIndex(
+      (subContact) => subContact._id === message.fromId
+    );
+
+    if (subContactIndex !== -1) {
+      // Create a copy of subContacts and update the isIncomingMessage flag
+      const updatedSubContacts = [...contact.subContacts];
+      updatedSubContacts[subContactIndex] = {
+        ...updatedSubContacts[subContactIndex],
+        isIncomingMessage: true,
+      };
+
+      // Create a new contact object with updated subContacts
+      const updatedContact = { ...contact, subContacts: updatedSubContacts };
+
+      // Dispatch the updated contact
+      dispatch(updateContact(updatedContact));
+    }6
   };
 
   return {

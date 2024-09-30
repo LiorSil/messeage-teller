@@ -25,7 +25,7 @@ const UserProfile: React.FC = () => {
         className="w-14 h-14 rounded-full border-2 border-black object-cover object-center"
         alt={contact?.name || "UserProfile Logo"}
       />
-      <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
+      <span className="self-center md:text-xl lg:text-2xl font-semibold whitespace-nowrap text-white">
         {contact?.name || "Guest"}
       </span>
     </a>

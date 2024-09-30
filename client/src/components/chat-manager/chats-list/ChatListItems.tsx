@@ -15,6 +15,7 @@ const ChatListItems = ({
     subContacts?.map((contact, index) => (
       <li key={`${index}_${contact._id}`} className="space-y-3">
         <ChatItem
+          isIncomingMessage={contact.isIncomingMessage || false}
           onSelectChatItem={() => handleChatSelection(contact)}
           contactName={contact.name}
           imageUrl={
