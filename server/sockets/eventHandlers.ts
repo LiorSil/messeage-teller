@@ -13,9 +13,9 @@ const handleConnection = (socket: Socket, io: Server) => {
 
   if (contactId) {
     // Add the contact to their own room based on their contactId
-    console.log(`Contact ${contactId} joined room ${contactId}`);
+    //console.log(`Contact ${contactId} joined room ${contactId}`);
     socket.join(contactId);
-    logger.info(`Contact ${contactId} joined room ${contactId}`);
+    //logger.info(`Contact ${contactId} joined room ${contactId}`);
   }
 
   // Listen for messages
@@ -25,12 +25,12 @@ const handleConnection = (socket: Socket, io: Server) => {
 
   // Handle disconnection event
   socket.on("disconnect", () => {
-    logger.info(`Contact ${contactId} disconnected`);
+    //logger.info(`Contact ${contactId} disconnected`);
   });
 
   // Error handling for socket connection
   socket.on("error", (error) => {
-    logger.error("Socket error:", error);
+    //logger.error("Socket error:", error);
     socket.disconnect();
   });
 };
@@ -46,7 +46,7 @@ const handleSendMessage = debounce(async (message: IMessage, io: Server) => {
 
     // Ensure the chat exists
     if (!chat || !(chat._id instanceof Types.ObjectId)) {
-      logger.error("Failed to create or retrieve the chat.");
+      //  logger.error("Failed to create or retrieve the chat.");
       return;
     }
 
@@ -80,9 +80,10 @@ const handleSendMessage = debounce(async (message: IMessage, io: Server) => {
 
     // Emit the message to the receiver's room
     io.to(message.toId.toString()).emit("receive_message", message);
-    logger.info(`Message sent to room ${message.toId.toString()}`);
+
+    // logger.info(`Message sent to room ${message.toId.toString()}`);
   } catch (error) {
-    logger.error("Error handling send_message:", error);
+    //  logger.error("Error handling send_message:", error);
   }
 }, 300);
 

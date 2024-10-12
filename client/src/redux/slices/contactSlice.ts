@@ -25,6 +25,7 @@ const contactSlice = createSlice({
   initialState,
   reducers: {
     updateContact: (state, action: PayloadAction<Contact>) => {
+      console.log("Updating contact", action.payload);
       state.contact = action.payload;
     },
   },
@@ -33,6 +34,7 @@ const contactSlice = createSlice({
       state.getContactLoading = true;
     });
     builder.addCase(fetchContact.fulfilled, (state, action) => {
+      console.log("Fetched contact", action.payload);
       state.getContactLoading = false;
       state.contact = action.payload;
     });

@@ -8,7 +8,7 @@ import { useChatSession } from "../../hooks/useChatSession";
 const ChatSessionLayout = () => {
   const messagesEndRef = useScrollToBottom();
 
-  const { newMessages, inputValue, handleInputChange, sendMessage, contact } =
+  const { newMessages, inputValue, handleInputChange, sendMessage, contactId } =
     useChatSession();
 
   return (
@@ -17,7 +17,7 @@ const ChatSessionLayout = () => {
         <ChatHeader />
       </div>
       <div className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
-        <MessageList messages={newMessages} currentUserId={contact?._id} />
+        <MessageList messages={newMessages} currentUserId={contactId} />
         <div ref={messagesEndRef} />
       </div>
       <div className="sticky bottom-0 z-10 bg-app-palette-sap-green-light-+30">

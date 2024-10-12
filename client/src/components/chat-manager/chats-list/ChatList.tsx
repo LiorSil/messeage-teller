@@ -5,18 +5,18 @@ import ErrorMessage from "../../../shared/ErrorMessage";
 import { useChatManager } from "../../../hooks/useChatManager";
 
 const ChatList = () => {
-  const { contact, error, loading } = useContact();
+  const { error, loading, sortedSubContacts } = useContact();
 
   const { handleChatSelection } = useChatManager();
 
   if (loading) <Loading />;
   if (error) <ErrorMessage error="Can't get user's contacts" />;
-  if (!contact?.subContacts) return null;
+  if (!sortedSubContacts) return null;
 
   return (
     <div className="overflow-y-auto h-screen p-3 mb-9 pb-6">
       <ChatListItems
-        subContacts={contact?.subContacts}
+        subContacts={sortedSubContacts}
         handleChatSelection={handleChatSelection}
       />
       <div className="flex justify-center items-center mt-4">

@@ -2,6 +2,7 @@ import chatRepo from "../repos/chatRepo";
 import { IChat, IContact, IMessage } from "../models/model.interfaces";
 import { Schema, Types } from "mongoose";
 import contactService from "./contactService";
+import { sortSubContactsByLatestChats } from "../repos/sortSubContactsByMessages";
 
 const getChat = async (contacts: string[]): Promise<IChat> => {
   const participants = await contactService.getContactsByIds(contacts);
@@ -26,7 +27,11 @@ const createMessage = async (
   chatId: Types.ObjectId,
   messageData: Partial<IMessage>
 ): Promise<IChat | null> => {
-  return await chatRepo.pushMessage(chatId, messageData);
+  const newMessage = await chatRepo.pushMessage(chatId, messageData);
+  await sortSubContactsByLatestChats(messageData.fromId?.toString() as any);
+  await sortSubContactsByLatestChats(messageData.toId?.toString() as any);
+
+  return newMessage;
 };
 
 const getChatByParticipantsIds = async (

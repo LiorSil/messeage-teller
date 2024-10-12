@@ -1,4 +1,3 @@
-import React from "react";
 import ChatItem from "./ChatItem";
 import { SubContact } from "../../../types/subContact";
 

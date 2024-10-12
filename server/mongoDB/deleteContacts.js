@@ -9,3 +9,4 @@ db.chats.deleteMany({},
         }
     }
 );
+

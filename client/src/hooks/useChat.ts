@@ -1,6 +1,6 @@
 // hooks/useChat.ts
 import { useDispatch, useSelector } from "react-redux";
-import { sendMessage, updateInputValue } from "../redux/slices/chatSlice";
+import { updateInputValue } from "../redux/slices/chatSlice";
 import { RootState } from "../redux/store";
 
 export const useChat = () => {
@@ -12,9 +12,5 @@ export const useChat = () => {
     dispatch(updateInputValue(message));
   };
 
-  const handleSendMessage = () => {
-    dispatch(sendMessage());
-  };
-
-  return { inputValue, messages, handleInputChange, handleSendMessage };
+  return { inputValue, messages, handleInputChange };
 };

@@ -21,6 +21,12 @@ const getChat = async (
   }
 };
 
+const contactChats = async (
+  contactId: Types.ObjectId | string
+): Promise<IChat[]> => {
+  return await Chat.find({ participants: contactId }).exec();
+}
+
 const getChatById = async (
   chatId: Types.ObjectId | string
 ): Promise<IChat | null> => {
@@ -59,6 +65,7 @@ const deleteChat = async (
 
 export default {
   getChat,
+  contactChats,
   pushMessage,
   getChatById,
   getChats,

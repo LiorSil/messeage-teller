@@ -6,7 +6,6 @@ const createMessage = async (
   messageData: Partial<IMessage>
 ): Promise<IMessage> => {
   const message = new Message({ ...messageData });
-  console.log("message", message);
 
   return await message.save();
 };

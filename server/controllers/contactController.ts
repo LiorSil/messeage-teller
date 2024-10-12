@@ -152,8 +152,7 @@ const updateProfile = async (req: Request, res: Response) => {
   const { ...data } = req.body;
   const { phoneNumber } = req.body.contact;
 
-  console.log("data", data);
-  console.log("phoneNumber", phoneNumber);
+
 
   try {
     const contact = await contactService.getContactByPhoneNumber(phoneNumber);

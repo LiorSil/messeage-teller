@@ -5,10 +5,11 @@ import { toggleChatManagerView } from "../redux/slices/chatSlice";
 import { SubContact } from "../types/subContact";
 import useContact from "./useContact";
 import { updateSelectedChat } from "../redux/slices/chatSlice";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 import { updateContact } from "../redux/slices/contactSlice";
+import { selectSortedSubContactsByMessages } from "../redux/selectors/contactSelector";
 const cookies = new Cookies();
 
 export const useChatManager = () => {
@@ -43,36 +44,46 @@ export const useChatManager = () => {
     }
   }, [memoizedContact, dispatch]);
 
-  const handleChatSelection = async (selectedSubContact: SubContact | null) => {
-    if (contact?._id && selectedSubContact) {
-      await dispatch(getChatByParticipantsIds(contact._id)); // Ensure this is done before switching views
-      await dispatch(toggleChatManagerView());
-      await handleRemoveNotification(selectedSubContact);
-      await dispatch(updateSelectedChat(selectedSubContact)); // This should be called after the notification is removed
-    } else {
-      dispatch(updateSelectedChat(selectedSubContact || null));
-    }
-  };
+  const handleChatSelection = useCallback(
+    async (selectedSubContact: SubContact | null) => {
+      if (memoizedContact?._id && selectedSubContact) {
+        await dispatch(getChatByParticipantsIds(memoizedContact._id));
+        dispatch(toggleChatManagerView());
+        await handleRemoveNotification(selectedSubContact);
+        await dispatch(updateSelectedChat(selectedSubContact));
+      } else {
+        dispatch(updateSelectedChat(selectedSubContact || null));
+      }
+    },
+    [memoizedContact, dispatch]
+  );
 
-  const handleRemoveNotification = async (selectedChat: SubContact | null) => {
-    if (!contact || !selectedChat) return;
+  // Optimized remove notification handler with memoization
 
-    const subContactIndex = contact.subContacts.findIndex(
-      (subContact) => subContact._id === selectedChat._id
-    );
+  const handleRemoveNotification = useCallback(
+    async (selectedChat: SubContact | null) => {
+      if (!memoizedContact || !selectedChat) return;
 
-    if (subContactIndex !== -1) {
-      // Create a copy of subContacts and update the isIncomingMessage flag
-      const updatedSubContacts = [...contact.subContacts];
-      updatedSubContacts[subContactIndex] = {
-        ...updatedSubContacts[subContactIndex],
-        isIncomingMessage: false,
-      };
-      const updatedContact = { ...contact, subContacts: updatedSubContacts };
+      const subContactIndex = memoizedContact.subContacts.findIndex(
+        (subContact) => subContact._id === selectedChat._id
+      );
 
-      dispatch(updateContact(updatedContact)); // Dispatch the updated contact
-    }
-  };
+      if (subContactIndex !== -1) {
+        const updatedSubContacts = [...memoizedContact.subContacts];
+        updatedSubContacts[subContactIndex] = {
+          ...updatedSubContacts[subContactIndex],
+          isIncomingMessage: false,
+        };
+        const updatedContact = {
+          ...memoizedContact,
+          subContacts: updatedSubContacts,
+        };
+
+        await dispatch(updateContact(updatedContact)); // Dispatch the updated contact
+      }
+    },
+    [memoizedContact, dispatch]
+  );
 
   return { handleChatSelection };
 };
