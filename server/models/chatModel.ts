@@ -1,7 +1,6 @@
 import exp from "constants";
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { IChat, IMessage } from "./model.interfaces";
-import Message from "./messageModel";
 
 const messageSchema = new Schema<IMessage>({
   fromId: {
@@ -36,6 +35,12 @@ const chatSchema = new Schema<IChat>({
     { type: Schema.Types.ObjectId, ref: "Contact", required: true },
   ],
   messages: { type: [messageSchema], default: [] },
+  notification: {
+    type: [Schema.Types.ObjectId],
+    ref: "Contact",
+    default: [],
+    required: true,
+  },
 });
 
 export const Chat = mongoose.model("Chat", chatSchema, "chats");

@@ -114,5 +114,6 @@ export const useChatSession = () => {
     handleInputChange,
     sendMessage,
     contactId: contact?._id,
+    hasActiveChat: selectedChat !== null,
   };
 };

@@ -1,11 +1,11 @@
 import chatRepo from "../repos/chatRepo";
 import { IChat, IContact, IMessage } from "../models/model.interfaces";
-import { Schema, Types } from "mongoose";
 import contactService from "./contactService";
 import { sortSubContactsByLatestChats } from "../repos/sortSubContactsByMessages";
+import { Types } from "mongoose";
 
-const getChat = async (contacts: string[]): Promise<IChat> => {
-  const participants = await contactService.getContactsByIds(contacts);
+const getChat = async ([fromId, toId]: Types.ObjectId[]): Promise<IChat> => {
+  const participants = await contactService.getContactsByIds([fromId, toId]);
 
   if (!participants || participants.length === 0) {
     throw new Error(
@@ -13,13 +13,7 @@ const getChat = async (contacts: string[]): Promise<IChat> => {
     );
   }
 
-  const contactIds = participants.map((contact: IContact) => contact._id);
-
-  if (contactIds.some((id) => !id)) {
-    throw new Error("One or more contacts have invalid IDs.");
-  }
-
-  const chat = await chatRepo.getChat(contactIds);
+  const chat = await chatRepo.getChat([fromId, toId]);
   return chat;
 };
 

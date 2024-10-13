@@ -5,6 +5,7 @@ import { loginUser } from "../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useMemo } from "react";
 import Cookies from "universal-cookie";
+import { fetchContact } from "../redux/thunks/contactThunks";
 
 type LoginFormData = {
   email: string;
@@ -19,12 +20,12 @@ const useLoginForm = () => {
     formState: { errors },
   } = useForm<LoginFormData>();
   const cookies = useMemo(() => new Cookies(), []);
-
+  const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
+
   const { loading, error, token } = useSelector(
     (state: RootState) => state.auth
   );
-  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<LoginFormData> = (data) => {
     dispatch(loginUser(data));
@@ -34,6 +35,7 @@ const useLoginForm = () => {
   useEffect(() => {
     const token = cookies.get("token");
     if (token) {
+      dispatch(fetchContact(token));
       navigate("/chat-room");
     } else {
       navigate("/login");

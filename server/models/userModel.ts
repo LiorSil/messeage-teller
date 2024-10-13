@@ -1,4 +1,4 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
 import phoneNumberRegex from "../utils/phoneNumberRegex";
 import { IUser } from "./model.interfaces";

@@ -40,8 +40,8 @@ const handleSendMessage = debounce(async (message: IMessage, io: Server) => {
   try {
     //retrieve existing chat or create a new one
     const chat: IChat = await chatService.getChat([
-      message.fromId.toString(),
-      message.toId.toString(),
+      new Types.ObjectId(message.fromId),
+      new Types.ObjectId(message.toId),
     ]);
 
     // Ensure the chat exists

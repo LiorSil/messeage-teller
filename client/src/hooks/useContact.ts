@@ -23,7 +23,7 @@ const useContact = () => {
     if (token && !_id) {
       dispatch(fetchContact(token));
     }
-  }, [token, dispatch, contact, _id]);
+  }, [token, dispatch, _id]);
 
   return {
     contact,

@@ -16,7 +16,6 @@ export const sortSubContactsByLatestChats = async (
   // Step 2: Fetch all chats where the contact is a participant
   const chats: IChat[] = await chatRepo.contactChats(contact._id);
   if (!chats || chats.length === 0) {
-    console.log(`No chats found for contact ${contact._id}`);
     return [];
   }
 
@@ -38,10 +37,10 @@ export const sortSubContactsByLatestChats = async (
   });
 
   //Step 4: Debugging: Check the final processed participants
-  console.log(
-    "Processed participants with last message time:",
-    processedParticipants
-  );
+  // console.log(
+  //   "Processed participants with last message time:",
+  //   processedParticipants
+  // );
   // step 5: update the order of contactId's subContacts based on the last message time
   contact.subContacts = processedParticipants.map(
     (participant) => participant.participantId
@@ -51,11 +50,7 @@ export const sortSubContactsByLatestChats = async (
   const success = await contactRepo.updateContact(contactId, contact);
   if (!success) {
     throw new Error(`Failed to update contact with ID ${contactId}`);
-  } else {
-    console.log(
-      `Successfully updated contact with ID ${contactId}, subContacts: ${success}`
-    );
-  }
+  } 
 
   return processedParticipants;
 };

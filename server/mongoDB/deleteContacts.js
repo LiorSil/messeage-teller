@@ -1,12 +1,5 @@
 db.contacts.updateMany({}, { $set: { contacts: [] } });
 
-// delete chats 
+// delete chats
 
-db.chats.deleteMany({},
-    {
-        $set: {
-        chats: []
-        }
-    }
-);
-
+db.chats.deleteMany({}, { $set: { chats: [] } });

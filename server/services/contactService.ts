@@ -67,7 +67,7 @@ const deleteContact = async (
 };
 
 const getContactsByIds = async (
-  contactIds: string[]
+  contactIds: Types.ObjectId[]
 ): Promise<IContact[] | null> => {
   const contacts = await Promise.all(
     contactIds.map(async (contactId) => {

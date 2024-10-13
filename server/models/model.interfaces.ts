@@ -1,4 +1,4 @@
-import { Document, Schema, Types } from "mongoose";
+import { Document, Types } from "mongoose";
 
 interface IMessage extends Document {
   fromId: Types.ObjectId;
@@ -12,8 +12,8 @@ interface IMessage extends Document {
 interface IChat extends Document {
   participants: Types.ObjectId[];
   messages: IMessage[];
+  notification: Types.ObjectId[];
 }
-
 
 interface IContact extends Document {
   _id: Types.ObjectId;
@@ -33,4 +33,4 @@ interface IUser extends Document {
   comparePassword: (candidatePassword: string) => Promise<boolean>;
 }
 
-export { IMessage, IChat,  IContact, IUser };
+export { IMessage, IChat, IContact, IUser };

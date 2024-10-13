@@ -15,8 +15,12 @@ const getChat = async (
   if (existingChat) {
     return existingChat;
   } else {
-
-  const newChat = new Chat({ participants });
+console.log("creating new chat");
+const newChat = new Chat({
+  participants: participants,
+  messages: [],
+  notification: [],
+});
   return await newChat.save();
   }
 };

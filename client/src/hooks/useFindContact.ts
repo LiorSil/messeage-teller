@@ -23,9 +23,7 @@ const useFindContact = () => {
     [dispatch, token]
   );
 
-  const handleClearAddContactSuccess = useCallback(() => {
-    console.log("Clearing add contact success");
-  }, []);
+  const handleClearAddContactSuccess = useCallback(() => {}, []);
 
   return {
     subContacts,
