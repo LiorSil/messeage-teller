@@ -14,6 +14,8 @@ interface IChat extends Document {
   messages: IMessage[];
   notification: Types.ObjectId[];
 }
+type PartialChat = Pick<IChat, "_id" | "participants" | "messages">;
+
 
 interface IContact extends Document {
   _id: Types.ObjectId;
@@ -25,6 +27,7 @@ interface IContact extends Document {
   createdAt?: string;
   chats: Types.ObjectId[];
 }
+type PartialContact = Pick<IContact, "_id" | "name" | "avatar" | "phoneNumber" | "subContacts" >;
 
 interface IUser extends Document {
   email: string;
@@ -33,4 +36,10 @@ interface IUser extends Document {
   comparePassword: (candidatePassword: string) => Promise<boolean>;
 }
 
-export { IMessage, IChat, IContact, IUser };
+interface INotification extends Document {
+  fromId: Types.ObjectId;
+  recipients: Types.ObjectId[];
+}
+
+
+export { IMessage, IChat, PartialChat , IContact, PartialContact, IUser, INotification };

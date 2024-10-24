@@ -9,7 +9,7 @@ const createContact = async (
 };
 
 const getContactById = async (
-  contactId: Types.ObjectId | string
+  contactId: Types.ObjectId 
 ): Promise<IContact | null> => {
   const contact = await contactRepo.getContactById(contactId);
 

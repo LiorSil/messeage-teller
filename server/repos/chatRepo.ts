@@ -2,7 +2,7 @@ import { Types } from "mongoose";
 import { IMessage, IChat } from "../models/model.interfaces";
 import Chat from "../models/chatModel";
 
-const getChat = async (
+const getOrCreateChat = async (
   participants: Types.ObjectId[] | null
 ): Promise<IChat> => {
   if (!participants) {
@@ -10,7 +10,6 @@ const getChat = async (
   } 
  
   participants = participants.sort();
-
   const existingChat = await Chat.findOne({ participants }).exec();
   if (existingChat) {
     return existingChat;
@@ -68,7 +67,7 @@ const deleteChat = async (
 };
 
 export default {
-  getChat,
+  getOrCreateChat,
   contactChats,
   pushMessage,
   getChatById,

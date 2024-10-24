@@ -1,4 +1,3 @@
-import exp from "constants";
 import mongoose, { Schema } from "mongoose";
 import { IChat, IMessage } from "./model.interfaces";
 

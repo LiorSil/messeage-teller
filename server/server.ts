@@ -10,6 +10,7 @@ import contactRoute from "./routes/contactRoute";
 import authRoute from "./routes/authRoute";
 import userRoute from "./routes/userRoute";
 import chatRoute from "./routes/chatRoute";
+import notificationRoute from "./routes/notificationRoute";
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -24,6 +25,7 @@ app.get("/", (req: any, res: { send: (arg0: string) => void }) => {
   res.send("Hello World!");
 });
 
+app.use("/notifications", notificationRoute);
 app.use("/contacts", contactRoute);
 app.use("/auth", authRoute);
 app.use("/users", userRoute);

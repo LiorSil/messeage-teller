@@ -4,7 +4,13 @@ import contactService from "./contactService";
 import { sortSubContactsByLatestChats } from "../repos/sortSubContactsByMessages";
 import { Types } from "mongoose";
 
-const getChat = async ([fromId, toId]: Types.ObjectId[]): Promise<IChat> => {
+
+type PartialChat = Pick<IChat, "_id" | "participants" | "messages">;
+
+const getChat = async ([
+  fromId,
+  toId,
+]: Types.ObjectId[]): Promise<PartialChat> => {
   const participants = await contactService.getContactsByIds([fromId, toId]);
 
   if (!participants || participants.length === 0) {
@@ -12,9 +18,12 @@ const getChat = async ([fromId, toId]: Types.ObjectId[]): Promise<IChat> => {
       "Invalid contacts. Unable to create chat with undefined or empty contacts."
     );
   }
-
-  const chat = await chatRepo.getChat([fromId, toId]);
-  return chat;
+    const chat = await chatRepo.getOrCreateChat([fromId, toId]);
+  return {
+    _id: chat._id,
+    participants: chat.participants,
+    messages: chat.messages,
+  };
 };
 
 const createMessage = async (
