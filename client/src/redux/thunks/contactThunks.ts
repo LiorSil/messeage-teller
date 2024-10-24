@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
-import { Contact } from "../../types/contact";
+import { AckNotificationArgs, Contact } from "../../types/contact";
 
 
 /**
@@ -31,4 +31,28 @@ const fetchContact = createAsyncThunk<Contact, string>(
   }
 );
 
-export { fetchContact };
+
+const acknowledgeNotification = createAsyncThunk<void, AckNotificationArgs>(
+  "contact/acknowledgeNotification",
+  async ({ token, fromId, recipientId }, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        `${VITE_API_URL}/notifications/removeNotification`,
+        { fromId, recipientId },
+
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data; // If you need to return anything useful (can be `void` too).
+    } catch (error: any) {
+      return rejectWithValue(
+        error.response?.data || "Failed to acknowledge notification"
+      );
+    }
+  }
+);
+
+export { fetchContact, acknowledgeNotification };

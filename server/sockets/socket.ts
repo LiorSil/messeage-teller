@@ -1,6 +1,6 @@
 import { Server as HttpServer } from "http";
 import { Server } from "socket.io";
-import { handleConnection } from "./eventHandlers";
+import { handleConnection } from "./handlers/connectionHandler";
 
 export const initializeSocket = (server: HttpServer) => {
   const io = new Server(server, {

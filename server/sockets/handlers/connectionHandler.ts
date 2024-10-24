@@ -6,10 +6,11 @@ export const handleConnection = (socket: Socket, io: Server) => {
 
   if (contactId) {
     socket.join(contactId);
-    console.log(`Contact ${contactId} joined room ${contactId}`);
+    console.log(`Contact ${contactId} joined room `);
   }
 
   socket.on("send_message", (message) => handleSendMessage(message, io));
+  
 
   socket.on("disconnect", () => {
     console.log(`Contact ${contactId} disconnected`);

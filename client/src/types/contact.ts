@@ -22,5 +22,10 @@ export interface FetchContactByPhoneOrNameParams {
   token: string;
   phoneNumber: string;
 }
+export interface AckNotificationArgs {
+  token: string;
+  fromId: string;
+  recipientId: string;
+}
 
 

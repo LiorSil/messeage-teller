@@ -18,7 +18,7 @@ export const useSocket = () => {
     const socketInstance = io(SERVER_URL, {
       withCredentials: true, // Optional, if you need CORS support
       query: {
-        contactId, // Send the contact._id as a query parameter
+        contactId, // 
       },
     });
 
