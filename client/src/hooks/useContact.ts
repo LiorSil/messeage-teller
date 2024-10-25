@@ -13,17 +13,15 @@ const useContact = () => {
 
   const { loading, error } = useSelector((state: RootState) => state.contact);
 
-  const { sortedSubContacts, contact } = useSelector(
+  const {  contact } = useSelector(
     selectContactsWithLatestMessages
   );
 
-  const { _id } = contact || {};
-
   useEffect(() => {
-    if (token && !_id) {
+    if (token) {
       dispatch(fetchContact(token));
     }
-  }, [token, dispatch, _id]);
+  }, [token, dispatch]);
 
   return {
     contact,
@@ -31,7 +29,7 @@ const useContact = () => {
     loading,
     dispatch,
     token,
-    sortedSubContacts,
+    sortedSubContacts: contact?.subContacts,
   };
 };
 

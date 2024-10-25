@@ -22,8 +22,8 @@ const removeNotification = async (req: Request, res: Response) => {
       fromId,
       recipientId
     );
-    if(!notification) {
-    res.status(200).json(notification);
+    if (notification) {
+      res.status(200).json(notification);
     } else {
       res.status(404).json({ message: "Notification not found" });
     }

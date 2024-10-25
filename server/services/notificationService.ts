@@ -11,7 +11,10 @@ const pullRecipient = async (
   fromId: Types.ObjectId,
   recipientId: Types.ObjectId | Types.ObjectId[]
 ): Promise<INotification | null> => {
-  const notification = notificationRepo.pullRecipient(fromId, recipientId);
+  const notification = await notificationRepo.pullRecipient(
+    fromId,
+    recipientId
+  );
   if (!notification) console.warn("Notification not found");
   return notification;
 };

@@ -11,8 +11,8 @@ import axios from "axios";
  * @returns
  */
 
-const getChatByParticipantsIds = createAsyncThunk<Chat[], string>(
-  "chat/getChatByParticipantsIds",
+const getContactChats = createAsyncThunk<Chat[], string>(
+  "chat/getContactChats",
   async (participantsIds) => {
     const response = await axios.get(
       `${VITE_API_URL}/chats/chatsByParticipants`,
@@ -26,4 +26,4 @@ const getChatByParticipantsIds = createAsyncThunk<Chat[], string>(
   }
 );
 
-export { getChatByParticipantsIds };
+export { getContactChats };

@@ -2,7 +2,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SubContact } from "../../types/subContact";
 
-import { getChatByParticipantsIds } from "../thunks/chatThunks";
+import { getContactChats } from "../thunks/chatThunks";
 import { Chat } from "../../types/chat";
 import { getMessagesForSubContact } from "../selectors/chatSelector";
 import { Message } from "../../types/message";
@@ -36,7 +36,7 @@ const chatSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getChatByParticipantsIds.fulfilled, (state, action) => {
+    builder.addCase(getContactChats.fulfilled, (state, action) => {
       state.chats = action.payload;
       const messages = getMessagesForSubContact(
         state.chats,
@@ -44,8 +44,8 @@ const chatSlice = createSlice({
       );
       state.messages = messages || [];
     });
-    builder.addCase(getChatByParticipantsIds.rejected, () => {});
-    builder.addCase(getChatByParticipantsIds.pending, () => {});
+    builder.addCase(getContactChats.rejected, () => {});
+    builder.addCase(getContactChats.pending, () => {});
   },
 });
 

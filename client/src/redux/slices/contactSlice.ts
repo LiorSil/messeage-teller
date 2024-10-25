@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ContactState } from "../states/contactState";
 
 import { Contact } from "../../types/contact";
-import { fetchContact } from "../thunks/contactThunks";
+import { fetchContact, acknowledgeNotification } from "../thunks/contactThunks";
 
 const initialState: ContactState = {
   contact: {
