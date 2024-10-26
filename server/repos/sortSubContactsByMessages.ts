@@ -37,17 +37,19 @@ export const sortSubContactsByLatestChats = async (
   });
 
   // step 4: update the order of contactId's subContacts based on the last message time
-  contact.subContacts = processedParticipants.map(
-    (participant) => participant.participantId
-  );
+  contact.subContacts = processedParticipants
+    .sort((a, b) => {
+      return b.lastMessageTime.getTime() - a.lastMessageTime.getTime();
+    })
+    .map((participant) => participant.participantId);
 
-  // Step 5: Save the contact
+    // Step 5: Save the contact
   const success = await contactRepo.updateContact(contactId, contact);
   if (!success) {
     throw new Error(`Failed to update contact with ID ${contactId}`);
   } 
 
-  return processedParticipants;
+    return processedParticipants;
 };
 const getLastMessageTime = (chat: IChat): IMessage | null => {
   return chat.messages.reduce((latest, current) => {

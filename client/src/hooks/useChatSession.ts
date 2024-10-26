@@ -9,7 +9,8 @@ import { useSocketListener } from "./useSocketListener";
 import { useChatInput } from "./useChatInput";
 import useContact from "./useContact.ts";
 import { useCallback } from "react";
-import useModifySubContacts from "./useModifySubContacts.ts";
+import { fetchContact } from "../redux/thunks/contactThunks.ts";
+import Cookies from "universal-cookie";
 
 export const useChatSession = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -22,7 +23,8 @@ export const useChatSession = () => {
   const { newMessages, createMessage } = useMessages(messages);
   const { createNotification } = useNotification();
   const { inputValue, handleInputChange, clearInput } = useChatInput();
-  const { handleAddSubContact } = useModifySubContacts();
+  const cookies = new Cookies();
+  const token = cookies.get("token");
 
   // Handle receiving messages from the server
   const receiveMessage = useCallback(
@@ -30,7 +32,7 @@ export const useChatSession = () => {
       console.log("Received message:", message);
 
       const isFromSelectedChat = message.fromId === selectedChat?._id;
-      const isFromSubContact = contact.subContacts.some(
+      const isFromSubContact = contact?.subContacts.some(
         (subContact) => subContact._id === message.fromId
       );
 
@@ -40,9 +42,11 @@ export const useChatSession = () => {
 
       if (isFromSubContact) {
         createNotification(message, contact);
+      } else {
+        dispatch(fetchContact(token));
       }
     },
-    [selectedChat, createMessage, createNotification, contact, handleAddSubContact]
+    [selectedChat, createMessage, createNotification, contact, dispatch, token]
   );
 
   // Manage socket listeners for message receiving

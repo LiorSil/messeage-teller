@@ -2,8 +2,8 @@ import chatRepo from "../repos/chatRepo";
 import { IChat, IMessage } from "../models/model.interfaces";
 import contactService from "./contactService";
 import { sortSubContactsByLatestChats } from "../repos/sortSubContactsByMessages";
+import notificationRepo from "../repos/notificationRepo";
 import { Types } from "mongoose";
-
 
 type PartialChat = Pick<IChat, "_id" | "participants" | "messages">;
 
@@ -18,7 +18,7 @@ const getChat = async ([
       "Invalid contacts. Unable to create chat with undefined or empty contacts."
     );
   }
-    const chat = await chatRepo.getOrCreateChat([fromId, toId]);
+  const chat = await chatRepo.getOrCreateChat([fromId, toId]);
   return {
     _id: chat._id,
     participants: chat.participants,
@@ -33,6 +33,11 @@ const createMessage = async (
   const newMessage = await chatRepo.pushMessage(chatId, messageData);
   await sortSubContactsByLatestChats(messageData.fromId?.toString() as any);
   await sortSubContactsByLatestChats(messageData.toId?.toString() as any);
+  //add notification logic here
+  await notificationRepo.createOrUpdateNotification(
+    messageData.fromId as any,
+    messageData.toId as any
+  );
 
   return newMessage;
 };

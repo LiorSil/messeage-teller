@@ -37,6 +37,19 @@ const pullRecipient = async (
   ).exec();
   return notification;
 };
+export const findNotificationsForRecipient = async (recipientId: Types.ObjectId) => {
 
-export default { createOrUpdateNotification, pullRecipient };
+    // Query notifications where the recipient is in the recipients array
+    const notifications = await Notification.find({
+      recipients: recipientId,
+    });
+
+    return notifications;
+  } 
+
+export default {
+  createOrUpdateNotification,
+  pullRecipient,
+  findNotificationsForRecipient,
+};
 

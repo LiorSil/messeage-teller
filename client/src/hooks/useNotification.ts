@@ -8,7 +8,6 @@ export const useNotification = () => {
   const dispatch = useDispatch();
 
   const createNotification = (message: Message, contact: Contact) => {
-    console.log("contact", contact);
     if (!contact.subContacts) return;
 
     const updatedSubContacts = contact.subContacts.map(

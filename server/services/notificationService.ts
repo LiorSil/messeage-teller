@@ -18,5 +18,14 @@ const pullRecipient = async (
   if (!notification) console.warn("Notification not found");
   return notification;
 };
+const getActiveNotifications = async (
+  recipientId: Types.ObjectId
+): Promise<INotification[]> => {
+  const notifications = await notificationRepo.findNotificationsForRecipient(
+    recipientId
+  );
+  console.log("Notifications found: ", notifications);
+  return notifications;
+};
 
-export default { pushNotification, pullRecipient };
+export default { pushNotification, pullRecipient, getActiveNotifications };

@@ -32,4 +32,6 @@ const removeNotification = async (req: Request, res: Response) => {
   }
 };
 
+
+
 export default { pushNotification, removeNotification };
