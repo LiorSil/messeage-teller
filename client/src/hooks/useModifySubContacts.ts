@@ -17,12 +17,12 @@ const useModifySubContacts = () => {
   const cookies = useMemo(() => new Cookies(), []);
   const token = cookies.get("token");
 
-  const handleAddSubContact = (newSubContactNumber: string) => {
+  const handleAddSubContact = (contactIdOrNumber: string) => {
     axios
       .put(
         `${VITE_API_URL}/contacts/addSubContact`,
         {
-          phoneNumber: newSubContactNumber,
+          contactIdOrNumber: contactIdOrNumber,
         },
         {
           headers: {

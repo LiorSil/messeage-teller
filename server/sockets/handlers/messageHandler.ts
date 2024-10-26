@@ -25,7 +25,6 @@ export const handleSendMessage = debounce(
         console.warn("Failed to retrieve contacts");
         return;
       }
-      await updateContacts(contacts[0], contacts[1]);
       await notifyRecipients(contacts[0]._id, contacts[1]._id);
       io.to(message.toId.toString()).emit("receive_message", message);
     } catch (error) {
@@ -66,26 +65,7 @@ const getContacts = async (
   return contacts as PartialContact[];
 };
 
-const updateContacts = async (
-  contact1: PartialContact | null,
-  contact2: PartialContact | null
-) => {
-  if (!contact1 || !contact2) return;
-  const updates = [
-    updateContactIfNeeded(contact1, contact2._id),
-    updateContactIfNeeded(contact2, contact1._id),
-  ].filter(Boolean); // Remove `null` entries
-  await Promise.all(updates);
-};
 
-const updateContactIfNeeded = (
-  contact: PartialContact,
-  subContactId: Types.ObjectId
-) => {
-  if (contact.subContacts.includes(subContactId)) return null;
-  contact.subContacts.push(subContactId);
-  return contactService.updateContact(contact._id, contact);
-};
 
 const notifyRecipients = async (fromId: Types.ObjectId, recipient: Types.ObjectId) => {
   const notification = await notificationService.pushNotification(fromId, recipient);

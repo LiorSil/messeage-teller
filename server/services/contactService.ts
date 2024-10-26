@@ -9,7 +9,7 @@ const createContact = async (
 };
 
 const getContactById = async (
-  contactId: Types.ObjectId 
+  contactId: Types.ObjectId
 ): Promise<IContact | null> => {
   const contact = await contactRepo.getContactById(contactId);
 
@@ -55,7 +55,7 @@ const updateContact = async (
   contactId: Types.ObjectId | string,
   updateData: Partial<IContact>
 ): Promise<IContact | null> => {
-  
+  console.log(`updateData: ${updateData}`);
   const updateContact = await contactRepo.updateContact(contactId, updateData);
   return updateContact;
 };
@@ -82,7 +82,6 @@ const getContactsByIds = async (
   // Otherwise, return the valid contacts
   return contacts as IContact[];
 };
-
 
 export default {
   createContact,

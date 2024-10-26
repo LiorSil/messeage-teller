@@ -21,7 +21,6 @@ interface SelectorResult {
 // Select chats and contacts from Redux state
 const selectChats = (state: RootState) => state.chat.chats;
 const selectContact = (state: RootState) => state.contact.contact;
-
 const getLatestMessage = (chat: Chat): Message => {
   return chat.messages[chat.messages.length - 1];
 };

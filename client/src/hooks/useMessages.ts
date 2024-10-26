@@ -9,9 +9,9 @@ export const useMessages = (messages: Message[]) => {
     setNewMessages(messages);
   }, [messages]);
 
-  const addMessage = useCallback((message: Message) => {
+  const createMessage = useCallback((message: Message) => {
     setNewMessages((prevMessages) => [...prevMessages, message]);
   }, []);
 
-  return { newMessages, addMessage };
+  return { newMessages, createMessage };
 };

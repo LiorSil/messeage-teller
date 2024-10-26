@@ -6,7 +6,6 @@ import { useChatManager } from "../../../hooks/useChatManager";
 
 const ChatList = () => {
   const { error, loading, sortedSubContacts } = useContact();
-
   const { handleChatSelection } = useChatManager();
 
   if (loading) <Loading />;

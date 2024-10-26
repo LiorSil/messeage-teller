@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { loginUser, registerUser } from "../thunks/authThunks";
 import Cookies from "universal-cookie";
-import { fetchContact } from "./contactSlice";
 
 const cookies = new Cookies();
 
@@ -35,8 +34,6 @@ const authSlice = createSlice({
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
       const { token } = action.payload;
-      //dispatch fetchContact(token);
-
       cookies.set("token", token, {
         path: "/",
         expires: new Date(Date.now() + 1000 * 3600),

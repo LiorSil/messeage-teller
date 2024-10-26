@@ -40,7 +40,7 @@ const useLoginForm = () => {
     } else {
       navigate("/login");
     }
-  }, [token, navigate, cookies]);
+  }, [token, navigate, cookies, dispatch]);
 
   return {
     register,

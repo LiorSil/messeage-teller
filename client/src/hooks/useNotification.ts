@@ -7,10 +7,8 @@ import { SubContact } from "../types/subContact";
 export const useNotification = () => {
   const dispatch = useDispatch();
 
-  const handleIncomingMessageNotification = (
-    message: Message,
-    contact: Contact
-  ) => {
+  const createNotification = (message: Message, contact: Contact) => {
+    console.log("contact", contact);
     if (!contact.subContacts) return;
 
     const updatedSubContacts = contact.subContacts.map(
@@ -24,5 +22,5 @@ export const useNotification = () => {
     dispatch(updateContact(updatedContact));
   };
 
-  return { handleIncomingMessageNotification };
+  return { createNotification };
 };

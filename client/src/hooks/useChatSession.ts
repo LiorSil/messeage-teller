@@ -1,38 +1,54 @@
 import { useSocket } from "./useSocket";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/store.ts";
 import { RootState } from "../redux/store";
 import { Message } from "../types/message";
 import { useMessages } from "./useMessages.ts";
 import { useNotification } from "./useNotification";
 import { useSocketListener } from "./useSocketListener";
 import { useChatInput } from "./useChatInput";
+import useContact from "./useContact.ts";
+import { useCallback } from "react";
+import useModifySubContacts from "./useModifySubContacts.ts";
 
 export const useChatSession = () => {
+  const dispatch: AppDispatch = useDispatch();
   const socket = useSocket();
   const messages = useSelector((state: RootState) => state.chat.messages);
   const selectedChat = useSelector(
     (state: RootState) => state.chat.selectedChat
   );
-  const contact = useSelector((state: RootState) => state.contact.contact);
-
-  const { newMessages, addMessage } = useMessages(messages);
-  const { handleIncomingMessageNotification } =
-    useNotification();
+  const { contact } = useContact();
+  const { newMessages, createMessage } = useMessages(messages);
+  const { createNotification } = useNotification();
   const { inputValue, handleInputChange, clearInput } = useChatInput();
+  const { handleAddSubContact } = useModifySubContacts();
 
   // Handle receiving messages from the server
-  const handleMessageReceive = (message: Message) => {
-    console.log("Received message", message);
-    if (message.fromId === selectedChat?._id) {
-      addMessage(message);
-    }
-    handleIncomingMessageNotification(message, contact);
-  };
+  const receiveMessage = useCallback(
+    (message: Message) => {
+      console.log("Received message:", message);
+
+      const isFromSelectedChat = message.fromId === selectedChat?._id;
+      const isFromSubContact = contact.subContacts.some(
+        (subContact) => subContact._id === message.fromId
+      );
+
+      if (isFromSelectedChat) {
+        createMessage(message);
+      }
+
+      if (isFromSubContact) {
+        createNotification(message, contact);
+      }
+    },
+    [selectedChat, createMessage, createNotification, contact, handleAddSubContact]
+  );
 
   // Manage socket listeners for message receiving
-  useSocketListener(socket, handleMessageReceive);
+  useSocketListener(socket, receiveMessage);
 
-  const sendMessage = () => {
+  const sendMessage = useCallback(() => {
     if (socket && inputValue.trim() && contact?._id && selectedChat?._id) {
       const message: Message = {
         fromId: contact._id,
@@ -42,12 +58,12 @@ export const useChatSession = () => {
       };
 
       socket.emit("send_message", message);
-      addMessage(message);
+      createMessage(message);
       clearInput();
     } else {
       console.error("contactId or selectedChatId is not valid.");
     }
-  };
+  }, [socket, inputValue, contact, selectedChat, createMessage, clearInput]);
 
   return {
     newMessages,

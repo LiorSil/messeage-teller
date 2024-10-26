@@ -12,10 +12,7 @@ const useContact = () => {
   const dispatch: AppDispatch = useDispatch();
 
   const { loading, error } = useSelector((state: RootState) => state.contact);
-
-  const {  contact } = useSelector(
-    selectContactsWithLatestMessages
-  );
+  const { contact } = useSelector(selectContactsWithLatestMessages);
 
   useEffect(() => {
     if (token) {

@@ -1,4 +1,4 @@
-import { IChat, IContact } from "../models/model.interfaces";
+import { IChat } from "../models/model.interfaces";
 import { IMessage } from "../models/model.interfaces";
 import contactRepo from "./contactRepo";
 import chatRepo from "./chatRepo";
@@ -36,17 +36,12 @@ export const sortSubContactsByLatestChats = async (
     }));
   });
 
-  //Step 4: Debugging: Check the final processed participants
-  // console.log(
-  //   "Processed participants with last message time:",
-  //   processedParticipants
-  // );
-  // step 5: update the order of contactId's subContacts based on the last message time
+  // step 4: update the order of contactId's subContacts based on the last message time
   contact.subContacts = processedParticipants.map(
     (participant) => participant.participantId
   );
 
-  // Step 6: Save the contact
+  // Step 5: Save the contact
   const success = await contactRepo.updateContact(contactId, contact);
   if (!success) {
     throw new Error(`Failed to update contact with ID ${contactId}`);

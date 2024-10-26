@@ -1,5 +1,5 @@
 import chatRepo from "../repos/chatRepo";
-import { IChat, IContact, IMessage } from "../models/model.interfaces";
+import { IChat, IMessage } from "../models/model.interfaces";
 import contactService from "./contactService";
 import { sortSubContactsByLatestChats } from "../repos/sortSubContactsByMessages";
 import { Types } from "mongoose";
