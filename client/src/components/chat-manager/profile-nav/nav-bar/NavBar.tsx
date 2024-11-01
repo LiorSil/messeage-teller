@@ -5,7 +5,7 @@ import DrawerToggleButton from "./DrawerToggleButton";
 import Backdrop from "./Backdrop";
 import Drawer from "./Drawer";
 import DrawerMenuLink from "./DrawerMenuLink";
-import AddContact from "../add-contact/AddContact"; // Import your components
+import AddContact from "../add-contact/AddContact.tsx"; // Import your components
 import SignOut from "../sign-out/SignOut";
 import Profile from "../profile/Profile";
 

@@ -24,7 +24,6 @@ const getActiveNotifications = async (
   const notifications = await notificationRepo.findNotificationsForRecipient(
     recipientId
   );
-  console.log("Notifications found: ", notifications);
   return notifications;
 };
 

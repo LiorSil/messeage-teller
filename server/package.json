@@ -1,10 +1,10 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "server.ts",
+  "main": "src/server.ts",
   "scripts": {
     "start": "tsc && node dist/server.js",
-    "dev": "ts-node-dev --respawn --transpileOnly server.ts",
+    "dev": "nodemon --watch src --exec ts-node --transpileOnly src/server.ts --respawn",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc"
   },

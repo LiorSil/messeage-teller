@@ -8,7 +8,7 @@
     @apply block text-base font-medium text-app-palette-muted-turquoise--60 mb-2
   }
   .app-form-input{
-    @apply shadow-sm rounded-md w-full px-3 py-2 border-2 border-app-palette-cool-gray--30 focus:outline-none focus:ring-offset-app-palette-muted-turquoise--60 focus:border-app-palette-muted-turquoise--60 text-app-palette-muted-turquoise--60
+  @apply shadow-sm rounded-md w-full px-3 py-2 border-2 border-app-palette-cool-gray--30 focus:outline-none focus:ring-offset-app-palette-muted-turquoise--60 focus:border-app-palette-muted-turquoise--60 text-app-palette-muted-turquoise--60
   }
 
 }

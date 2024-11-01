@@ -14,7 +14,7 @@ const getOrCreateChat = async (
   if (existingChat) {
     return existingChat;
   } else {
-console.log("creating new chat");
+console.log("creating new chat  sdsd");
 const newChat = new Chat({
   participants: participants,
   messages: [],

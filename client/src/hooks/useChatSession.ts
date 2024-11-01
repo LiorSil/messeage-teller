@@ -25,12 +25,12 @@ export const useChatSession = () => {
   const { inputValue, handleInputChange, clearInput } = useChatInput();
   const cookies = new Cookies();
   const token = cookies.get("token");
-
+  
   // Handle receiving messages from the server
   const receiveMessage = useCallback(
     (message: Message) => {
       console.log("Received message:", message);
-
+      
       const isFromSelectedChat = message.fromId === selectedChat?._id;
       const isFromSubContact = contact?.subContacts.some(
         (subContact) => subContact._id === message.fromId

@@ -8,7 +8,7 @@ import {
   getUserByPhoneNumber,
 } from "../repos/userRepo";
 import { IUser, IContact } from "../models/model.interfaces";
-import contactService from "../services/contactService";
+import contactService from "./contactService";
 
 const registerUser = async (
   email: string,

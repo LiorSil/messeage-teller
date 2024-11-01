@@ -7,23 +7,23 @@ import useFindContact from "../../../../hooks/useFindContact";
 import useModifySubContacts from "../../../../hooks/useModifySubContacts";
 import NoticeComponent from "../../../../shared/NoticeMessage";
 
-interface Contact {
-  id: number;
-  name: string;
-  phoneNumber: string;
-}
-
 const isContact = (obj: any): obj is Contact => {
-  return (
-    typeof obj === "object" &&
-    obj !== null &&
-    typeof obj.name === "string" &&
-    typeof obj.phoneNumber === "string"
-  );
+    return (
+        typeof obj === "object" &&
+        obj !== null &&
+        typeof obj.name === "string" &&
+        typeof obj.phoneNumber === "string"
+    );
 };
 
+interface Contact {
+    id: number;
+    name: string;
+    phoneNumber: string;
+}
+
 const AddContact = () => {
-  const [query, setQuery] = useState("");
+    const [query, setQuery] = useState("");
 
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
@@ -99,3 +99,8 @@ const AddContact = () => {
 };
 
 export default AddContact;
+
+
+
+
+
