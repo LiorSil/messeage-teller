@@ -28,6 +28,7 @@ const contactSchema = new Schema<IContact>(
             {
                 subContactId: {type: Types.ObjectId, ref: "Contact", required: true}, // Reference to Contact
                 selected: {type: Boolean, default: false},
+                lastMessageTime: {type: Date, default: new Date(0)},
             }
         ],
     },

@@ -14,32 +14,10 @@ const getContactById = async (
     return await contactRepo.getContactById(contactId);
 };
 
-const getContactByPhoneNumber = async (
-    phoneNumber: string
-): Promise<IContact | null> => {
-    return await contactRepo.getContactByPhoneNumber(phoneNumber);
-};
-
-const getContactsByPhoneNumber = async (
-    phoneNumbers: string[]
-): Promise<IContact[] | null> => {
-    const contacts = await Promise.all(
-        phoneNumbers.map(async (phoneNumber) => {
-            return await contactRepo.getContactByPhoneNumber(phoneNumber);
-        })
-    );
-
-    // If any contact is null, return null for the entire operation
-    if (contacts.some((contact) => contact === null)) {
-        return null;
-    }
-    // Otherwise, return the valid contacts
-    return contacts as IContact[];
-};
 
 
-const getContactsByName = async (query: string): Promise<IContact[]> => {
-    return await contactRepo.findContacts(query);
+const getContactsByQuery = async (query: string): Promise<IContact[]> => {
+    return await contactRepo.getContactsByQuery(query);
 };
 
 const getContacts = async (): Promise<IContact[]> => {
@@ -85,9 +63,8 @@ const getContactsByIds = async (
 export default {
     createContact,
     getContactById,
-    getContactByPhoneNumber,
-    getContactsByPhoneNumber,
-  getContactsByName,
+
+    getContactsByQuery,
     getContacts,
     updateContact,
     deleteContact,

@@ -30,7 +30,6 @@ export const useChatManager = () => {
     if (selectedSubContact && contact) {
       await dispatch(
         getSelectedChatMessages({
-          contactId: contact._id,
           subContact: selectedSubContact,
         }),
       );

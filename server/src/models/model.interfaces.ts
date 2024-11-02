@@ -18,6 +18,7 @@ interface IChat extends Document {
 interface ISubContact {
   subContactId: Types.ObjectId;
   selected: boolean;
+  lastMessageTime: Date;
 }
 
 interface IContact extends Document {

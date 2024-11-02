@@ -1,6 +1,7 @@
 import Contact from "../models/contactModel";
 import {IContact} from "../models/model.interfaces";
 import {Types} from "mongoose";
+import {phoneNumberSchema} from "./validation";
 
 const createContact = async (
     contactData: Partial<IContact>
@@ -28,19 +29,24 @@ const getContactsByName = async (name: string): Promise<IContact[]> => {
     return await Contact.find({name: {$regex: name, $options: "i"}}).exec();
 };
 
-const findContacts = async (query: string): Promise<IContact[]> => {
-    return await Contact.find({
-        $or: [
-            {name: {$regex: query, $options: "i"}},
-            {phoneNumber: {$regex: query, $options: "i"}},
-        ],
-    }).exec();
+
+const getContactsByQuery = async (query: string): Promise<IContact[]> => {
+    const isPhoneNumber = await phoneNumberSchema
+        .validate(query)
+        .then(() => true)
+        .catch(() => false);
+
+    const searchField = isPhoneNumber
+        ? {phoneNumber: {$regex: query, $options: "i"}}
+        : {name: {$regex: query, $options: "i"}};
+    return await Contact.find(searchField).exec();
+
 };
+
 
 const getContacts = async (): Promise<IContact[]> => {
     return await Contact.find().exec();
 };
-
 const updateContact = async (
     contactId: Types.ObjectId | string,
     updateData: Partial<IContact>
@@ -75,9 +81,9 @@ export default {
     getContactById,
     getContactByPhoneNumber,
     getContactsByName,
-    findContacts,
     getContacts,
     updateContact,
     deleteContact,
     addSubContact,
+    getContactsByQuery,
 };

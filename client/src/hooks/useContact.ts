@@ -19,8 +19,6 @@ const useContact = () => {
     error,
     loading,
     dispatch,
-
-    sortedSubContacts: contact?.subContacts,
   };
 };
 

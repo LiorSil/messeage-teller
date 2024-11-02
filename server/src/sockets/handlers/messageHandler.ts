@@ -24,7 +24,7 @@ const getChat = async (
     contactAId: Types.ObjectId,
     contactBId: Types.ObjectId
 ): Promise<IChat> => {
-    return await chatService.getChat(contactAId, contactBId);
+    return await chatService.getOrCreateChat(contactAId, contactBId);
 };
 
 const notifyRecipient = async (fromId: Types.ObjectId, recipient: Types.ObjectId) => {

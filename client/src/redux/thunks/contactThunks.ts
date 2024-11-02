@@ -8,13 +8,13 @@ const fetchContact = createAsyncThunk<Contact, void, { rejectValue: any }>(
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await axiosInstance.get<Contact>("/contacts");
-
       return data;
     } catch (error) {
       return handleAxiosError(error, rejectWithValue);
     }
   },
 );
+
 const acknowledgeNotification = createAsyncThunk<
   void,
   AckNotificationArgs,

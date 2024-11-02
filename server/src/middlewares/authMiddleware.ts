@@ -22,9 +22,8 @@ const authMiddleware = async (
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
-
     if (decoded) {
-      req.body.contact = await contactService.getContactByPhoneNumber(decoded.phoneNumber);
+      [req.body.contact] = await contactService.getContactsByQuery(decoded.phoneNumber)
       next();
     }
   } catch (err) {

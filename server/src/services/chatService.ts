@@ -4,7 +4,7 @@ import {sortSubContactsByLatestChats} from "../repos/sortSubContactsByMessages";
 import notificationRepo from "../repos/notificationRepo";
 import {Types} from "mongoose";
 
-const getChat = async (
+const getOrCreateChat = async (
     contactAId: Types.ObjectId,
     contactBId: Types.ObjectId): Promise<IChat> => {
     return await chatRepo.getOrCreateChat([contactAId, contactBId]);
@@ -26,10 +26,5 @@ const createMessage = async (
     return newMessage;
 };
 
-const getChatByParticipantsIds = async (
-    participants: Types.ObjectId[]
-): Promise<IChat | null> => {
-    return await chatRepo.getChat(participants);
-};
 
-export default {getChat, createMessage, getChatByParticipantsIds};
+export default { getOrCreateChat, createMessage,};

@@ -8,12 +8,11 @@ const getOrCreateChat = async (
     if (!participants) {
         throw new Error("Participants are required to create a chat");
     }
-
-    participants = participants.sort();
-    const existingChat = await Chat.findOne({participants}).exec();
+    const existingChat = await getChat(participants);
     if (existingChat) {
         return existingChat;
     } else {
+        console.log("Creating new chat");
         const newChat = new Chat({
             participants: participants,
             messages: [],
@@ -23,17 +22,6 @@ const getOrCreateChat = async (
     }
 };
 
-const contactChats = async (
-    contactId: Types.ObjectId | string
-): Promise<IChat[]> => {
-    return await Chat.find({participants: contactId}).exec();
-}
-
-const getChatById = async (
-    chatId: Types.ObjectId | string
-): Promise<IChat | null> => {
-    return await Chat.findById(chatId).exec();
-};
 
 const pushMessage = async (
     chatId: Types.ObjectId | string,
@@ -51,7 +39,10 @@ const getChats = async (): Promise<IChat[] | IChat> => {
 };
 
 const getChat = async (participants: Types.ObjectId[]): Promise<IChat | null> => {
-    return await Chat.findOne({ participants: { $all: participants } }).exec();
+    return await Chat.findOne({
+        participants: {$all: participants},
+        $expr: {$eq: [{$size: "$participants"}, participants.length]},
+    }).exec();
 };
 
 const updateChat = async (
@@ -67,13 +58,23 @@ const deleteChat = async (
     return await Chat.findByIdAndDelete(chatId).exec();
 };
 
+const getChatsByParticipant = async (participantId: Types.ObjectId): Promise<IChat[]> => {
+    try {
+        return await Chat.find({
+            participants: {$in: [participantId]}
+        }).exec();
+    } catch (error) {
+        console.error("Error retrieving chats by participant:", error);
+        throw new Error("Failed to retrieve chats.");
+    }
+};
+
 export default {
     getOrCreateChat,
-    contactChats,
     pushMessage,
-    getChatById,
     getChats,
     getChat,
     updateChat,
     deleteChat,
+    getChatsByParticipant
 };
