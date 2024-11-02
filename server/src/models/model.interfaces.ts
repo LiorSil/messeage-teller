@@ -15,15 +15,17 @@ interface IChat extends Document {
   messages: IMessage[];
   notification: Types.ObjectId[];
 }
-type PartialChat = Pick<IChat, "_id" | "participants" | "messages">;
-
+interface ISubContact {
+  subContactId: Types.ObjectId;
+  selected: boolean;
+}
 
 interface IContact extends Document {
   _id: Types.ObjectId;
   name: string;
   avatar: string;
   phoneNumber: string;
-  subContacts: Types.ObjectId[];
+  subContacts: ISubContact[];
   status?: string;
   createdAt?: string;
   chats: Types.ObjectId[];
@@ -42,4 +44,4 @@ interface INotification extends Document {
 }
 
 
-export { IMessage, IChat, PartialChat , IContact,  IUser, INotification };
+export { IMessage, IChat,  ISubContact, IContact,  IUser, INotification };

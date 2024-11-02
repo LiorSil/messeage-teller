@@ -8,22 +8,22 @@ import useModifySubContacts from "../../../../hooks/useModifySubContacts";
 import NoticeComponent from "../../../../shared/NoticeMessage";
 
 const isContact = (obj: any): obj is Contact => {
-    return (
-        typeof obj === "object" &&
-        obj !== null &&
-        typeof obj.name === "string" &&
-        typeof obj.phoneNumber === "string"
-    );
+  return (
+    typeof obj === "object" &&
+    obj !== null &&
+    typeof obj.name === "string" &&
+    typeof obj.phoneNumber === "string"
+  );
 };
 
 interface Contact {
-    id: number;
-    name: string;
-    phoneNumber: string;
+  id: number;
+  name: string;
+  phoneNumber: string;
 }
 
 const AddContact = () => {
-    const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("");
 
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
@@ -44,10 +44,10 @@ const AddContact = () => {
         handleFetchContactByPhoneOrName(value);
       }
     },
-    [handleClearAddContactSuccess, handleFetchContactByPhoneOrName]
+    [handleClearAddContactSuccess, handleFetchContactByPhoneOrName],
   );
-  const handleItemClick = useCallback((phoneNumber: string) => {
-    setSelectedItem((prev) => (prev === phoneNumber ? null : phoneNumber));
+  const handleItemClick = useCallback((subContactId: string) => {
+    setSelectedItem((prev) => (prev === subContactId ? null : subContactId));
   }, []);
 
   const validContacts = useMemo(() => {
@@ -72,6 +72,7 @@ const AddContact = () => {
         <ComboboxDropdown
           isVisible={query.length >= 5}
           onAddContact={() => {
+            console.log("selectedItem", selectedItem);
             if (selectedItem && subContacts.length > 0) {
               handleAddSubContact(selectedItem);
             } else {
@@ -87,8 +88,8 @@ const AddContact = () => {
               <ComboboxItem
                 key={index}
                 text={item.name}
-                isSelected={item.phoneNumber === selectedItem}
-                onClick={() => handleItemClick(item.phoneNumber)}
+                isSelected={item._id === selectedItem}
+                onClick={() => handleItemClick(item._id)}
               />
             );
           })}
@@ -99,8 +100,3 @@ const AddContact = () => {
 };
 
 export default AddContact;
-
-
-
-
-

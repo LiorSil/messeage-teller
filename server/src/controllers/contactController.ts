@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import contactService from "../services/contactService";
 import ns from "../services/notificationService";
 import { Types } from "mongoose";
+import {ISubContact} from "../models/model.interfaces";
 
 
 const handleError = (res: Response, error: any) =>
@@ -18,20 +19,18 @@ const createContact = async (req: Request, res: Response) => {
 
 const getContact = async (req: Request, res: Response) => {
   try {
-    const { phoneNumber } = req.body.contact;
-    const contact = await contactService.getContactByPhoneNumber(phoneNumber);
-
-    if (!contact) return res.status(404).json({ message: "Contact not found" });
-
+    const { contact } = await req.body;
     const notifications = await ns.getActiveNotifications(contact._id);
+
     const notificationFromIds = new Set(
       notifications.map(({ fromId }) => fromId.toString())
     );
     const subContacts = await Promise.all(
-      contact.subContacts.map((subContactId) =>
-        fetchSubContact(subContactId, notificationFromIds)
+      contact.subContacts.map((subContact: ISubContact) =>
+        fetchSubContact(subContact.subContactId, notificationFromIds)
       )
     );
+    console.log("subContacts",  subContacts);
 
     res.status(200).json({
       _id: contact._id,
@@ -82,11 +81,12 @@ const findContactsByQuery = async (req: Request, res: Response) => {
   try {
     const { query } = req.params;
     const { phoneNumber } = req.body.contact;
+    console.log("query", query);
 
     const contact = await contactService.getContactByPhoneNumber(phoneNumber);
     if (!contact) return res.status(404).json({ message: "Contact not found" });
 
-    let contacts = await contactService.findContacts(query);
+    let contacts = await contactService.getContactsByName(query);
     const { subContacts: ownedContacts } = contact;
 
     contacts = contacts.filter(
@@ -94,12 +94,11 @@ const findContactsByQuery = async (req: Request, res: Response) => {
         !ownedContacts.some((sc) => sc.equals(c._id)) &&
         c.phoneNumber !== phoneNumber // Filter out self-contact
     );
-
-    const safeContacts = contacts.map(({ name, phoneNumber }, index) => ({
-      _id: index,
+    const safeContacts = contacts.map(({ _id, name, phoneNumber,avatar }) => ({
+      _id,
       name,
       phoneNumber,
-      avatar: "",
+      avatar,
       lastMessage: "",
     }));
 
@@ -111,27 +110,13 @@ const findContactsByQuery = async (req: Request, res: Response) => {
 
 const addSubContact = async (req: Request, res: Response) => {
   try {
-    const { phoneNumber: contactPhoneNumber } = req.body.contact;
-    const { contactIdOrNumber } = req.body;
+    const { contact } = req.body.contact;
+    const { subContactId } = req.body;
 
-    const contact = await contactService.getContactByPhoneNumber(
-      contactPhoneNumber
-    );
-    if (!contact) return res.status(404).json({ message: "Contact not found" });
+    await contactService.getContactById(subContactId);
+    const success = await contactService.addSubContact(contact._id, subContactId);
 
-    let subContact =
-      (await contactService.getContactByPhoneNumber(contactIdOrNumber)) ||
-      (await contactService.getContactById(contactIdOrNumber));
-
-    if (!subContact)
-      return res.status(404).json({ message: "Sub-contact not found" });
-
-    if (!contact.subContacts.some((sc) => sc.equals(subContact._id))) {
-      contact.subContacts.push(subContact._id);
-      await contactService.updateContact(contact._id, contact);
-    }
-
-    res.status(200).json(contact);
+    res.status(200).json(success);
   } catch (error) {
     handleError(res, error);
   }

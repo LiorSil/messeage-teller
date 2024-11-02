@@ -46,8 +46,12 @@ const pushMessage = async (
     ).exec();
 };
 
-const getChats = async (): Promise<IChat[]> => {
+const getChats = async (): Promise<IChat[] | IChat> => {
     return await Chat.find().exec();
+};
+
+const getChat = async (participants: Types.ObjectId[]): Promise<IChat | null> => {
+    return await Chat.findOne({ participants: { $all: participants } }).exec();
 };
 
 const updateChat = async (
@@ -69,6 +73,7 @@ export default {
     pushMessage,
     getChatById,
     getChats,
+    getChat,
     updateChat,
     deleteChat,
 };

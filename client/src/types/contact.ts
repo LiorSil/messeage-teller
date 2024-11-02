@@ -14,7 +14,7 @@ export interface Contact {
 // src/types/contactTypes.ts
 
 export interface FetchContactByPhoneOrNameParams {
-  phoneNumber: string;
+  query: string;
 }
 export interface FetchAddSubContactParams {
   newSubContactNumber: string;

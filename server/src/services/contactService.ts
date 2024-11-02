@@ -37,11 +37,8 @@ const getContactsByPhoneNumber = async (
     return contacts as IContact[];
 };
 
-const getContactsByName = async (name: string): Promise<IContact[] | null> => {
-    return await contactRepo.getContactsByName(name);
-};
 
-const findContacts = async (query: string): Promise<IContact[]> => {
+const getContactsByName = async (query: string): Promise<IContact[]> => {
     return await contactRepo.findContacts(query);
 };
 
@@ -53,9 +50,14 @@ const updateContact = async (
     contactId: Types.ObjectId | string,
     updateData: Partial<IContact>
 ): Promise<IContact | null> => {
-    console.log(`updateData: ${updateData}`);
     return await contactRepo.updateContact(contactId, updateData);
 };
+
+const addSubContact= async(
+    contactId: Types.ObjectId ,
+    subContactId: Types.ObjectId
+): Promise<IContact | null> => await contactRepo.addSubContact(contactId, subContactId);
+
 
 const deleteContact = async (
     contactId: Types.ObjectId | string
@@ -85,10 +87,10 @@ export default {
     getContactById,
     getContactByPhoneNumber,
     getContactsByPhoneNumber,
-    getContactsByName,
-    findContacts,
+  getContactsByName,
     getContacts,
     updateContact,
     deleteContact,
     getContactsByIds,
+    addSubContact,
 };

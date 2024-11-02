@@ -4,4 +4,5 @@ export interface SubContact {
   isIncomingMessage?: boolean;
   name: string;
   phoneNumber: string;
+  selected: boolean;
 }

@@ -1,10 +1,9 @@
 import notificationRepo from "../repos/notificationRepo";
-import { INotification } from "../models/model.interfaces";
-import { Types } from "mongoose";
+import {INotification} from "../models/model.interfaces";
+import {Types} from "mongoose";
 
 const pushNotification = async (fromId: Types.ObjectId, recipientId: Types.ObjectId | Types.ObjectId[]): Promise<INotification> => {
-  const notification = await notificationRepo.createOrUpdateNotification(fromId, recipientId);
-  return notification;
+  return await notificationRepo.createOrUpdateNotification(fromId, recipientId);
 }
 
 const pullRecipient = async (
@@ -21,10 +20,9 @@ const pullRecipient = async (
 const getActiveNotifications = async (
   recipientId: Types.ObjectId
 ): Promise<INotification[]> => {
-  const notifications = await notificationRepo.findNotificationsForRecipient(
-    recipientId
+  return await notificationRepo.findNotificationsForRecipient(
+      recipientId
   );
-  return notifications;
 };
 
 export default { pushNotification, pullRecipient, getActiveNotifications };

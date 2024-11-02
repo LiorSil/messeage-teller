@@ -49,7 +49,6 @@ export const useChatManager = () => {
         ? { ...subContact, isIncomingMessage: false }
         : subContact,
     );
-    console.log("updatedSubContacts", updatedSubContacts);
 
     if (!contact) return;
     dispatch(updateContact({ ...contact, subContacts: updatedSubContacts }));

@@ -11,10 +11,10 @@ const useModifySubContacts = () => {
 
   const dispatch = useDispatch();
 
-  const handleAddSubContact = (contactIdOrNumber: string) => {
+  const handleAddSubContact = (subContactId: string) => {
     axiosInstance
       .put(`/contacts/addSubContact`, {
-        contactIdOrNumber: contactIdOrNumber,
+        subContactId,
       })
       .then((response) => {
         dispatch(updateContact(response.data));

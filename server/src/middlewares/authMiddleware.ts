@@ -1,11 +1,12 @@
-import { Request, Response, NextFunction } from "express";
+import {NextFunction, Request, Response} from "express";
 import jwt from "jsonwebtoken";
+import contactService from "../services/contactService";
 
 interface CustomRequest extends Request {
   contact?: any;
 }
 
-const authMiddleware = (
+const authMiddleware = async (
   req: CustomRequest,
   res: Response,
   next: NextFunction
@@ -13,16 +14,17 @@ const authMiddleware = (
   const token = req.header("Authorization")?.replace("Bearer ", "");
 
   if (!token) {
+    console.log("No token provided");
     return res
       .status(401)
       .json({ message: "Access denied. No token provided." });
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
 
     if (decoded) {
-      req.body.contact = decoded;
+      req.body.contact = await contactService.getContactByPhoneNumber(decoded.phoneNumber);
       next();
     }
   } catch (err) {

@@ -1,6 +1,6 @@
 import Notification from "../models/notificationsModel";
-import { INotification } from "../models/model.interfaces";
-import { Types } from "mongoose";
+import {INotification} from "../models/model.interfaces";
+import {Types} from "mongoose";
 
 const createOrUpdateNotification = async (
   fromId: Types.ObjectId,
@@ -30,21 +30,18 @@ const pullRecipient = async (
     ? recipientId
     : [recipientId];
 
-  const notification = await Notification.findOneAndUpdate(
-    { fromId }, 
-    { $pull: { recipients: { $in: recipientsToRemove } } },
-    { new: true }
+  return await Notification.findOneAndUpdate(
+      {fromId},
+      {$pull: {recipients: {$in: recipientsToRemove}}},
+      {new: true}
   ).exec();
-  return notification;
 };
 export const findNotificationsForRecipient = async (recipientId: Types.ObjectId) => {
 
     // Query notifications where the recipient is in the recipients array
-    const notifications = await Notification.find({
-      recipients: recipientId,
-    });
-
-    return notifications;
+  return Notification.find({
+    recipients: recipientId,
+  });
   } 
 
 export default {

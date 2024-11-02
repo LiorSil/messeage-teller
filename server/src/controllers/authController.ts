@@ -36,9 +36,8 @@ const login = async (req: Request, res: Response) => {
     if (!user || !(await user.comparePassword(password))) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
-
     const token = jwt.sign(
-      { id: user._id, phoneNumber: user.phoneNumber },
+      { userId: user._id, phoneNumber: user.phoneNumber },
       process.env.JWT_SECRET!,
       {
         expiresIn: "1h",

@@ -11,8 +11,8 @@ const useFindContact = () => {
   );
 
   const handleFetchContactByPhoneOrName = useCallback(
-    (phoneNumber: string) => {
-      dispatch(fetchContactByPhoneOrName({ phoneNumber }));
+    (query: string) => {
+      dispatch(fetchContactByPhoneOrName({ query }));
     },
     [dispatch],
   );
