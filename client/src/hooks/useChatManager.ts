@@ -4,7 +4,6 @@ import { getContactChats } from "../redux/thunks/chatThunks";
 import { toggleChatManagerView } from "../redux/slices/chatSlice";
 import { SubContact } from "../types/subContact";
 import useContact from "./useContact";
-import { updateSelectedChat } from "../redux/slices/chatSlice";
 import { useEffect } from "react";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
@@ -28,13 +27,13 @@ export const useChatManager = () => {
   }, [token, navigate]);
 
   const handleChatSelection = async (selectedSubContact: SubContact | null) => {
-    if (selectedSubContact) {
-      await dispatch(getContactChats(contact._id));
+    if (selectedSubContact && contact) {
+
+      await dispatch(getContactChats({contactId: contact._id, subContact: selectedSubContact}));
       // for mobile view toggle chat manager view
       dispatch(toggleChatManagerView());
       await handleRemoveNotification(contact, selectedSubContact);
     }
-    dispatch(updateSelectedChat(selectedSubContact || null));
   };
 
   const handleRemoveNotification = async (
@@ -46,12 +45,14 @@ export const useChatManager = () => {
         ? { ...subContact, isIncomingMessage: false }
         : subContact
     );
+    console.log("updatedSubContacts", updatedSubContacts);
 
-    dispatch(updateContact({ ...contact, subContacts: updatedSubContacts }));
+    if(!contact) return;
+    dispatch(updateContact({ ...contact, subContacts: updatedSubContacts } ));
     if (selectedChat.isIncomingMessage) {
       dispatch(
         acknowledgeNotification({
-          token,
+
           fromId: selectedChat._id,
           recipientId: recipient._id,
         })

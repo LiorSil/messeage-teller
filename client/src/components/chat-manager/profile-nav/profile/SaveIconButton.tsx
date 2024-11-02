@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { ReactComponent as SaveIcon } from "../../../../assets/icons/Save.svg";
 import IconButtonWrapper from "../../../../shared/IconButtonWrapper";
 import Button from "../../../../shared/Button";
 
 type Props = {
   onClick?: () => void;
-  isNameValid?: string;
+  isNameValid?: boolean;
 };
 
 const SaveIconButton = (props: Props) => {

@@ -19,8 +19,7 @@ const getContact = async (req: Request, res: Response) => {
   try {
     const { phoneNumber } = req.body.contact;
     const contact = await contactService.getContactByPhoneNumber(phoneNumber);
-    console.log(`contact: ${contact}`)
-    
+
     if (!contact) return res.status(404).json({ message: "Contact not found" });
 
     const notifications = await ns.getActiveNotifications(contact._id);

@@ -1,29 +1,27 @@
-import { Chat } from "../../types/chat";
-import { createAsyncThunk } from "@reduxjs/toolkit";
-const VITE_API_URL = import.meta.env.VITE_API_URL;
-import axios from "axios";
+import {createAsyncThunk} from "@reduxjs/toolkit";
 
-/**
+import {FetchChatsArgs, FetchChatsResponse} from "../states/chatState.ts";
+import axiosInstance from "../../api/axiosInstance.ts";
 
-/**
- * Get chat by participants ids using async thunk
- * @param participantsIds : string (ids of participants)
- * @returns
- */
 
-const getContactChats = createAsyncThunk<Chat[], string>(
-  "chat/getContactChats",
-  async (participantsIds) => {
-    const response = await axios.get(
-      `${VITE_API_URL}/chats/chatsByParticipants`,
-      {
-        params: {
-          participants: participantsIds, // Send as query parameter
-        },
-      }
-    );
-    return response.data;
-  }
+const getContactChats = createAsyncThunk<FetchChatsResponse, FetchChatsArgs>(
+    "chat/getContactChats",
+    async ({contactId, subContact}, {rejectWithValue}) => {
+        try {
+            const response = await axiosInstance.get(`/chats/chatsByParticipants`, {
+                params: {
+                    contactId,
+                    subContactId: subContact._id,
+                },
+            });
+            return {
+                messages: response.data.messages,
+                selectedChat: subContact,
+            };
+        } catch (error) {
+            return rejectWithValue("Failed to fetch chat messages");
+        }
+    }
 );
 
-export { getContactChats };
+export {getContactChats};

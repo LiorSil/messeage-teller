@@ -1,5 +1,3 @@
-import React from "react";
-
 const RecordButton = () => {
   return (
     <span className="flex items-center bg-gray-200 rounded-l-lg">

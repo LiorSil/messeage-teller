@@ -1,4 +1,3 @@
-import React from "react";
 import { useSignOut } from "../../../../hooks/useSignOut";
 import ConfirmMessage from "../../../../shared/ConfirmMessage";
 

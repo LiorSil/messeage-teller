@@ -1,5 +1,3 @@
-import React from "react";
-
 interface ChatItemProps {
   isIncomingMessage: boolean;
   contactName: string;

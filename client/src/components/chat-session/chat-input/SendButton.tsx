@@ -1,5 +1,3 @@
-import React from "react";
-
 interface SendButtonProps {
   onSend: () => void;
   isInputEmpty: boolean;

@@ -13,17 +13,16 @@ export interface Contact {
 
 // src/types/contactTypes.ts
 
-export interface FetchAddSubContactParams {
-  token: string;
-  newSubContactNumber: string;
-}
 
 export interface FetchContactByPhoneOrNameParams {
   token: string;
   phoneNumber: string;
 }
-export interface AckNotificationArgs {
+export interface FetchAddSubContactParams {
   token: string;
+  newSubContactNumber: string;
+}
+export interface AckNotificationArgs {
   fromId: string;
   recipientId: string;
 }

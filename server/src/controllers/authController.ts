@@ -44,7 +44,6 @@ const login = async (req: Request, res: Response) => {
         expiresIn: "1h",
       }
     );
-    console.log("Token", token)
     res.status(200).json({ token });
   } catch (err: any) {
     res.status(400).json({ message: err.message });

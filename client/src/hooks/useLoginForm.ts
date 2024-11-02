@@ -33,9 +33,9 @@ const useLoginForm = () => {
   };
 
   useEffect(() => {
-    const token = cookies.get("token");
+
     if (token) {
-      dispatch(fetchContact(token));
+      dispatch(fetchContact());
       navigate("/chat-room");
     } else {
       navigate("/login");

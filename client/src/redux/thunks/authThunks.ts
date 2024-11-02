@@ -1,70 +1,41 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-const VITE_API_URL = import.meta.env.VITE_API_URL;
+import {createAsyncThunk} from "@reduxjs/toolkit";
+import {LoginUserData, LoginUserResponse, RegisterUserData, RegisterUserResponse} from "../states/authState.ts";
+import axiosInstance from "../../api/axiosInstance.ts";
+import {handleAxiosError} from "../../utils/handleAxiosError.ts";
 
-/**
- * Async thunk for registering a user
- * @param userData - The user data to register
- * @returns The response data from the API
- * @throws The error message from the API response or a generic error message
- */
 
-const registerUser = createAsyncThunk(
-  "auth/registerUser",
-  async (
-    userData: {
-      email: string;
-      password: string;
-      phoneNumber: string;
-    },
-    { rejectWithValue }
-  ) => {
-    try {
-      const response = await axios.post(
-        `${VITE_API_URL}/auth/register`,
-        userData
-      );
-      return response.data;
-    } catch (err) {
-      if (axios.isAxiosError(err) && err.response && err.response.data) {
-        // Return the error message from the API response
-        return rejectWithValue(err.response.data.message);
-      } else {
-        // Return a generic error message
-        return rejectWithValue("An error occurred");
-      }
+const registerUser = createAsyncThunk<
+    RegisterUserResponse,
+    RegisterUserData,
+    { rejectValue: any }
+>(
+    "auth/registerUser",
+    async (userData, {rejectWithValue}) => {
+        try {
+            const response = await axiosInstance.post<RegisterUserResponse>('/auth/register', userData);
+            return response.data;
+        } catch (error) {
+            // Ensure we return the result of `handleAxiosError` to maintain correct return type
+            return handleAxiosError<any>(error, rejectWithValue);
+        }
     }
-  }
 );
 
-/**
- * Async thunk for logging in a user
- * @param userData - The user data to login
- * @returns The response data from the API
- * @throws The error message from the API response or a generic error message
- */
 
-const loginUser = createAsyncThunk(
-  "auth/loginUser",
-  async (
-    userData: {
-      email: string;
-      password: string;
-    },
-    { rejectWithValue }
-  ) => {
-    try {
-      const response = await axios.post(`${VITE_API_URL}/auth/login`, userData);
-      return response.data;
-    } catch (err) {
-      if (axios.isAxiosError(err) && err.response && err.response.data) {
-        return rejectWithValue(err.response.data.message);
-      } else {
-        // Return a generic error message
-        return rejectWithValue("An error occurred");
-      }
+const loginUser = createAsyncThunk<
+    LoginUserResponse,
+    LoginUserData,
+    { rejectValue: any }
+>(
+    "auth/loginUser",
+    async (userData, {rejectWithValue}) => {
+        try {
+            const response = await axiosInstance.post<LoginUserResponse>('/auth/login', userData);
+            return response.data;
+        } catch (error) {
+            return handleAxiosError<any>(error, rejectWithValue);
+        }
     }
-  }
 );
 
-export { registerUser, loginUser };
+export {registerUser, loginUser};

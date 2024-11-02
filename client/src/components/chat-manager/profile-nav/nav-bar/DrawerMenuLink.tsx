@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useSignOut } from "../../../../hooks/useSignOut";
+import React from "react";
 
 interface DrawerMenuLinkProps {
   href: string;

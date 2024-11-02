@@ -1,14 +1,9 @@
-import {
-  IChat,
-  PartialChat,
-  IMessage,
-  PartialContact,
-} from "../../models/model.interfaces";
-import { Server } from "socket.io";
-import { debounce } from "../../utils/debounce";
+import {IMessage, PartialChat, PartialContact,} from "../../models/model.interfaces";
+import {Server} from "socket.io";
+import {debounce} from "../../utils/debounce";
 import chatService from "../../services/chatService";
 import contactService from "../../services/contactService";
-import { Types } from "mongoose";
+import {Types} from "mongoose";
 import notificationService from "../../services/notificationService";
 
 export const handleSendMessage = debounce(
@@ -35,11 +30,10 @@ export const handleSendMessage = debounce(
 );
 
 const getChat = async (message: IMessage): Promise<PartialChat> => {
-  const chat = await chatService.getChat([
+  return await chatService.getChat([
     new Types.ObjectId(message.fromId),
     new Types.ObjectId(message.toId),
   ]);
-  return chat;
 };
 
 const getContacts = async (

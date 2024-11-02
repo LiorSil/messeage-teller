@@ -13,13 +13,12 @@ const useContact = () => {
   const { loading, error, contact } = useSelector(
     (state: RootState) => state.contact
   );
-  
 
   useEffect(() => {
-    if (token) {
-      dispatch(fetchContact(token));
-    }
-  }, [token, dispatch]);
+
+      dispatch(fetchContact());
+
+  }, [ dispatch]);
 
   return {
     contact,

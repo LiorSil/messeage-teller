@@ -9,3 +9,19 @@ export interface ContactState {
   phoneNumber: string;
   addContactSuccess: boolean;
 }
+
+export const initialState: ContactState = {
+  contact: {
+    _id: "",
+    name: "",
+    phoneNumber: "",
+    avatar: "",
+    createdAt: "",
+    subContacts: [],
+  },
+  loading: false,
+  phoneNumber: "",
+  getContactLoading: false,
+  error: "",
+  addContactSuccess: false,
+};

@@ -40,10 +40,10 @@ export const useChatSession = () => {
         createMessage(message);
       }
 
-      if (isFromSubContact) {
+      if (isFromSubContact && contact) {
         createNotification(message, contact);
       } else {
-        dispatch(fetchContact(token));
+        dispatch(fetchContact());
       }
     },
     [selectedChat, createMessage, createNotification, contact, dispatch, token]
@@ -59,6 +59,7 @@ export const useChatSession = () => {
         toId: selectedChat._id,
         content: inputValue,
         sentTD: new Date(),
+
       };
 
       socket.emit("send_message", message);
