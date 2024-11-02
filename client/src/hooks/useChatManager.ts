@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
-import { getContactChats } from "../redux/thunks/chatThunks";
+import { getSelectedChatMessages } from "../redux/thunks/chatThunks";
 import { toggleChatManagerView } from "../redux/slices/chatSlice";
 import { SubContact } from "../types/subContact";
 import useContact from "./useContact";
@@ -28,8 +28,12 @@ export const useChatManager = () => {
 
   const handleChatSelection = async (selectedSubContact: SubContact | null) => {
     if (selectedSubContact && contact) {
-
-      await dispatch(getContactChats({contactId: contact._id, subContact: selectedSubContact}));
+      await dispatch(
+        getSelectedChatMessages({
+          contactId: contact._id,
+          subContact: selectedSubContact,
+        }),
+      );
       // for mobile view toggle chat manager view
       dispatch(toggleChatManagerView());
       await handleRemoveNotification(contact, selectedSubContact);
@@ -38,24 +42,23 @@ export const useChatManager = () => {
 
   const handleRemoveNotification = async (
     recipient: Contact,
-    selectedChat: SubContact
+    selectedChat: SubContact,
   ) => {
     const updatedSubContacts = recipient.subContacts.map((subContact) =>
       subContact._id === selectedChat._id
         ? { ...subContact, isIncomingMessage: false }
-        : subContact
+        : subContact,
     );
     console.log("updatedSubContacts", updatedSubContacts);
 
-    if(!contact) return;
-    dispatch(updateContact({ ...contact, subContacts: updatedSubContacts } ));
+    if (!contact) return;
+    dispatch(updateContact({ ...contact, subContacts: updatedSubContacts }));
     if (selectedChat.isIncomingMessage) {
       dispatch(
         acknowledgeNotification({
-
           fromId: selectedChat._id,
           recipientId: recipient._id,
-        })
+        }),
       );
     }
   };

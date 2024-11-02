@@ -1,10 +1,6 @@
-const VITE_API_URL = import.meta.env.VITE_API_URL;
-
-import axios from "axios";
-
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
+import axiosInstance from "../api/axiosInstance.ts";
 import { updateContact } from "../redux/slices/contactSlice";
-import Cookies from "universal-cookie";
 import { useDispatch } from "react-redux";
 
 const useModifySubContacts = () => {
@@ -14,22 +10,12 @@ const useModifySubContacts = () => {
   }, []);
 
   const dispatch = useDispatch();
-  const cookies = useMemo(() => new Cookies(), []);
-  const token = cookies.get("token");
 
   const handleAddSubContact = (contactIdOrNumber: string) => {
-    axios
-      .put(
-        `${VITE_API_URL}/contacts/addSubContact`,
-        {
-          contactIdOrNumber: contactIdOrNumber,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+    axiosInstance
+      .put(`/contacts/addSubContact`, {
+        contactIdOrNumber: contactIdOrNumber,
+      })
       .then((response) => {
         dispatch(updateContact(response.data));
         setShowNotice(true);

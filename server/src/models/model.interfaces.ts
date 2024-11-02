@@ -10,6 +10,7 @@ interface IMessage extends Document {
 }
 
 interface IChat extends Document {
+  _id: Types.ObjectId;
   participants: Types.ObjectId[];
   messages: IMessage[];
   notification: Types.ObjectId[];
@@ -27,7 +28,6 @@ interface IContact extends Document {
   createdAt?: string;
   chats: Types.ObjectId[];
 }
-type PartialContact = Pick<IContact, "_id" | "name" | "avatar" | "phoneNumber" | "subContacts" >;
 
 interface IUser extends Document {
   email: string;
@@ -42,4 +42,4 @@ interface INotification extends Document {
 }
 
 
-export { IMessage, IChat, PartialChat , IContact, PartialContact, IUser, INotification };
+export { IMessage, IChat, PartialChat , IContact,  IUser, INotification };

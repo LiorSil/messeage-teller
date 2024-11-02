@@ -1,8 +1,7 @@
 // store/chatSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getContactChats } from "../thunks/chatThunks";
+import { getSelectedChatMessages } from "../thunks/chatThunks";
 import { initialState } from "../states/chatState";
-
 
 const chatSlice = createSlice({
   name: "chat",
@@ -16,17 +15,16 @@ const chatSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getContactChats.fulfilled, (state, action) => {
+    builder.addCase(getSelectedChatMessages.fulfilled, (state, action) => {
       state.messages = action.payload.messages || [];
       state.selectedChat = action.payload.selectedChat;
     });
-    builder.addCase(getContactChats.rejected, (state,_) => {
+    builder.addCase(getSelectedChatMessages.rejected, (state, _) => {
       state.selectedChat = null;
     });
-    builder.addCase(getContactChats.pending, () => {});
+    builder.addCase(getSelectedChatMessages.pending, () => {});
   },
 });
 
-export const { updateInputValue,  toggleChatManagerView } =
-  chatSlice.actions;
+export const { updateInputValue, toggleChatManagerView } = chatSlice.actions;
 export default chatSlice.reducer;

@@ -6,3 +6,9 @@ export type Message = {
   readTD?: Date;
   content: string;
 };
+
+export enum MessageScenario {
+  SenderNotInContacts = 'SenderNotInContacts',
+  SenderIsSelected = 'SenderInContactsSelected',
+  SenderInNotSelected = 'SenderInContactsNotSelected'
+}

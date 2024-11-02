@@ -10,9 +10,8 @@ export const handleConnection = (socket: Socket, io: Server) => {
   }
 
   socket.on("send_message", (message) => handleSendMessage(message, io));
-  
 
-  socket.on("disconnect", () => {
+socket.on("disconnect", () => {
     console.log(`Contact ${contactId} disconnected`);
   });
 

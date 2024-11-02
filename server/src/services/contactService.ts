@@ -1,97 +1,94 @@
 import contactRepo from "../repos/contactRepo";
-import { IContact } from "../models/model.interfaces";
-import { Types } from "mongoose";
+import {IContact} from "../models/model.interfaces";
+import {Types} from "mongoose";
 
 const createContact = async (
-  contactData: Partial<IContact>
+    contactData: Partial<IContact>
 ): Promise<IContact> => {
-  return await contactRepo.createContact(contactData);
+    return await contactRepo.createContact(contactData);
 };
 
 const getContactById = async (
-  contactId: Types.ObjectId
+    contactId: Types.ObjectId
 ): Promise<IContact | null> => {
-  const contact = await contactRepo.getContactById(contactId);
-
-  return contact;
+    return await contactRepo.getContactById(contactId);
 };
 
 const getContactByPhoneNumber = async (
-  phoneNumber: string
+    phoneNumber: string
 ): Promise<IContact | null> => {
-  return await contactRepo.getContactByPhoneNumber(phoneNumber);
+    return await contactRepo.getContactByPhoneNumber(phoneNumber);
 };
 
 const getContactsByPhoneNumber = async (
-  phoneNumbers: string[]
+    phoneNumbers: string[]
 ): Promise<IContact[] | null> => {
-  const contacts = await Promise.all(
-    phoneNumbers.map(async (phoneNumber) => {
-      return await contactRepo.getContactByPhoneNumber(phoneNumber);
-    })
-  );
+    const contacts = await Promise.all(
+        phoneNumbers.map(async (phoneNumber) => {
+            return await contactRepo.getContactByPhoneNumber(phoneNumber);
+        })
+    );
 
-  // If any contact is null, return null for the entire operation
-  if (contacts.some((contact) => contact === null)) {
-    return null;
-  }
-  // Otherwise, return the valid contacts
-  return contacts as IContact[];
+    // If any contact is null, return null for the entire operation
+    if (contacts.some((contact) => contact === null)) {
+        return null;
+    }
+    // Otherwise, return the valid contacts
+    return contacts as IContact[];
 };
 
 const getContactsByName = async (name: string): Promise<IContact[] | null> => {
-  return await contactRepo.getContactsByName(name);
+    return await contactRepo.getContactsByName(name);
 };
 
 const findContacts = async (query: string): Promise<IContact[]> => {
-  return await contactRepo.findContacts(query);
+    return await contactRepo.findContacts(query);
 };
 
 const getContacts = async (): Promise<IContact[]> => {
-  return await contactRepo.getContacts();
+    return await contactRepo.getContacts();
 };
 
 const updateContact = async (
-  contactId: Types.ObjectId | string,
-  updateData: Partial<IContact>
+    contactId: Types.ObjectId | string,
+    updateData: Partial<IContact>
 ): Promise<IContact | null> => {
-  console.log(`updateData: ${updateData}`);
-  const updateContact = await contactRepo.updateContact(contactId, updateData);
-  return updateContact;
+    console.log(`updateData: ${updateData}`);
+    return await contactRepo.updateContact(contactId, updateData);
 };
 
 const deleteContact = async (
-  contactId: Types.ObjectId | string
+    contactId: Types.ObjectId | string
 ): Promise<IContact | null> => {
-  return await contactRepo.deleteContact(contactId);
+    return await contactRepo.deleteContact(contactId);
 };
 
 const getContactsByIds = async (
-  contactIds: Types.ObjectId[]
+    contactIds: Types.ObjectId[]
 ): Promise<IContact[] | null> => {
-  const contacts = await Promise.all(
-    contactIds.map(async (contactId) => {
-      return await contactRepo.getContactById(contactId);
-    })
-  );
+    const contacts = await Promise.all(
+        contactIds.map(async (contactId) => {
+            return await contactRepo.getContactById(contactId);
+        })
+    );
 
-  // If any contact is null, return null for the entire operation
-  if (contacts.some((contact) => contact === null)) {
-    return null;
-  }
-  // Otherwise, return the valid contacts
-  return contacts as IContact[];
+    // If any contact is null, return null for the entire operation
+    if (contacts.some((contact) => contact === null)) {
+        return null;
+    }
+    // Otherwise, return the valid contacts
+    return contacts as IContact[];
 };
 
 export default {
-  createContact,
-  getContactById,
-  getContactByPhoneNumber,
-  getContactsByPhoneNumber,
-  getContactsByName,
-  findContacts,
-  getContacts,
-  updateContact,
-  deleteContact,
-  getContactsByIds,
+    createContact,
+    getContactById,
+    getContactByPhoneNumber,
+    getContactsByPhoneNumber,
+    getContactsByName,
+    findContacts,
+    getContacts,
+    updateContact,
+    deleteContact,
+    getContactsByIds,
 };

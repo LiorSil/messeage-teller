@@ -23,9 +23,8 @@ const useLoginForm = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
 
-  const { loading, error, token } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const { loading, error } = useSelector((state: RootState) => state.auth);
+  const token = cookies.get("token");
 
   const onSubmit: SubmitHandler<LoginFormData> = (data) => {
     dispatch(loginUser(data));
@@ -33,7 +32,6 @@ const useLoginForm = () => {
   };
 
   useEffect(() => {
-
     if (token) {
       dispatch(fetchContact());
       navigate("/chat-room");

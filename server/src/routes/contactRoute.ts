@@ -1,8 +1,8 @@
-import express from "express";
+import {Router} from "express";
 import contactController from "../controllers/contactController";
 import authMiddleware from "../middlewares/authMiddleware";
-const router = express.Router();
 
+const router = Router();
 
 router.get("/", authMiddleware, contactController.getContact);
 router.get("/:query", authMiddleware, contactController.findContactsByQuery);
