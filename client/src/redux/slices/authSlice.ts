@@ -8,7 +8,11 @@ const cookies = new Cookies();
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    initialError: (state) => {
+      state.error = "";
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(registerUser.pending, (state) => {
       state.loading = true;
@@ -18,7 +22,7 @@ const authSlice = createSlice({
     });
     builder.addCase(registerUser.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.payload as string;
+      state.error = action.payload.message;
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
       const { token } = action.payload;
@@ -40,5 +44,6 @@ const authSlice = createSlice({
 });
 
 export { registerUser, loginUser };
+export const { initialError } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -12,10 +12,7 @@ const App = () => {
       <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/login" element={<Login headline="Welcome Back!" />} />
       <Route path="/about" element={<>About</>} />
-      <Route
-        path="/register"
-        element={<Register headline="Nice To Meet You!" />}
-      />
+      <Route path="/register" element={<Register />} />
       <Route path="/chat-room" element={<ChatRoom />} />
       <Route path="/unauthorized" element={<UnauthorizedPage />} />
       <Route path="*" element={<Navigate to="/login" />} />{" "}

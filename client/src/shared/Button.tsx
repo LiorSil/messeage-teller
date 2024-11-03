@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 interface ButtonProps {
   type: "submit" | "button";
@@ -6,17 +6,22 @@ interface ButtonProps {
   className?: string;
   disabled?: boolean;
   onClick?: () => void;
+  controlReference?: React.RefObject<HTMLButtonElement>;
 }
 
 const Button: React.FC<ButtonProps> = ({
   type,
+
   children,
   className,
   onClick,
   disabled,
 }) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
   return (
     <button
+      ref={buttonRef}
       onClick={onClick}
       disabled={disabled}
       type={type}

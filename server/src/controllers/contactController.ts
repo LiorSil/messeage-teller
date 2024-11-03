@@ -2,47 +2,27 @@ import {Request, Response} from "express";
 import contactService from "../services/contactService";
 import ns from "../services/notificationService";
 import {Types} from "mongoose";
-import {ISubContact} from "../models/model.interfaces";
+import {IContact, ISubContact} from "../models/model.interfaces";
 
 
 const handleError = (res: Response, error: any) =>
     res.status(400).json({message: error.message});
 
 const createContact = async (req: Request, res: Response) => {
+    const createdContact = await contactService.createContact(req.body);
     try {
-        const contact = await contactService.createContact(req.body);
-        res.status(201).json(contact);
-    } catch (error) {
-        handleError(res, error);
+        if (!createdContact)
+            return res.status(409).json({message: "Contact already exists"});
+        res.status(201).json(createdContact);
+
+    } catch (error: any) {
+        res.status(400).json({message: error.message});
     }
 };
 
 const getContact = async (req: Request, res: Response) => {
-    try {
-        const {contact} = await req.body;
-        const notifications = await ns.getActiveNotifications(contact._id);
-
-        const notificationFromIds = new Set(
-            notifications.map(({fromId}) => fromId.toString())
-        );
-        const subContacts = await Promise.all(
-            contact.subContacts.map((subContact: ISubContact) => {
-                    return fetchSubContact(subContact.subContactId, notificationFromIds)
-                }
-            )
-        );
-
-        res.status(200).json({
-            _id: contact._id,
-            name: contact.name,
-            avatar: contact.avatar,
-            phoneNumber: contact.phoneNumber,
-            createdAt: contact.createdAt,
-            subContacts,
-        });
-    } catch (error) {
-        handleError(res, error);
-    }
+    const {contact} = await req.body;
+    await buildClientContactData(contact, res);
 };
 
 const fetchSubContact = async (
@@ -71,7 +51,10 @@ const findContactsByQuery = async (req: Request, res: Response) => {
 
         const contacts = await contactService.getContactsByQuery(query)
         const contactsWithoutLoggedInUser = contacts.filter((c) => !c._id.equals(contact._id));
-        const safeContacts = contactsWithoutLoggedInUser.map(({_id, name, phoneNumber, avatar}) => ({
+        const contactsWithoutExistingSubContacts = contactsWithoutLoggedInUser.filter(c =>
+            !contact.subContacts.find((subContact: ISubContact) => subContact.subContactId.equals(c._id))
+        );
+        const safeContacts = contactsWithoutExistingSubContacts.map(({_id, name, phoneNumber, avatar}) => ({
             _id,
             name,
             phoneNumber,
@@ -89,12 +72,10 @@ const addSubContact = async (req: Request, res: Response) => {
     try {
         const {contact, subContactId} = req.body;
 
-        await contactService.getContactById(subContactId);
-        const success = await contactService.addSubContact(contact._id, subContactId);
-        console.log("success", success);
-        success
-            ? res.status(200).json({message: "Sub contact added successfully"})
-            : res.status(404).json({message: "Sub contact not found"});
+        const contactWasUpdated = await contactService.addSubContact(contact._id, subContactId);
+        if (!contactWasUpdated)
+            return res.status(404).json({message: "Sub contact not found"});
+        await buildClientContactData(contact, res)
 
     } catch (error) {
         handleError(res, error);
@@ -115,6 +96,37 @@ const updateProfile = async (req: Request, res: Response) => {
         handleError(res, error);
     }
 };
+
+const buildClientContactData = async (contact: IContact, res: Response) => {
+    try {
+        // Fetch active notifications for the contact
+        const notifications = await ns.getActiveNotifications(contact._id)
+        // Create a set of notification sender IDs
+        const notificationFromIds: Set<string> = new Set(
+            notifications.map(({fromId}) => fromId.toString())
+        );
+        // Fetch all sub-contacts details asynchronously
+        const subContacts = await Promise.all(
+            contact.subContacts.map((subContact: ISubContact) =>
+                fetchSubContact(subContact.subContactId, notificationFromIds)
+            )
+        );
+
+        // Send the response in the specified format
+        res.status(200).json({
+            _id: contact._id,
+            name: contact.name,
+            avatar: contact.avatar,
+            phoneNumber: contact.phoneNumber,
+            createdAt: contact.createdAt,
+            subContacts,
+        });
+    } catch (error) {
+        // Handle any errors that may occur during data fetching
+        res.status(500).json({message: 'Error fetching contact data', error});
+    }
+};
+
 
 export default {
     createContact,

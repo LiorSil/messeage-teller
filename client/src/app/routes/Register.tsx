@@ -1,10 +1,13 @@
-import  { useEffect } from "react";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { SubmitHandler } from "react-hook-form";
 import useRegisterForm from "../../hooks/useRegisterForm";
 import Loading from "../../shared/Loading";
 import FormWrapper from "./FormWrapper";
 import Button from "../../shared/Button";
+import { AppDispatch } from "../../redux/store.ts";
+import { useDispatch } from "react-redux";
+import { initialError } from "../../redux/slices/authSlice.ts";
 
 interface IFormInputs {
   email: string;
@@ -12,17 +15,15 @@ interface IFormInputs {
   phoneNumber: string;
 }
 
-type Props = {
-  headline: string;
-};
-
-const Register = (props: Props) => {
+const Register = () => {
   const { register, handleSubmit, onSubmitHandler, error, loading, success } =
     useRegisterForm();
 
   const navigate = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+    dispatch(initialError());
     onSubmitHandler(data);
   };
 
@@ -34,14 +35,13 @@ const Register = (props: Props) => {
 
   return (
     <>
-      <FormWrapper headline={props.headline}>
+      <FormWrapper headline={"Nice To Meet you"}>
         {loading && <Loading />}
         {error && (
           <p className="bg-app-palette-cool-gray-+90 border-2 border-red-600 text-red-500 text-center">
             {error}
           </p>
         )}
-
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4 ">
             <label htmlFor="email" className="app-form-label">

@@ -4,7 +4,7 @@ import Loading from "../../../../shared/Loading";
 
 const UserProfile: React.FC = () => {
   const { contact, loading, error } = useContact();
-
+  console.log("UserProfile.tsx: contact:", contact);
 
   if (loading) {
     return <Loading />;
