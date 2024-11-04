@@ -1,7 +1,7 @@
-import chatRepo from "../repos/chatRepo";
+import chatRepo from "../repositories/chatRepo";
 import {IChat, IMessage} from "../models/model.interfaces";
-import {sortSubContactsByLatestChats} from "../repos/sortSubContactsByMessages";
-import notificationRepo from "../repos/notificationRepo";
+import {sortSubContactsByLatestChats} from "../repositories/sortSubContactsByMessages";
+import notificationRepo from "../repositories/notificationRepo";
 import {Types} from "mongoose";
 
 const getOrCreateChat = async (

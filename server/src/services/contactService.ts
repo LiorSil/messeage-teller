@@ -1,4 +1,4 @@
-import contactRepo from "../repos/contactRepo";
+import contactRepo from "../repositories/contactRepo";
 import {IContact} from "../models/model.interfaces";
 import {Types} from "mongoose";
 

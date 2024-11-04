@@ -6,7 +6,7 @@ import {
   deleteUser,
   getUserById,
   getUserByPhoneNumber,
-} from "../repos/userRepo";
+} from "../repositories/userRepo";
 import { IUser, IContact } from "../models/model.interfaces";
 import contactService from "./contactService";
 

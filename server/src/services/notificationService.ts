@@ -1,4 +1,4 @@
-import notificationRepo from "../repos/notificationRepo";
+import notificationRepo from "../repositories/notificationRepo";
 import {INotification} from "../models/model.interfaces";
 import {Types} from "mongoose";
 
