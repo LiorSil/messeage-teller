@@ -1,21 +1,33 @@
 import userRepo from "../repositories/userRepo";
 import jwt from 'jsonwebtoken';
 import contactService from "./contactService";
-import {IContact, IUser} from "../models/model.interfaces";
 
 const registerUser = async (
     email: string,
     password: string,
-    phoneNumber: string
-): Promise<{ user: IUser; contact: IContact }> => {
-    const user = await userRepo.createUser(email, password, phoneNumber);
-    const contact = await contactService.createContact({
-        name: email,
-        phoneNumber,
-        createdAt: new Date().toISOString(),
-    });
-    return {user, contact};
+    phoneNumber: string) => {
+    try {
+        const existingUser = await userRepo.getUserByEmail(email);
+        if (existingUser) {
+            return {status: 400, data: {message: "User already exists"}};
+        }
+        const existingPhoneNumber = await userRepo.getUserByPhoneNumber(phoneNumber);
+        if (existingPhoneNumber) {
+            return {status: 400, data: {message: "Phone number already exists"}};
+        }
+
+        const user = await userRepo.createUser(email, password, phoneNumber);
+        const contact = await contactService.createContact({
+            name: email,
+            phoneNumber,
+            createdAt: new Date().toISOString(),
+        })
+        return {status: 201, data:  {user, contact}};
+    } catch (error: any) {
+        return {status: 400, data: {message: error.message}};
+    }
 };
+
 
 const loginUser = async (email: string, password: string) => {
     try {

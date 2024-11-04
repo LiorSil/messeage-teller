@@ -2,7 +2,6 @@ import {Request, Response} from "express";
 import chatService from "../services/chatService";
 
 const getChatsByParticipantsIds = async (req: Request, res: Response) => {
-    console.log("req.body", req.body.contact);
     const { contact } = await req.body;
     const {subContactId} = req.query
     const chat = await chatService.getOrCreateChat(contact._id, subContactId as any);

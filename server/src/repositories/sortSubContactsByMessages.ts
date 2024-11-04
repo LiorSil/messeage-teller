@@ -60,8 +60,6 @@ export const sortSubContactsByLatestChats = async (
     if (!success) {
         throw new Error(`Failed to update contact with ID ${contact._id}`);
     }
-    console.log("new Contact", contact);
-
     return contact;
 };
 

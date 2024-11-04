@@ -18,12 +18,10 @@ const createContact = async (req: Request, res: Response) => {
 };
 
 const getContact = async (req: Request, res: Response) => {
-    console.log("req.body", req.body);
     try {
         const {contact} = await req.body;
         const result = await contactService.buildClientContactData(contact);
         res.status(result.status).json(result.data);
-        console.log("result.data", result.data);
     } catch (error: any) {
         res.status(500).json({message: error.message});
     }

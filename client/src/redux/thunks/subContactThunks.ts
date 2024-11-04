@@ -19,7 +19,6 @@ const fetchContactByPhoneOrName = createAsyncThunk<
   "subContactsFinder/fetchContactByPhoneOrName",
   async ({ query }, { rejectWithValue }) => {
     try {
-      console.log("query", query);
       const response = await axiosInstance.get<SubContact[]>(
         `/contacts/${query}`,
       );
