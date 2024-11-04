@@ -1,10 +1,14 @@
 import {Request, Response} from "express";
-import chatService from "../services/chatService";
+import notificationRepo from "../repositories/notificationRepo";
 
 const getChatsByParticipantsIds = async (req: Request, res: Response) => {
-    const { contact } = await req.body;
+    const {contact} = await req.body;
     const {subContactId} = req.query
-    const chat = await chatService.getOrCreateChat(contact._id, subContactId as any);
-    res.status(chat ? 200 : 404).json(chat ? chat : {message: "No chats found."});
+    const chat = await notificationRepo.pullRecipient(contact._id, subContactId as any);
+    if (chat)
+        res.status(200).json(chat);
+    else
+        res.status(404).json({message: "Chat not found"});
+
 }
 export default {getChatsByParticipantsIds};

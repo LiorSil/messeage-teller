@@ -1,7 +1,7 @@
 import contactRepo from "../repositories/contactRepo";
 import {IContact, ISubContact} from "../models/model.interfaces";
 import {Types} from "mongoose";
-import notificationService from "./notificationService";
+import notificationRepo from "../repositories/notificationRepo";
 
 const createContact = async (
     contactData: Partial<IContact>
@@ -45,7 +45,7 @@ const fetchSubContact = async (
 const buildClientContactData = async (contact: IContact) => {
     try {
         // Fetch active notifications for the contact
-        const notifications = await notificationService.getActiveNotifications(contact._id);
+        const notifications = await notificationRepo.findNotificationsForRecipient(contact._id);
         // Create a set of notification sender IDs
         const notificationFromIds = new Set(
             notifications.map(({fromId}) => fromId.toString())
