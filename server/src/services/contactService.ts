@@ -1,6 +1,7 @@
 import contactRepo from "../repositories/contactRepo";
-import {IContact} from "../models/model.interfaces";
+import {IContact, ISubContact} from "../models/model.interfaces";
 import {Types} from "mongoose";
+import notificationService from "./notificationService";
 
 const createContact = async (
     contactData: Partial<IContact>
@@ -8,21 +9,6 @@ const createContact = async (
     return await contactRepo.createContact(contactData);
 };
 
-const getContactById = async (
-    contactId: Types.ObjectId
-): Promise<IContact | null> => {
-    return await contactRepo.getContactById(contactId);
-};
-
-
-
-const getContactsByQuery = async (query: string): Promise<IContact[]> => {
-    return await contactRepo.getContactsByQuery(query);
-};
-
-const getContacts = async (): Promise<IContact[]> => {
-    return await contactRepo.getContacts();
-};
 
 const updateContact = async (
     contactId: Types.ObjectId | string,
@@ -31,43 +17,69 @@ const updateContact = async (
     return await contactRepo.updateContact(contactId, updateData);
 };
 
-const addSubContact= async(
-    contactId: Types.ObjectId ,
+const addSubContact = async (
+    contactId: Types.ObjectId,
     subContactId: Types.ObjectId
 ): Promise<IContact | null> => await contactRepo.addSubContact(contactId, subContactId);
 
 
-const deleteContact = async (
-    contactId: Types.ObjectId | string
-): Promise<IContact | null> => {
-    return await contactRepo.deleteContact(contactId);
+const fetchSubContact = async (
+    subContactId: Types.ObjectId | string,
+    notificationFromIds: Set<string>
+) => {
+    const fullSubContact = await contactRepo.getContactById(subContactId);
+    if (!fullSubContact) return null;
+
+    const {_id, name, phoneNumber, avatar} = fullSubContact;
+
+    return {
+        _id,
+        name,
+        phoneNumber,
+        avatar,
+        isIncomingMessage: notificationFromIds.has(_id.toString()) || false,
+    };
 };
 
-const getContactsByIds = async (
-    contactIds: Types.ObjectId[]
-): Promise<IContact[] | null> => {
-    const contacts = await Promise.all(
-        contactIds.map(async (contactId) => {
-            return await contactRepo.getContactById(contactId);
-        })
-    );
 
-    // If any contact is null, return null for the entire operation
-    if (contacts.some((contact) => contact === null)) {
-        return null;
+const buildClientContactData = async (contact: IContact) => {
+    try {
+        // Fetch active notifications for the contact
+        const notifications = await notificationService.getActiveNotifications(contact._id);
+        // Create a set of notification sender IDs
+        const notificationFromIds = new Set(
+            notifications.map(({fromId}) => fromId.toString())
+        );
+        // Fetch all sub-contacts details asynchronously
+        const subContacts = await Promise.all(
+            contact.subContacts.map((subContact: ISubContact) =>
+                fetchSubContact(subContact.subContactId, notificationFromIds)
+            )
+        );
+        // Return the data in the specified format
+        return {
+            status: 200,
+            data: {
+                _id: contact._id,
+                name: contact.name,
+                avatar: contact.avatar,
+                phoneNumber: contact.phoneNumber,
+                createdAt: contact.createdAt,
+                subContacts,
+            },
+        };
+    } catch (error) {
+        return {
+            status: 500,
+            data: {message: 'Error fetching contact data', error},
+        };
     }
-    // Otherwise, return the valid contacts
-    return contacts as IContact[];
 };
+
 
 export default {
     createContact,
-    getContactById,
-
-    getContactsByQuery,
-    getContacts,
     updateContact,
-    deleteContact,
-    getContactsByIds,
+    buildClientContactData,
     addSubContact,
-};
+}

@@ -1,12 +1,4 @@
-import {
-  createUser,
-  getUsers,
-  getUserByEmail,
-  updateUser,
-  deleteUser,
-  getUserById,
-  getUserByPhoneNumber,
-} from "../repositories/userRepo";
+import userRepo from "../repositories/userRepo";
 import { IUser, IContact } from "../models/model.interfaces";
 import contactService from "./contactService";
 
@@ -15,7 +7,7 @@ const registerUser = async (
   password: string,
   phoneNumber: string
 ): Promise<{ user: IUser; contact: IContact }> => {
-  const user = await createUser(email, password, phoneNumber);
+  const user = await userRepo.createUser(email, password, phoneNumber);
   const contact = await contactService.createContact({
     name: email,
     phoneNumber,
@@ -27,35 +19,35 @@ const registerUser = async (
 };
 
 const findUsers = async (): Promise<IUser[]> => {
-  return await getUsers();
+  return await userRepo.getUsers();
 };
 
 const getUser = async (userId: string): Promise<IUser | null> => {
-  return await getUserById(userId);
+  return await userRepo.getUserById(userId);
 };
 
 const findUserByEmail = async (email: string): Promise<IUser | null> => {
-  return await getUserByEmail(email);
+  return await userRepo.getUserByEmail(email);
 };
 
 const findUserByPhoneNumber = async (
   phoneNumber: string
 ): Promise<IUser | null> => {
-  return await getUserByPhoneNumber(phoneNumber);
+  return await userRepo.getUserByPhoneNumber(phoneNumber);
 };
 
 const updateUserData = async (
   userId: string,
   updateData: Partial<IUser>
 ): Promise<IUser | null> => {
-  return await updateUser(userId, updateData);
+  return await userRepo.updateUser(userId, updateData);
 };
 
 const removeUser = async (userId: string): Promise<IUser | null> => {
-  return await deleteUser(userId);
+  return await userRepo.deleteUser(userId);
 };
 
-export {
+export default {
   registerUser,
   findUsers,
   getUser,
