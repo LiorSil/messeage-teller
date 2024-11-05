@@ -6,7 +6,7 @@ const getUsers = async (req: Request, res: Response) => {
         const users = await userRepo.getUsers();
         res.status(200).json(users);
     } catch (err: any) {
-        res.status(400).json({message: err.message});
+        res.status(400).json({ message: err.message });
     }
 };
 

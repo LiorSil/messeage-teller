@@ -3,7 +3,7 @@ import {Server} from "socket.io";
 import {debounce} from "../../utils/debounce";
 import chatService from "../../services/chatService";
 import {Types} from "mongoose";
-import notificationRepo from "../../repositories/notificationRepo";
+import notificationService from "../../services/notificationService";
 
 export const handleSendMessage = debounce(
     async (message: IMessage, io: Server) => {
@@ -28,6 +28,6 @@ const getChat = async (
 };
 
 const notifyRecipient = async (fromId: Types.ObjectId, recipient: Types.ObjectId) => {
-    return await notificationRepo.createOrUpdateNotification(fromId, recipient);
+    return await notificationService.createOrUpdateNotification(fromId, recipient);
 }
 

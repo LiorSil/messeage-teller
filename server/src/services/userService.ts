@@ -51,9 +51,18 @@ const loginUser = async (email: string, password: string) => {
         return {status: 400, data: {message: error.message}};
     }
 };
+const getUsers = async () => {
+    try {
+        return await userRepo.getUsers();
+    } catch (error: any) {
+        throw new Error(error.message || "Failed to fetch users");
+    }
+};
+
 
 
 export default {
     registerUser,
     loginUser,
+    getUsers
 };

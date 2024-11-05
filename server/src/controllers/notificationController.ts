@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import notificationRepo from "../repositories/notificationRepo";
+import notificationService from "../services/notificationService";
 
 const pushNotification = async (req: Request, res: Response) => {
   const { fromId, recipientId } = req.body;
 
   try {
-    const notification = await notificationRepo.createOrUpdateNotification(
+    const notification = await notificationService.createOrUpdateNotification(
       fromId,
       recipientId
     );
@@ -18,7 +18,7 @@ const pushNotification = async (req: Request, res: Response) => {
 const removeNotification = async (req: Request, res: Response) => {
   const { fromId, recipientId } = req.body;
   try {
-    const notification = await notificationRepo.pullRecipient(
+    const notification = await notificationService.pullRecipient(
       fromId,
       recipientId
     );
