@@ -9,6 +9,10 @@ const createContact = async (
     return await contactRepo.createContact(contactData);
 };
 
+const getContactsByQuery = async (query: string): Promise<IContact[]> => {
+    return await contactRepo.getContactsByQuery(query);
+}
+
 
 const updateContact = async (
     contactId: Types.ObjectId | string,
@@ -76,10 +80,29 @@ const buildClientContactData = async (contact: IContact) => {
     }
 };
 
+const findContactsByQuery = async (loggedInContact: IContact, query: string) => {
+    const contacts = await getContactsByQuery(query);
+    return contacts
+        .filter(foundContact =>
+            !foundContact._id.equals(loggedInContact._id) &&
+            !loggedInContact.subContacts.some(
+                (subContact: ISubContact) => subContact.subContactId.equals(foundContact._id))
+        )
+        .map(({_id, name, phoneNumber, avatar}) => ({
+            _id,
+            name,
+            phoneNumber,
+            avatar,
+            //TODO: Add last message to the response
+            lastMessage: "",
+        }));
+};
 
 export default {
     createContact,
+    getContactsByQuery,
     updateContact,
     buildClientContactData,
     addSubContact,
+    findContactsByQuery,
 }
