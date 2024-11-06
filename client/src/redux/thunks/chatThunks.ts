@@ -13,7 +13,8 @@ const getSelectedChatMessages = createAsyncThunk<
         subContactId: subContact._id,
       },
     });
-    console.log("response", response.data.messages);
+    console.log("response", response.data);
+
     return {
       messages: response.data.messages,
       selectedChat: subContact,

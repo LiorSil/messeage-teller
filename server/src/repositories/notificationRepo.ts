@@ -8,7 +8,7 @@ const createOrUpdateNotification = async (
         : Types.ObjectId[]
 ): Promise<INotification> => {
     const notification = await Notification.findOneAndUpdate(
-        {fromId},
+        {fromId: fromId},
         {$addToSet: {recipients: {$each: recipientsToAdd}}}, // Add only unique recipients
         {new: true, upsert: true} // Create if not found, return updated doc
     ).exec();

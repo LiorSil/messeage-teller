@@ -20,7 +20,7 @@ const createMessage = async (
     //add notification logic here
     await notificationRepo.createOrUpdateNotification(
         messageData.fromId as any,
-        messageData.toId as any
+        [messageData.toId as any]
     );
 
     return newMessage;

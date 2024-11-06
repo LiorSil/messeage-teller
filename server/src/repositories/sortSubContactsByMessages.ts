@@ -12,7 +12,6 @@ export const sortSubContactsByLatestChats = async (
 ) => {
     // Step 1: Fetch the contact by ID
     const contact: IContact | null = await contactRepo.getContactById(contactId);
-    console.log("contact", contact);
 
     if (!contact) {
         throw new Error(`No contact found with ID ${contactId}`);
