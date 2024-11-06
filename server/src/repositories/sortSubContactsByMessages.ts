@@ -18,7 +18,7 @@ export const sortSubContactsByLatestChats = async (
     }
 
     // Step 2: Fetch all chats where the contact is a participant
-    const chats: IChat[] = await chatRepo.getChatsByParticipant(contact._id);
+    const chats: IChat[] = await chatRepo.getChatsByContactId(contact._id);
     if (!chats || chats.length === 0) {
         return [];
     }

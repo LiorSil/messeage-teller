@@ -13,7 +13,7 @@ interface IChat extends Document {
   _id: Types.ObjectId;
   participants: Types.ObjectId[];
   messages: IMessage[];
-  notification: Types.ObjectId[];
+  notifications: Types.ObjectId[];
 }
 interface ISubContact {
   subContactId: Types.ObjectId;

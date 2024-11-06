@@ -1,7 +1,6 @@
 import chatRepo from "../repositories/chatRepo";
 import {IChat, IMessage} from "../models/model.interfaces";
 import {sortSubContactsByLatestChats} from "../repositories/sortSubContactsByMessages";
-import notificationRepo from "../repositories/notificationRepo";
 import {Types} from "mongoose";
 
 const getOrCreateChat = async (
@@ -12,19 +11,22 @@ const getOrCreateChat = async (
 
 const createMessage = async (
     chatId: Types.ObjectId,
-    messageData: Partial<IMessage>
+    messageData: IMessage
 ): Promise<IChat | null> => {
-    const newMessage = await chatRepo.pushMessage(chatId, messageData);
-    await sortSubContactsByLatestChats(messageData.fromId?.toString() as any);
-    await sortSubContactsByLatestChats(messageData.toId?.toString() as any);
-    //add notification logic here
-    await notificationRepo.createOrUpdateNotification(
-        messageData.fromId as any,
-        [messageData.toId as any]
-    );
 
+    const newMessage = await chatRepo.pushMessage(chatId, messageData);
+    await sortSubContactsByLatestChats(messageData.fromId);
+    await sortSubContactsByLatestChats(messageData.toId);
+    //add notification logic here
+    await chatRepo.pushNotification(chatId, messageData.toId);
     return newMessage;
+
 };
 
 
-export default { getOrCreateChat, createMessage,};
+const getChatByParticipants = async (participants: Types.ObjectId[]) => {
+    return await chatRepo.getOrCreateChat(participants);
+}
+
+
+export default {getOrCreateChat, createMessage, getChatByParticipants};

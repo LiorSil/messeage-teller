@@ -2,29 +2,9 @@ import {Types} from "mongoose";
 import {IChat, IMessage} from "../models/model.interfaces";
 import Chat from "../models/chatModel";
 
-const getOrCreateChat = async (
-    participants: Types.ObjectId[] | null
-): Promise<IChat> => {
-    if (!participants) {
-        throw new Error("Participants are required to create a chat");
-    }
-    const existingChat = await getChat(participants);
-    if (existingChat) {
-        return existingChat;
-    } else {
-        console.log("Creating new chat");
-        const newChat = new Chat({
-            participants: participants,
-            messages: [],
-            notification: [],
-        });
-        return await newChat.save();
-    }
-};
-
 
 const pushMessage = async (
-    chatId: Types.ObjectId | string,
+    chatId: Types.ObjectId,
     message: Partial<IMessage>
 ): Promise<IChat | null> => {
     return await Chat.findByIdAndUpdate(
@@ -33,16 +13,40 @@ const pushMessage = async (
         {new: true}
     ).exec();
 };
+const pushNotification = async (
+
+    chatId: Types.ObjectId,
+    recipientId: Types.ObjectId
+): Promise<IChat | null> => {
+    console.log("Pushing notification to:", recipientId);
+    console.log("chatId:", chatId);
+    const success = await Chat.findByIdAndUpdate(
+        chatId,
+        {$push: {notifications: recipientId}},
+        {new: true}
+    ).exec();
+    console.log("Notification pushed:", success);
+    return success;
+}
 
 const getChats = async (): Promise<IChat[] | IChat> => {
     return await Chat.find().exec();
 };
 
-const getChat = async (participants: Types.ObjectId[]): Promise<IChat | null> => {
-    return await Chat.findOne({
+const getOrCreateChat = async (
+    participants: Types.ObjectId[]
+): Promise<IChat> => {
+    let chat = await Chat.findOne({
         participants: {$all: participants},
         $expr: {$eq: [{$size: "$participants"}, participants.length]},
     }).exec();
+
+    // If no chat is found, create a new one
+    if (!chat) {
+        chat = new Chat({participants});
+        await chat.save();
+    }
+    return chat;
 };
 
 const updateChat = async (
@@ -58,7 +62,7 @@ const deleteChat = async (
     return await Chat.findByIdAndDelete(chatId).exec();
 };
 
-const getChatsByParticipant = async (participantId: Types.ObjectId): Promise<IChat[]> => {
+const getChatsByContactId = async (participantId: Types.ObjectId): Promise<IChat[]> => {
     try {
         return await Chat.find({
             participants: {$in: [participantId]}
@@ -70,11 +74,11 @@ const getChatsByParticipant = async (participantId: Types.ObjectId): Promise<ICh
 };
 
 export default {
-    getOrCreateChat,
     pushMessage,
+    pushNotification,
     getChats,
-    getChat,
+    getOrCreateChat,
     updateChat,
     deleteChat,
-    getChatsByParticipant
+    getChatsByContactId
 };

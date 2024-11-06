@@ -31,14 +31,17 @@ const messageSchema = new Schema<IMessage>({
 
 const chatSchema = new Schema<IChat>({
     participants: [
-        {type: Schema.Types.ObjectId, ref: "Contact", required: true},
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Contact",
+            required: true},
     ],
-    messages: {type: [messageSchema], default: []},
-    notification: {
+    messages: {
+        type: [messageSchema], default: []},
+    notifications: {
         type: [Schema.Types.ObjectId],
         ref: "Contact",
         default: [],
-        required: true,
     },
 });
 

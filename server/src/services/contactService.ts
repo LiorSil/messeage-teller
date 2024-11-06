@@ -36,6 +36,7 @@ const fetchSubContact = async (
 
     const {_id, name, phoneNumber, avatar} = fullSubContact;
 
+
     return {
         _id,
         name,
@@ -54,6 +55,7 @@ const buildClientContactData = async (contact: IContact) => {
         const notificationFromIds = new Set(
             notifications.map(({fromId}) => fromId.toString())
         );
+
         // Fetch all sub-contacts details asynchronously
         const subContacts = await Promise.all(
             contact.subContacts.map((subContact: ISubContact) =>
@@ -71,6 +73,7 @@ const buildClientContactData = async (contact: IContact) => {
                 createdAt: contact.createdAt,
                 subContacts,
             },
+
         };
     } catch (error) {
         return {
