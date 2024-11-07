@@ -18,6 +18,7 @@ export const initialState: ContactState = {
     avatar: "",
     createdAt: "",
     subContacts: [],
+    notificationsIds: [],
   },
   loading: false,
   phoneNumber: "",

@@ -21,12 +21,16 @@ const acknowledgeNotification = createAsyncThunk<
   { rejectValue: any }
 >(
   "contact/acknowledgeNotification",
-  async ({ fromId, recipientId }, { rejectWithValue }) => {
+  async ({ contactId, subContactNotification }, { rejectWithValue }) => {
     try {
-      await axiosInstance.put<void>("/notifications/removeNotification", {
-        fromId,
-        recipientId,
-      });
+      const resp = await axiosInstance.put(
+        "/notifications/acknowledgeNotification",
+        {
+          contactId,
+          subContactNotification,
+        },
+      );
+      return resp.data;
     } catch (error) {
       return handleAxiosError(error, rejectWithValue);
     }

@@ -4,7 +4,6 @@ import notificationController from "../controllers/notificationController";
 
 const router = Router();
 
-router.put("/pushNotification", authMiddleware, notificationController.pushNotification);
-router.put("/removeNotification", authMiddleware, notificationController.removeNotification);
+router.put("/acknowledgeNotification", authMiddleware, notificationController.pullNotification);
 
 export default router;

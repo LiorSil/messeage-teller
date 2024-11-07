@@ -8,7 +8,9 @@ export interface Contact {
   phoneNumber: string;
   avatar: string;
   createdAt: string;
-  subContacts: SubContact[]; // Ensure this is typed as an array of SubContact
+  subContacts: SubContact[]; //
+  notificationsIds: string[];
+  // Ensure this is typed as an array of SubContact
 }
 
 // src/types/contactTypes.ts
@@ -20,6 +22,6 @@ export interface FetchAddSubContactParams {
   newSubContactNumber: string;
 }
 export interface AckNotificationArgs {
-  fromId: string;
-  recipientId: string;
+  contactId: string;
+  subContactNotification: string;
 }

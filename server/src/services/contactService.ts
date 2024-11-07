@@ -1,6 +1,7 @@
 import contactRepo from "../repositories/contactRepo";
 import {IContact, ISubContact} from "../models/model.interfaces";
 import {Types} from "mongoose";
+import notificationService from "./notificationService";
 
 const createContact = async (
     contactData: Partial<IContact>
@@ -52,6 +53,7 @@ const buildClientContactData = async (contact: IContact) => {
                 fetchSubContact(subContact.subContactId)
             )
         );
+        const notificationsIds = notificationService.getNotifications(contact._id);
         // Return the data in the specified format
         return {
             status: 200,
@@ -62,7 +64,9 @@ const buildClientContactData = async (contact: IContact) => {
                 phoneNumber: contact.phoneNumber,
                 createdAt: contact.createdAt,
                 subContacts,
+                notificationsIds,
             },
+
 
         };
     } catch (error) {

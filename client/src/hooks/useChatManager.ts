@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { updateContact } from "../redux/slices/contactSlice";
 import { acknowledgeNotification } from "../redux/thunks/contactThunks";
 import { Contact } from "../types/contact";
+
 const cookies = new Cookies();
 
 export const useChatManager = () => {
@@ -54,8 +55,8 @@ export const useChatManager = () => {
     if (selectedChat.isIncomingMessage) {
       dispatch(
         acknowledgeNotification({
-          fromId: selectedChat._id,
-          recipientId: recipient._id,
+          contactId: contact._id,
+          subContactNotification: selectedChat._id,
         }),
       );
     }
