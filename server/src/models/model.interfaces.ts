@@ -13,7 +13,6 @@ interface IChat extends Document {
   _id: Types.ObjectId;
   participants: Types.ObjectId[];
   messages: IMessage[];
-  notifications: Types.ObjectId[];
 }
 interface ISubContact {
   subContactId: Types.ObjectId;
@@ -39,10 +38,9 @@ interface IUser extends Document {
   comparePassword: (candidatePassword: string) => Promise<boolean>;
 }
 
-interface INotification extends Document {
-  fromId: Types.ObjectId;
-  recipients: Types.ObjectId[];
+interface INotification {
+  contactId: Types.ObjectId;
+  contactNotifications: Types.ObjectId[];
 }
-
 
 export { IMessage, IChat,  ISubContact, IContact,  IUser, INotification };

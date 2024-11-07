@@ -1,7 +1,6 @@
 import contactRepo from "../repositories/contactRepo";
 import {IContact, ISubContact} from "../models/model.interfaces";
 import {Types} from "mongoose";
-import notificationRepo from "../repositories/notificationRepo";
 
 const createContact = async (
     contactData: Partial<IContact>
@@ -29,7 +28,6 @@ const addSubContact = async (
 
 const fetchSubContact = async (
     subContactId: Types.ObjectId | string,
-    notificationFromIds: Set<string>
 ) => {
     const fullSubContact = await contactRepo.getContactById(subContactId);
     if (!fullSubContact) return null;
@@ -42,24 +40,16 @@ const fetchSubContact = async (
         name,
         phoneNumber,
         avatar,
-        isIncomingMessage: notificationFromIds.has(_id.toString()) || false,
     };
 };
 
 
 const buildClientContactData = async (contact: IContact) => {
     try {
-        // Fetch active notifications for the contact
-        const notifications = await notificationRepo.findNotificationsForRecipient(contact._id);
-        // Create a set of notification sender IDs
-        const notificationFromIds = new Set(
-            notifications.map(({fromId}) => fromId.toString())
-        );
-
         // Fetch all sub-contacts details asynchronously
         const subContacts = await Promise.all(
             contact.subContacts.map((subContact: ISubContact) =>
-                fetchSubContact(subContact.subContactId, notificationFromIds)
+                fetchSubContact(subContact.subContactId)
             )
         );
         // Return the data in the specified format

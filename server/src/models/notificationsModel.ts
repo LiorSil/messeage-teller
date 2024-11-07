@@ -4,24 +4,22 @@ import { INotification } from "./model.interfaces";
 
 const notificationSchema = new Schema<INotification>(
     {
-        fromId: {
+        contactId: {
             type: Schema.Types.ObjectId,
             ref: "Contact",
             unique: true,
             required: true,
-    }, recipients:{
+    }, contactNotifications:{
         type: [Schema.Types.ObjectId],
         ref: "Contact",
         required: true,
     }
 
     });
-
+// Middleware to ensure unique ObjectIds in contactNotifications
 notificationSchema.pre("save", function (next) {
-  this.recipients = [...new Set(this.recipients.map(String))].map(
-    (id) => new Types.ObjectId(id)
-  );
-  next();
+    this.contactNotifications = [...new Set(this.contactNotifications)];
+    next();
 });
 
 const Notification = model<INotification>("Notification", notificationSchema, "notifications");
