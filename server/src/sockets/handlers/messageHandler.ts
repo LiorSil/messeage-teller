@@ -9,9 +9,9 @@ export const handleSendMessage = debounce(
         console.log("Handling send_message:", message);
         const [sender, recipient] = [message.fromId, message.toId];
         try {
-            const chat: IChat = await chatService.getOrCreateChat(sender, recipient);
+            const chat: IChat = await chatService.getOrCreateChat(recipient,sender);
             await chatService.createMessage(chat._id, message);
-            await notificationService.createOrUpdateNotification(sender, recipient);
+            await notificationService.pushNotification(recipient, sender);
             io.to(recipient.toString()).emit("receive_message", message);
         } catch (error) {
             console.error("Error handling send_message:", error);

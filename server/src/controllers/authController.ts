@@ -1,7 +1,5 @@
 import {Request, Response} from "express";
 import userService from "../services/userService";
-import jwt from "jsonwebtoken";
-import userRepo from "../repositories/userRepo";
 
 const register = async (req: Request, res: Response) => {
     try {

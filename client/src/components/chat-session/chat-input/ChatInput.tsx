@@ -1,3 +1,4 @@
+import React from "react";
 import ActionButtons from "./ActionButtons";
 import SendButton from "./SendButton";
 import RecordButton from "./RecordButton";

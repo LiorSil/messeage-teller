@@ -38,11 +38,7 @@ const chatSchema = new Schema<IChat>({
     ],
     messages: {
         type: [messageSchema], default: []},
-    notifications: {
-        type: [Schema.Types.ObjectId],
-        ref: "Contact",
-        default: [],
-    },
+
 });
 
 export const Chat = mongoose.model("Chat", chatSchema, "chats");

@@ -1,7 +1,6 @@
 import {NextFunction, Request, Response} from "express";
 import jwt from "jsonwebtoken";
 import contactService from "../services/contactService";
-import contactRepo from "../repositories/contactRepo";
 
 interface CustomRequest extends Request {
   contact?: any;
@@ -24,7 +23,7 @@ const authMiddleware = async (
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
     if (decoded) {
-      [req.body.contact] = await contactRepo.getContactsByQuery(decoded.phoneNumber)
+      [req.body.contact] = await contactService.getContactsByQuery(decoded.phoneNumber)
       next();
     }
   } catch (err) {
