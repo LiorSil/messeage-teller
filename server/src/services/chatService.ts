@@ -5,16 +5,17 @@ import { Types } from "mongoose";
 import { pushNotificationService } from "./notificationService";
 import { getOrCreateChat } from "../repositories/chatRepo";
 
-
-export const createMessage = async (
+export const createMessageService = async (
   chatId: Types.ObjectId,
   messageData: IMessage
 ): Promise<IChat | null> => {
   const newMessage = await pushMessage(chatId, messageData);
+
   await sortSubContactsByLatestChats(messageData.fromId);
   await sortSubContactsByLatestChats(messageData.toId);
   //add notification logic here
-  await pushNotificationService(chatId, messageData.toId);
+
+
   return newMessage;
 };
 

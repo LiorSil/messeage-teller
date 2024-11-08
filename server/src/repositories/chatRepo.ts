@@ -14,8 +14,6 @@ export const pushNotification = async (
   chatId: Types.ObjectId,
   recipientId: Types.ObjectId
 ): Promise<IChat | null> => {
-  console.log("Pushing notification to:", recipientId);
-  console.log("chatId:", chatId);
   const success = await chatModel
     .findByIdAndUpdate(
       chatId,
