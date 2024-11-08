@@ -1,37 +1,31 @@
-import Notification from "../models/notificationsModel";
+import notificationModel from "../models/notificationsModel";
 import {INotification} from "../models/model.interfaces";
 import {Types} from "mongoose";
 
-const getNotifications = async (contactId: Types.ObjectId): Promise<INotification | null> => {
-    return Notification.findOne({contactId}).exec();
+export const getNotifications = async (contactId: Types.ObjectId): Promise<INotification | null> => {
+    return notificationModel.findOne({contactId}).exec();
 }
 
-const pushNotification = async (
-    contactId: Types.ObjectId,
-    subContactNotification: Types.ObjectId
+export const pushNotification = async (
+  contactId: Types.ObjectId,
+  subContactNotification: Types.ObjectId
 ): Promise<INotification | null> => {
-    return Notification.findOneAndUpdate (
-        {contactId},
-        {$push: {contactNotifications: subContactNotification}},
-        {new: true}
-    ).exec();
-}
+  return notificationModel.findOneAndUpdate(
+    { contactId },
+    { $push: { contactNotifications: subContactNotification } },
+    { new: true, upsert: true } // 'upsert: true' creates a new document if none exists
+  ).exec();
+};
 
-const pullNotification = async (
-    contactId: Types.ObjectId,
-    subContactNotification: Types.ObjectId
+export const pullNotification = async (
+  contactId: Types.ObjectId,
+  subContactNotification: Types.ObjectId
 ): Promise<INotification | null> => {
-    return Notification.findOneAndUpdate (
-        {contactId},
-        {$pull: {contactNotifications: subContactNotification}},
-        {new: true}
-    ).exec();
-}
+  return notificationModel.findOneAndUpdate(
+    { contactId },
+    { $pull: { contactNotifications: subContactNotification } },
+    { new: true }
+  ).exec();
+};
 
-
-    export default {
-        getNotifications,
-        pushNotification,
-        pullNotification
-    };
 

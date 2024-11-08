@@ -29,5 +29,4 @@ const subContactsFinderSlice = createSlice({
   },
 });
 
-
 export default subContactsFinderSlice.reducer;

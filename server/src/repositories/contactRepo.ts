@@ -1,89 +1,83 @@
-import Contact from "../models/contactModel";
-import {IContact} from "../models/model.interfaces";
-import {Types} from "mongoose";
-import {phoneNumberSchema} from "./validation";
+import contactModel from "../models/contactModel";
+import { IContact } from "../models/model.interfaces";
+import { Types } from "mongoose";
+import { phoneNumberSchema } from "./validation";
 
-const createContact = async (
-    contactData: Partial<IContact>
+export const createContact = async (
+  contactData: Partial<IContact>
 ): Promise<IContact> => {
-    const contact = new Contact(contactData);
-    return await contact.save();
+  const contact = new contactModel(contactData);
+  return await contact.save();
 };
 
-const getContactById = async (
-    contactId: Types.ObjectId | string
+export const getContactById = async (
+  contactId: Types.ObjectId | string
 ): Promise<IContact | null> => {
-    return await Contact.findById(contactId).exec();
+  return await contactModel.findById(contactId).exec();
 };
 
-const getContactByPhoneNumber = async (phoneNumber: string) => {
-    try {
-        return await Contact.findOne({phoneNumber: phoneNumber});
-    } catch (error) {
-        console.error("Error finding contact by phone number:", error);
-        return null;
-    }
+export const getContactByPhoneNumber = async (phoneNumber: string) => {
+  try {
+    return await contactModel.findOne({ phoneNumber: phoneNumber });
+  } catch (error) {
+    console.error("Error finding contact by phone number:", error);
+    return null;
+  }
 };
 
-const getContactsByName = async (name: string): Promise<IContact[]> => {
-    return await Contact.find({name: {$regex: name, $options: "i"}}).exec();
+export const getContactsByName = async (name: string): Promise<IContact[]> => {
+  return await contactModel
+    .find({ name: { $regex: name, $options: "i" } })
+    .exec();
 };
 
+export const getContactsByQuery = async (
+  query: string
+): Promise<IContact[]> => {
+  const isPhoneNumber = await phoneNumberSchema
+    .validate(query)
+    .then(() => true)
+    .catch(() => false);
 
-const getContactsByQuery = async (query: string): Promise<IContact[]> => {
-    const isPhoneNumber = await phoneNumberSchema
-        .validate(query)
-        .then(() => true)
-        .catch(() => false);
-
-    const searchField = isPhoneNumber
-        ? {phoneNumber: {$regex: query, $options: "i"}}
-        : {name: {$regex: query, $options: "i"}};
-    return await Contact.find(searchField).exec();
-
+  const searchField = isPhoneNumber
+    ? { phoneNumber: { $regex: query, $options: "i" } }
+    : { name: { $regex: query, $options: "i" } };
+  return await contactModel.find(searchField).exec();
 };
 
-
-const getContacts = async (): Promise<IContact[]> => {
-    return await Contact.find().exec();
+export const getContacts = async (): Promise<IContact[]> => {
+  return await contactModel.find().exec();
 };
-const updateContact = async (
-    contactId: Types.ObjectId | string,
-    updateData: Partial<IContact>
+export const updateContact = async (
+  contactId: Types.ObjectId | string,
+  updateData: Partial<IContact>
 ): Promise<IContact | null> => {
-    return await Contact.findByIdAndUpdate(contactId, updateData, {
-        new: true,
-    }).exec();
+  return await contactModel
+    .findByIdAndUpdate(contactId, updateData, {
+      new: true,
+    })
+    .exec();
 };
 
-const addSubContact = async (contactId: Types.ObjectId, subContactId: Types.ObjectId
+export const addSubContact = async (
+  contactId: Types.ObjectId,
+  subContactId: Types.ObjectId
 ): Promise<IContact | null> => {
-    const subContactExists = await Contact.findById(subContactId).exec();
-    if (!subContactExists)
-        throw new Error("Sub-contact does not exist");
-    return await Contact.findByIdAndUpdate(
-        contactId,
-        {
-            $addToSet: {subContacts: {subContactId: subContactId}}
-        },
-        {new: true, upsert: true} //
-    ).exec();
-}
-
-const deleteContact = async (
-    contactId: Types.ObjectId | string
-): Promise<IContact | null> => {
-    return await Contact.findByIdAndDelete(contactId).exec();
+  const subContactExists = await contactModel.findById(subContactId).exec();
+  if (!subContactExists) throw new Error("Sub-contact does not exist");
+  return await contactModel
+    .findByIdAndUpdate(
+      contactId,
+      {
+        $addToSet: { subContacts: { subContactId: subContactId } },
+      },
+      { new: true, upsert: true } //
+    )
+    .exec();
 };
 
-export default {
-    createContact,
-    getContactById,
-    getContactByPhoneNumber,
-    getContactsByName,
-    getContacts,
-    updateContact,
-    deleteContact,
-    addSubContact,
-    getContactsByQuery,
+export const deleteContact = async (
+  contactId: Types.ObjectId | string
+): Promise<IContact | null> => {
+  return await contactModel.findByIdAndDelete(contactId).exec();
 };

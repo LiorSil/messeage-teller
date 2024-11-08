@@ -1,14 +1,14 @@
-import {Request, Response} from "express";
-import chatService from "../services/chatService";
+import { Request, Response } from "express";
+import { getChatByParticipants } from "../services/chatService";
+("../services/chatService");
 
-const getChatsByParticipantsIds = async (req: Request, res: Response) => {
-    const {contact} = await req.body;
-    const {subContactId} = req.query
-    const chat = await chatService.getChatByParticipants([contact._id, subContactId]);
-    if (chat)
-        res.status(200).json(chat);
-    else
-        res.status(404).json({message: "Chat not found"});
-
-}
-export default {getChatsByParticipantsIds};
+export const getChatsByParticipantsIds = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { contact } = await req.body;
+  const { subContactId } = req.query;
+  const chat = await getChatByParticipants([contact._id, subContactId]);
+  if (chat) res.status(200).json(chat);
+  else res.status(404).json({ message: "Chat not found" });
+};

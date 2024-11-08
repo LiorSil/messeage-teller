@@ -1,8 +1,9 @@
+import {getContactById, updateContact} from "./contactRepo";
+import { getChatsByContactId } from "./chatRepo";
 import {IChat, IContact} from "../models/model.interfaces";
-import {IMessage} from "../models/model.interfaces";
-import contactRepo from "./contactRepo";
-import chatRepo from "./chatRepo";
 import {Types} from "mongoose";
+import {IMessage} from "../models/model.interfaces";
+
 import {mappedChatParticipants} from "../types/chat";
 
 // todo: implement scenario where the contact has no subContacts
@@ -11,14 +12,14 @@ export const sortSubContactsByLatestChats = async (
     contactId: Types.ObjectId | string
 ) => {
     // Step 1: Fetch the contact by ID
-    const contact: IContact | null = await contactRepo.getContactById(contactId);
+    const contact: IContact | null = await getContactById(contactId);
 
     if (!contact) {
         throw new Error(`No contact found with ID ${contactId}`);
     }
 
     // Step 2: Fetch all chats where the contact is a participant
-    const chats: IChat[] = await chatRepo.getChatsByContactId(contact._id);
+    const chats: IChat[] = await getChatsByContactId(contact._id);
     if (!chats || chats.length === 0) {
         return [];
     }
@@ -55,7 +56,7 @@ export const sortSubContactsByLatestChats = async (
     contact.subContacts.sort((a, b) => b.lastMessageTime.getTime() - a.lastMessageTime.getTime());
 
     // Step 6: Update only the `subContacts` field in the database
-    const success = await contactRepo.updateContact(contact._id, contact);
+    const success = await updateContact(contact._id, contact);
     if (!success) {
         throw new Error(`Failed to update contact with ID ${contact._id}`);
     }

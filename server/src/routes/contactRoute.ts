@@ -1,12 +1,17 @@
-import {Router} from "express";
-import contactController from "../controllers/contactController";
-import authMiddleware from "../middlewares/authMiddleware";
+import { Router } from "express";
+import { authMiddleware } from "../middlewares/authMiddleware";
+import {
+  getContact,
+  findContactsByQuery,
+  addSubContact,
+  updateProfile,
+} from "../controllers/contactController";
 
 const router = Router();
 
-router.get("/", authMiddleware, contactController.getContact);
-router.get("/:query", authMiddleware, contactController.findContactsByQuery);
-router.put("/addSubContact", authMiddleware, contactController.addSubContact);
-router.put("/updateProfile", authMiddleware, contactController.updateProfile);
+router.get("/", authMiddleware, getContact);
+router.get("/:query", authMiddleware, findContactsByQuery);
+router.put("/addSubContact", authMiddleware, addSubContact);
+router.put("/updateProfile", authMiddleware, updateProfile);
 
 export default router;

@@ -3,6 +3,7 @@ import { handleSendMessage } from "./messageHandler";
 
 export const handleConnection = (socket: Socket, io: Server) => {
   const contactId = socket.handshake.query.contactId as string;
+  console.log("object", contactId);
 
   if (contactId) {
     socket.join(contactId);
