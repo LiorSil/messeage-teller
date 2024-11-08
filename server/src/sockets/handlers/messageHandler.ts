@@ -6,15 +6,16 @@ import {
   getChatByParticipants,
 } from "../../services/chatService";
 import { pushNotificationService } from "../../services/notificationService";
+import { addSubContactService } from "../../services/contactService";
 
 export const handleSendMessage = debounce(
   async (message: IMessage, io: Server) => {
     try {
-      console.log("Handling send_message:", message);
       const [sender, recipient] = [message.fromId, message.toId];
       const chat: IChat = await getChatByParticipants([recipient, sender]);
       await createMessageService(chat._id, message);
-      pushNotificationService(recipient, sender);
+      await addSubContactService(recipient, sender);
+      await pushNotificationService(recipient, sender);
 
       io.to(recipient.toString()).emit("receive_message", message);
     } catch (error) {

@@ -1,7 +1,7 @@
 import contactModel from "../models/contactModel";
 import { IContact } from "../models/model.interfaces";
 import { Types } from "mongoose";
-import { phoneNumberSchema } from "./validation";
+import { isSubContactExist, phoneNumberSchema } from "./validation";
 
 export const createContact = async (
   contactData: Partial<IContact>
@@ -63,15 +63,20 @@ export const addSubContact = async (
   contactId: Types.ObjectId,
   subContactId: Types.ObjectId
 ): Promise<IContact | null> => {
-  const subContactExists = await contactModel.findById(subContactId).exec();
-  if (!subContactExists) throw new Error("Sub-contact does not exist");
+  const subContactsIsAlreadyExist = await isSubContactExist(
+    contactId,
+    subContactId
+  );
+  if (subContactsIsAlreadyExist) {
+    return await contactModel.findById(contactId).exec();
+  }
   return await contactModel
     .findByIdAndUpdate(
       contactId,
       {
         $addToSet: { subContacts: { subContactId: subContactId } },
       },
-      { new: true, upsert: true } //
+      { new: true, upsert: true } // 'upsert: true' to create the contact if it doesn't exist
     )
     .exec();
 };

@@ -37,6 +37,11 @@ const contactSchema = new Schema<IContact>(
     }
 );
 
+contactSchema.path("subContacts").validate(function (value: any) {
+  const uniqueIds = new Set(value.map((v: any) => v.subContactId.toString()));
+  return uniqueIds.size === value.length;
+}, "Duplicate subContactId found in subContacts array.");
+
 const Contact = model<IContact>("Contact", contactSchema, "contacts");
 
 export default Contact;

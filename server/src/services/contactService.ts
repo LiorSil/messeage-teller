@@ -1,5 +1,5 @@
 import {
-    createContact,
+  createContact,
   getContactsByQuery,
   updateContact,
   addSubContact,
