@@ -18,6 +18,7 @@ interface ISubContact {
   subContactId: Types.ObjectId;
   selected: boolean;
   lastMessageTime: Date;
+  isIncomingMessage?: boolean;
 }
 
 interface IContact extends Document {

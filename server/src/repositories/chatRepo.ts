@@ -32,6 +32,7 @@ export const getChats = async (): Promise<IChat[] | IChat> => {
 export const getOrCreateChat = async (
   participants: Types.ObjectId[]
 ): Promise<IChat> => {
+  console.log("Participants:", participants);
   let chat = await chatModel
     .findOne({
       participants: { $all: participants },

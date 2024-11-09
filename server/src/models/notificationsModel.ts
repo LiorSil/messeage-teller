@@ -13,6 +13,7 @@ const notificationSchema = new Schema<INotification>(
         type: [Schema.Types.ObjectId],
         ref: "Contact",
         required: true,
+        default: [],
     }
 
     });

@@ -9,6 +9,7 @@ const useContact = () => {
   const { loading, error, contact } = useSelector(
     (state: RootState) => state.contact,
   );
+    
 
   useEffect(() => {
     dispatch(fetchContact());

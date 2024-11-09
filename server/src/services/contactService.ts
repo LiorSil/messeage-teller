@@ -4,8 +4,13 @@ import {
   updateContact,
   addSubContact,
   getContactById,
+  updateNotification,
 } from "../repositories/contactRepo";
-import { IContact, ISubContact } from "../models/model.interfaces";
+import {
+  IContact,
+  INotification,
+  ISubContact,
+} from "../models/model.interfaces";
 import { Types } from "mongoose";
 import { getNotificationsService } from "./notificationService";
 
@@ -51,14 +56,18 @@ export const getContactByIdService = async (
 
 export const buildClientContactDataService = async (contact: IContact) => {
   try {
-    // Fetch all sub-contacts details asynchronously
     const subContacts = await Promise.all(
-      contact.subContacts.map((subContact: ISubContact) =>
-        getContactByIdService(subContact.subContactId)
-      )
+      contact.subContacts.map(async (subContact: ISubContact) => {
+        const mSubContact = await getContactByIdService(
+          subContact.subContactId
+        );
+        return {
+          ...mSubContact,
+          isIncomingMessage: subContact.isIncomingMessage,
+        };
+      })
     );
-    const notificationsIds = getNotificationsService(contact._id);
-    // Return the data in the specified format
+
     return {
       status: 200,
       data: {
@@ -68,7 +77,6 @@ export const buildClientContactDataService = async (contact: IContact) => {
         phoneNumber: contact.phoneNumber,
         createdAt: contact.createdAt,
         subContacts,
-        notificationsIds,
       },
     };
   } catch (error) {
@@ -100,4 +108,34 @@ export const findContactsByQueryService = async (
       //TODO: Add last message to the response
       lastMessage: "",
     }));
+};
+
+export const pushNotificationService = async (
+  contactId: Types.ObjectId,
+  subContactId: Types.ObjectId
+): Promise<IContact | null> => {
+  const contact = await getContactById(contactId);
+  if (!contact) return null;
+
+  const updatedContact = await updateNotification(
+    contactId,
+    subContactId,
+    true
+  );
+  return updatedContact;
+};
+
+export const pullNotificationService = async (
+  contactId: Types.ObjectId,
+  subContactId: Types.ObjectId
+): Promise<IContact | null> => {
+  const contact = await getContactById(contactId);
+  if (!contact) return null;
+
+  const updatedContact = await updateNotification(
+    contactId,
+    subContactId,
+    false
+  );
+  return updatedContact;
 };

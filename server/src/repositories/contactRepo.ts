@@ -68,7 +68,7 @@ export const addSubContact = async (
     subContactId
   );
   if (subContactsIsAlreadyExist) {
-    return await contactModel.findById(contactId).exec();
+    return null;
   }
   return await contactModel
     .findByIdAndUpdate(
@@ -85,4 +85,16 @@ export const deleteContact = async (
   contactId: Types.ObjectId | string
 ): Promise<IContact | null> => {
   return await contactModel.findByIdAndDelete(contactId).exec();
+};
+
+export const updateNotification = async (
+  contactId: Types.ObjectId,
+  subContactId: Types.ObjectId,
+  isIncomingMessage: boolean
+): Promise<IContact | null> => {
+  return await contactModel.findOneAndUpdate(
+    { _id: contactId, "subContacts.subContactId": subContactId },
+    { $set: { "subContacts.$.isIncomingMessage": isIncomingMessage } },
+    { new: true }
+  );
 };

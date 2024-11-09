@@ -5,7 +5,7 @@ import { Types } from "mongoose";
 export const getNotifications = async (
   contactId: Types.ObjectId
 ): Promise<INotification | null> => {
-  return notificationModel.findOne({ contactId }).exec();
+  return notificationModel.findOne({ _id: contactId }).exec();
 };
 
 export const pushNotification = async (
@@ -14,7 +14,7 @@ export const pushNotification = async (
 ): Promise<INotification | null> => {
   const result = await notificationModel
     .findOneAndUpdate(
-      { contactId: contactId },
+      { _id: contactId },
       { $addToSet: { contactNotifications: subContactNotification } }, // Use $addToSet to avoid duplicates
       { new: true, upsert: true } // 'upsert: true' creates a new document if none exists
     )
@@ -28,8 +28,8 @@ export const pullNotification = async (
   subContactNotification: Types.ObjectId
 ): Promise<INotification | null> => {
   return notificationModel
-    .findOneAndUpdate(
-      { contactId },
+    .findByIdAndUpdate(
+      contactId,
       { $pull: { contactNotifications: subContactNotification } },
       { new: true }
     )

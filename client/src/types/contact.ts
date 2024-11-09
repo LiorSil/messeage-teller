@@ -23,5 +23,5 @@ export interface FetchAddSubContactParams {
 }
 export interface AckNotificationArgs {
   contactId: string;
-  subContactNotification: string;
+  subContactId: string;
 }

@@ -1,10 +1,10 @@
 import {Router} from "express";
 import {authMiddleware} from "../middlewares/authMiddleware";
-import { pullNotification } from "../controllers/notificationController";
+import { acknowledgeNotification } from "../controllers/contactController";
 
 const router = Router();
 
-router.put("/acknowledgeNotification", authMiddleware ,pullNotification);
+router.put("/acknowledgeNotification", authMiddleware, acknowledgeNotification);
 export default router;
 
 

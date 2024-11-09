@@ -8,8 +8,6 @@ export const useNotification = () => {
   const dispatch = useDispatch();
 
   const createNotification = (message: Message, contact: Contact) => {
-    if (!contact.subContacts) return;
-
     const updatedSubContacts = contact.subContacts.map(
       (subContact: SubContact) =>
         subContact._id === message.fromId

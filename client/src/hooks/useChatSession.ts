@@ -16,7 +16,7 @@ export const useChatSession = () => {
   const socket = useSocket();
   const messages = useSelector((state: RootState) => state.chat.messages);
   const selectedChat = useSelector(
-    (state: RootState) => state.chat.selectedChat,
+    (state: RootState) => state.chat.selectedChat
   );
   const { contact } = useContact();
   const { newMessages, createMessage } = useMessages(messages);
@@ -25,24 +25,14 @@ export const useChatSession = () => {
   // Handle receiving messages from the server
   const receiveMessage = useCallback(
     (message: Message) => {
-      console.log("Received message:", message);
-
       const isFromSelectedChat = message.fromId === selectedChat?._id;
-      const isFromSubContact = contact?.subContacts.some(
-        (subContact) => subContact._id === message.fromId,
-      );
 
-      if (isFromSelectedChat) {
-        createMessage(message);
-      }
+      isFromSelectedChat && createMessage(message);
+      contact && createNotification(message, contact);
 
-      if (isFromSubContact && contact) {
-        createNotification(message, contact);
-      } else {
-        dispatch(fetchContact());
-      }
+      dispatch(fetchContact());
     },
-    [selectedChat, createMessage, createNotification, contact, dispatch],
+    [selectedChat, createMessage, createNotification, contact, dispatch]
   );
 
   // Manage socket listeners for message receiving
@@ -60,8 +50,6 @@ export const useChatSession = () => {
       socket.emit("send_message", message);
       createMessage(message);
       clearInput();
-    } else {
-      console.error("contactId or selectedChatId is not valid.");
     }
   }, [socket, inputValue, contact, selectedChat, createMessage, clearInput]);
 

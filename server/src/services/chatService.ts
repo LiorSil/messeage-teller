@@ -18,5 +18,6 @@ export const createMessageService = async (
 };
 
 export const getChatByParticipants = async (participants: Types.ObjectId[]) => {
-  return await getOrCreateChat(participants);
+  const chat = await getOrCreateChat(participants);
+  return chat;
 };

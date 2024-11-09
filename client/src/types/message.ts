@@ -4,7 +4,6 @@ export type Message = {
   fromId: string;
   toId: string;
   sentTD: Date;
-  read?: boolean;
 };
 
 

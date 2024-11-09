@@ -5,7 +5,7 @@ import {
   createMessageService,
   getChatByParticipants,
 } from "../../services/chatService";
-import { pushNotificationService } from "../../services/notificationService";
+import { pushNotificationService } from "../../services/contactService";
 import { addSubContactService } from "../../services/contactService";
 
 export const handleSendMessage = debounce(
@@ -14,10 +14,12 @@ export const handleSendMessage = debounce(
       const [sender, recipient] = [message.fromId, message.toId];
       const chat: IChat = await getChatByParticipants([recipient, sender]);
       await createMessageService(chat._id, message);
-      await addSubContactService(recipient, sender);
+      const isNewSubContact = await addSubContactService(recipient, sender);
       await pushNotificationService(recipient, sender);
-
-      io.to(recipient.toString()).emit("receive_message", message);
+      if (isNewSubContact) {
+        console.log("New subContact added");
+        io.to(recipient.toString()).emit("receive_message", message);
+      } else io.to(recipient.toString()).emit("receive_message", message);
     } catch (error) {
       console.error("Error handling send_message:", error);
     }

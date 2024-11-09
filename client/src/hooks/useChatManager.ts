@@ -56,8 +56,8 @@ export const useChatManager = () => {
       dispatch(
         acknowledgeNotification({
           contactId: contact._id,
-          subContactNotification: selectedChat._id,
-        }),
+          subContactId: selectedChat._id,
+        })
       );
     }
   };
