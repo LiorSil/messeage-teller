@@ -3,11 +3,14 @@ import axios from "axios";
 
 export const handleAxiosError = <T>(
   error: unknown,
-  rejectWithValue: (value: T) => T,
+  rejectWithValue: (value: T) => T
 ): T => {
-  // @ts-ignore
-  if (axios.isAxiosError(error) && error.response) {
-    return rejectWithValue(error.response.data as T);
+  if (axios.isAxiosError(error)) {
+    if (error.response && error.response.data) {
+      return rejectWithValue(error.response.data as T);
+    }
+    return rejectWithValue("An unexpected error occurred" as T);
   }
+  // Handle non-Axios errors, if needed
   return rejectWithValue("An unexpected error occurred" as T);
 };

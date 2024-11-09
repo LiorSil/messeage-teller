@@ -24,7 +24,6 @@ interface Contact {
 
 const AddContact = () => {
   const [query, setQuery] = useState("");
-
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
   const {
@@ -44,7 +43,7 @@ const AddContact = () => {
         handleFetchContactByPhoneOrName(value);
       }
     },
-    [handleClearAddContactSuccess, handleFetchContactByPhoneOrName],
+    [handleClearAddContactSuccess, handleFetchContactByPhoneOrName]
   );
   const handleItemClick = useCallback((subContactId: string) => {
     setSelectedItem((prev) => (prev === subContactId ? null : subContactId));
@@ -72,7 +71,6 @@ const AddContact = () => {
         <ComboboxDropdown
           isVisible={query.length >= 5}
           onAddContact={() => {
-            console.log("selectedItem", selectedItem);
             if (selectedItem && subContacts.length > 0) {
               handleAddSubContact(selectedItem);
             } else {

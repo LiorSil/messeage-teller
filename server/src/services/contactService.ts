@@ -7,6 +7,7 @@ import {
 } from "../repositories/contactRepo";
 import { IContact, ISubContact } from "../models/model.interfaces";
 import { Types } from "mongoose";
+import { ClientSubContact } from "../types/client";
 
 export const createContactService = async (
   contactData: Partial<IContact>
@@ -30,11 +31,15 @@ export const updateContactService = async (
 export const addSubContactService = async (
   contactId: Types.ObjectId,
   subContactId: Types.ObjectId
-): Promise<IContact | null> => await addSubContact(contactId, subContactId);
+): Promise<ClientSubContact | null> => {
+  await addSubContact(contactId, subContactId);
+
+  return await getContactByIdService(subContactId);
+};
 
 export const getContactByIdService = async (
   subContactId: Types.ObjectId | string
-) => {
+): Promise<ClientSubContact | null> => {
   const fullSubContact = await getContactById(subContactId);
   if (!fullSubContact) return null;
 

@@ -18,9 +18,12 @@ export interface Contact {
 export interface FetchContactByPhoneOrNameParams {
   query: string;
 }
+
+// src/types/notification.ts
 export interface FetchAddSubContactParams {
-  newSubContactNumber: string;
+  subContactId: string;
 }
+
 export interface AckNotificationArgs {
   contactId: string;
   subContactId: string;

@@ -59,14 +59,10 @@ export const addSubContact = async (
   try {
     const { contact, subContactId } = req.body;
 
-    const contactWasUpdated = await addSubContactService(
-      contact._id,
-      subContactId
-    );
-    if (!contactWasUpdated)
+    const newSubContact = await addSubContactService(contact._id, subContactId);
+    if (!newSubContact)
       res.status(404).json({ message: "Sub contact not found" });
-    const result = await buildClientContactDataService(contact);
-    res.status(result.status).json(result.data);
+    res.status(200).json({...newSubContact, isIncomingMessage: false});
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
@@ -88,4 +84,3 @@ export const updateProfile = async (
     res.status(500).json({ message: error.message });
   }
 };
-

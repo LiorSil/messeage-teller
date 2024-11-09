@@ -10,7 +10,6 @@ const fetchContact = createAsyncThunk<Contact, void, { rejectValue: any }>(
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await axiosInstance.get<Contact>("/contacts");
-      console.log("contact", data);
       return data;
     } catch (error) {
       return handleAxiosError(error, rejectWithValue);

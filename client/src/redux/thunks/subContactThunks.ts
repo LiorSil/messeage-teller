@@ -1,6 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { SubContact } from "../../types/subContact";
-import { FetchContactByPhoneOrNameParams } from "../../types/contact";
+import {
+  FetchAddSubContactParams,
+  FetchContactByPhoneOrNameParams,
+} from "../../types/contact";
 import axiosInstance from "../../api/axiosInstance.ts";
 import { handleAxiosError } from "../../utils/handleAxiosError.ts";
 
@@ -11,7 +14,7 @@ import { handleAxiosError } from "../../utils/handleAxiosError.ts";
  * @throws The error message from the API response or a generic error message
  */
 
-const fetchContactByPhoneOrName = createAsyncThunk<
+export const fetchContactByPhoneOrName = createAsyncThunk<
   SubContact[],
   FetchContactByPhoneOrNameParams,
   { rejectValue: any }
@@ -20,13 +23,33 @@ const fetchContactByPhoneOrName = createAsyncThunk<
   async ({ query }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get<SubContact[]>(
-        `/contacts/${query}`,
+        `/contacts/${query}`
       );
       return response.data;
     } catch (error) {
       return handleAxiosError(error, rejectWithValue);
     }
-  },
+  }
 );
 
-export { fetchContactByPhoneOrName };
+export const fetchAddSubContact = createAsyncThunk<
+  SubContact,
+  FetchAddSubContactParams,
+  { rejectValue: any }
+>(
+  "subContactsFinder/FetchAddSubContact",
+  async ({ subContactId }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.put<SubContact>(
+        `/contacts/addSubContact`,
+        {
+          subContactId,
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      return handleAxiosError(error, rejectWithValue);
+    }
+  }
+);

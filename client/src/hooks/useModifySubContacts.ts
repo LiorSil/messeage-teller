@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import axiosInstance from "../api/axiosInstance.ts";
-import { updateContact } from "../redux/slices/contactSlice";
+import { fetchAddSubContact } from "../redux/thunks/subContactThunks";
+
 import { useDispatch } from "react-redux";
 
 const useModifySubContacts = () => {
@@ -11,20 +11,12 @@ const useModifySubContacts = () => {
 
   const dispatch = useDispatch();
 
-  const handleAddSubContact = (subContactId: string) => {
-    axiosInstance
-      .put(`/contacts/addSubContact`, {
-        subContactId,
-      })
-      .then((response) => {
-        dispatch(updateContact(response.data));
-        setShowNotice(true);
-      })
-      .catch((error) => {
-        console.error(error);
-        setShowNotice(true);
-      });
-  };
+  const handleAddSubContact = useCallback(
+    (subContactId: string) => {
+      dispatch(fetchAddSubContact({ subContactId }));
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     if (showNotice) {
