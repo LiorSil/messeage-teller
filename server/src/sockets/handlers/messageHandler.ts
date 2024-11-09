@@ -5,8 +5,8 @@ import {
   createMessageService,
   getChatByParticipants,
 } from "../../services/chatService";
-import { pushNotificationService } from "../../services/contactService";
 import { addSubContactService } from "../../services/contactService";
+import { pushNotificationService } from "../../services/notificationService";
 
 export const handleSendMessage = debounce(
   async (message: IMessage, io: Server) => {

@@ -4,15 +4,9 @@ import {
   updateContact,
   addSubContact,
   getContactById,
-  updateNotification,
 } from "../repositories/contactRepo";
-import {
-  IContact,
-  INotification,
-  ISubContact,
-} from "../models/model.interfaces";
+import { IContact, ISubContact } from "../models/model.interfaces";
 import { Types } from "mongoose";
-import { getNotificationsService } from "./notificationService";
 
 export const createContactService = async (
   contactData: Partial<IContact>
@@ -108,34 +102,4 @@ export const findContactsByQueryService = async (
       //TODO: Add last message to the response
       lastMessage: "",
     }));
-};
-
-export const pushNotificationService = async (
-  contactId: Types.ObjectId,
-  subContactId: Types.ObjectId
-): Promise<IContact | null> => {
-  const contact = await getContactById(contactId);
-  if (!contact) return null;
-
-  const updatedContact = await updateNotification(
-    contactId,
-    subContactId,
-    true
-  );
-  return updatedContact;
-};
-
-export const pullNotificationService = async (
-  contactId: Types.ObjectId,
-  subContactId: Types.ObjectId
-): Promise<IContact | null> => {
-  const contact = await getContactById(contactId);
-  if (!contact) return null;
-
-  const updatedContact = await updateNotification(
-    contactId,
-    subContactId,
-    false
-  );
-  return updatedContact;
 };
