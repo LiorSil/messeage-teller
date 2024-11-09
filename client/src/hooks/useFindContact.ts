@@ -2,11 +2,12 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../redux/store";
 import { fetchContactByPhoneOrName } from "../redux/thunks/subContactThunks";
+import { clearQuery, updateQuery } from "../redux/slices/subContactFinderSlice";
 
 const useFindContact = () => {
   const dispatch: AppDispatch = useDispatch();
 
-  const { subContacts, loading, error } = useSelector(
+  const { subContacts, loading, error, query } = useSelector(
     (state: RootState) => state.subContact,
   );
 
@@ -17,15 +18,21 @@ const useFindContact = () => {
     [dispatch],
   );
 
-  const handleClearAddContactSuccess = useCallback(() => {}, []);
+  const handleUpdateQuery = useCallback((query: string) => {
+    dispatch(updateQuery(query));
+  }, [dispatch]);
+  const handleClearQuery = useCallback(() => {
+    dispatch(clearQuery());
+  }, [dispatch]);
 
   return {
     subContacts,
     loading,
     error,
-
     handleFetchContactByPhoneOrName,
-    handleClearAddContactSuccess,
+    handleUpdateQuery,
+    handleClearQuery,
+    query,
   };
 };
 

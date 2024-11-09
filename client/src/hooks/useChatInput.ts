@@ -1,7 +1,10 @@
 import { useState, useCallback } from "react";
 
+
+
 export const useChatInput = () => {
   const [inputValue, setInputValue] = useState<string>("");
+
 
   const handleInputChange = useCallback((value: string) => {
     setInputValue(value);

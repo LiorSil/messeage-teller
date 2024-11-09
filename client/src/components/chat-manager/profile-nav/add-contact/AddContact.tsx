@@ -23,27 +23,22 @@ interface Contact {
 }
 
 const AddContact = () => {
-  const [query, setQuery] = useState("");
+  
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
-  const {
-    handleFetchContactByPhoneOrName,
-    subContacts,
-    handleClearAddContactSuccess,
-  } = useFindContact();
+  const { handleFetchContactByPhoneOrName, query, subContacts, handleUpdateQuery, handleClearQuery } = useFindContact();
 
   const { handleAddSubContact, showNotice, handleShowNotice } =
     useModifySubContacts();
 
   const handleInputChange = useCallback(
     ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-      handleClearAddContactSuccess();
-      setQuery(value);
+      handleUpdateQuery(value);
       if (value.length >= 5) {
         handleFetchContactByPhoneOrName(value);
       }
     },
-    [handleClearAddContactSuccess, handleFetchContactByPhoneOrName]
+    [handleFetchContactByPhoneOrName]
   );
   const handleItemClick = useCallback((subContactId: string) => {
     setSelectedItem((prev) => (prev === subContactId ? null : subContactId));
@@ -66,7 +61,7 @@ const AddContact = () => {
         <ComboboxInput
           value={query}
           onChange={handleInputChange}
-          onClear={() => setQuery("")}
+          onClear={() => handleClearQuery()}
         />
         <ComboboxDropdown
           isVisible={query.length >= 5}

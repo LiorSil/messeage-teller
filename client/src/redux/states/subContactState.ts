@@ -5,4 +5,5 @@ export interface SubContactState {
   subContacts: SubContact[];
   loading: boolean;
   error: string;
+  query: string;
 }

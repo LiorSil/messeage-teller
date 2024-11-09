@@ -8,12 +8,20 @@ const initialState: SubContactState = {
   subContacts: [],
   loading: false,
   error: "",
+  query: "",
 };
 
 const subContactsFinderSlice = createSlice({
   name: "subContactsFinder",
   initialState,
-  reducers: {},
+  reducers: {
+    updateQuery: (state, action) => {
+      state.query = action.payload;
+    },
+    clearQuery: (state) => {
+      state.query = "";
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchContactByPhoneOrName.fulfilled, (state, action) => {
       state.loading = false;
@@ -29,4 +37,5 @@ const subContactsFinderSlice = createSlice({
   },
 });
 
+export const { updateQuery, clearQuery } = subContactsFinderSlice.actions;
 export default subContactsFinderSlice.reducer;

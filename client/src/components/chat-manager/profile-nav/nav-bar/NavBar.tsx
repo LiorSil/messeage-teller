@@ -16,7 +16,7 @@ const NavBar: React.FC = () => {
     useState<React.ReactNode>(null);
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
   };
 
   const onBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {

@@ -35,7 +35,7 @@ export const fetchContactByPhoneOrName = createAsyncThunk<
 export const fetchAddSubContact = createAsyncThunk<
   SubContact,
   FetchAddSubContactParams,
-  { rejectValue: any }
+  { rejectValue: unknown }
 >(
   "subContactsFinder/FetchAddSubContact",
   async ({ subContactId }, { rejectWithValue }) => {

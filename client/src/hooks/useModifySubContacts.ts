@@ -1,19 +1,21 @@
 import { useState, useEffect, useCallback } from "react";
 import { fetchAddSubContact } from "../redux/thunks/subContactThunks";
-
 import { useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/store";
+import { clearQuery } from "../redux/slices/subContactFinderSlice";
 
 const useModifySubContacts = () => {
+  const dispatch: AppDispatch = useDispatch();
   const [showNotice, setShowNotice] = useState(false);
   const handleShowNotice = useCallback(() => {
     setShowNotice((prev) => !prev);
   }, []);
 
-  const dispatch = useDispatch();
-
   const handleAddSubContact = useCallback(
     (subContactId: string) => {
       dispatch(fetchAddSubContact({ subContactId }));
+      dispatch(clearQuery());
+      setShowNotice(true);
     },
     [dispatch]
   );
