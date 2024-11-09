@@ -6,6 +6,8 @@ import ComboboxItem from "./ComboboxItem";
 import useFindContact from "../../../../hooks/useFindContact";
 import useModifySubContacts from "../../../../hooks/useModifySubContacts";
 import NoticeComponent from "../../../../shared/NoticeMessage";
+import { useSelector } from "react-redux";
+import useContact from "../../../../hooks/useContact";
 
 const isContact = (obj: any): obj is Contact => {
   return (
@@ -26,7 +28,13 @@ const AddContact = () => {
   
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
-  const { handleFetchContactByPhoneOrName, query, subContacts, handleUpdateQuery, handleClearQuery } = useFindContact();
+  const { handleFetchContactByPhoneOrName, query, handleUpdateQuery, handleClearQuery } = 
+  useFindContact();
+
+    const { contact } = useContact()
+    const subContacts = contact?.subContacts || []
+
+
 
   const { handleAddSubContact, showNotice, handleShowNotice } =
     useModifySubContacts();
