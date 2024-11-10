@@ -6,7 +6,7 @@ import { fetchContact } from "../redux/slices/contactSlice";
 const useContact = () => {
   const dispatch: AppDispatch = useDispatch();
 
-  const { loading, error, contact } = useSelector(
+  const {  error, contact, potentialSubContacts } = useSelector(
     (state: RootState) => state.contact,
   );
     
@@ -18,7 +18,7 @@ const useContact = () => {
   return {
     contact,
     error,
-    loading,
+    potentialSubContacts,
     dispatch,
   };
 };

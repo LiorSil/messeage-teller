@@ -1,13 +1,11 @@
 // contactState.ts
 import { Contact } from "../../types/contact";
+import { SubContact } from "../../types/subContact";
 
 export interface ContactState {
   contact: Contact | null;
-  loading: boolean;
-  error: string | null;
-  getContactLoading: boolean;
-  phoneNumber: string;
-  addContactSuccess: boolean;
+  potentialSubContacts: SubContact[];
+  error: string;
 }
 
 export const initialState: ContactState = {
@@ -20,9 +18,6 @@ export const initialState: ContactState = {
     subContacts: [],
     notificationsIds: [],
   },
-  loading: false,
-  phoneNumber: "",
-  getContactLoading: false,
+  potentialSubContacts: [],
   error: "",
-  addContactSuccess: false,
 };
