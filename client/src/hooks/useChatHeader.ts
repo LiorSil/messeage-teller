@@ -16,16 +16,13 @@ export const useChatHeader = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 768); // Tailwind's "md" breakpoint is 768px
+      setIsSmallScreen(window.innerWidth < 768); 
     };
 
-    // Call handleResize initially to set the initial state
     handleResize();
 
-    // Add event listener to listen for window resizing
     window.addEventListener("resize", handleResize);
 
-    // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener("resize", handleResize);
     };

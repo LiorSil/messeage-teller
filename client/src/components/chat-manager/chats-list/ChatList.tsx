@@ -1,5 +1,5 @@
 import ChatListItems from "./ChatListItems";
-import useContact from "../../../hooks/useContact";
+import {useContact} from "../../../hooks/useContact";
 
 import { useChatManager } from "../../../hooks/useChatManager";
 

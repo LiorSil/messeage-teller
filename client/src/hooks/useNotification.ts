@@ -3,7 +3,7 @@ import { updateContact } from "../redux/slices/contactSlice";
 import { Message } from "../types/message";
 import { Contact } from "../types/contact";
 import { SubContact } from "../types/subContact";
-import useContact from "./useContact";
+import {useContact} from "./useContact";
 
 export const useNotification = () => {
   const dispatch = useDispatch();

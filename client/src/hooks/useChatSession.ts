@@ -7,7 +7,7 @@ import { Message } from "../types/message";
 import { useMessages } from "./useMessages.ts";
 import { useNotification } from "./useNotification";
 import { useChatInput } from "./useChatInput";
-import useContact from "./useContact.ts";
+import {useContact} from "./useContact.ts";
 import { fetchContact } from "../redux/thunks/contactThunks.ts";
 import { initSocketEvents } from "../sockets/socketEvents";
 

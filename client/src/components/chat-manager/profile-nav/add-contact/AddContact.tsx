@@ -6,7 +6,7 @@ import ComboboxItem from "./ComboboxItem";
 import useFindContact from "../../../../hooks/useFindContact";
 import useModifySubContacts from "../../../../hooks/useModifySubContacts";
 import NoticeComponent from "../../../../shared/NoticeMessage";
-import useContact from "../../../../hooks/useContact";
+import {useContact} from "../../../../hooks/useContact";
 
 
 
@@ -18,7 +18,7 @@ const AddContact = () => {
   const { handleFetchContactByPhoneOrName, query, handleUpdateQuery, handleClearQuery } = 
   useFindContact();
 
-  const { potentialSubContacts }  = useContact() || [] 
+    const { potentialSubContacts}  = useContact() || { potentialSubContacts: []} 
 
   const { handleAddSubContact, showNotice, handleShowNotice } =
     useModifySubContacts();

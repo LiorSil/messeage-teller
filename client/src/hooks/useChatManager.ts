@@ -3,7 +3,7 @@ import { AppDispatch } from "../redux/store";
 import { getSelectedChatMessages } from "../redux/thunks/chatThunks";
 import { toggleChatManagerView } from "../redux/slices/chatSlice";
 import { SubContact } from "../types/subContact";
-import useContact from "./useContact";
+import {useContact} from "./useContact";
 
 import { updateContact } from "../redux/slices/contactSlice";
 import { acknowledgeNotification } from "../redux/thunks/contactThunks";
@@ -18,7 +18,7 @@ export const useChatManager = () => {
 
 
   const handleChatSelection = async (selectedSubContact: SubContact | null) => {
-    if (selectedSubContact && contact) {
+    if (selectedSubContact ) {
       await dispatch(
         getSelectedChatMessages({
           subContact: selectedSubContact,
@@ -26,21 +26,20 @@ export const useChatManager = () => {
       );
       // for mobile view toggle chat manager view
       dispatch(toggleChatManagerView());
-      await handleRemoveNotification(contact, selectedSubContact);
+      await handleRemoveNotification( selectedSubContact);
     }
   };
 
   const handleRemoveNotification = async (
-    recipient: Contact,
     selectedChat: SubContact,
   ) => {
-    const updatedSubContacts = recipient.subContacts.map((subContact) =>
+    if (!contact) return;
+    const updatedSubContacts = contact.subContacts.map((subContact) =>
       subContact._id === selectedChat._id
         ? { ...subContact, isIncomingMessage: false }
         : subContact,
     );
 
-    if (!contact) return;
     dispatch(updateContact({ ...contact, subContacts: updatedSubContacts }));
     if (selectedChat.isIncomingMessage) {
       dispatch(

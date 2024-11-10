@@ -4,9 +4,12 @@ import ChatsManagerLayout from "../../components/chat-manager/ChatsManagerLayout
 import { useChatRoom } from "../../hooks/useChatRoom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { useContactFetch } from "../../hooks/useContact";
 
 const ChatRoom: React.FC = () => {
   const { getClassNames } = useChatRoom();
+  console.log("rendering ChatRoom");
+  useContactFetch();
   const { isChatMangerView } = useSelector((state: RootState) => state.chat);
 
   return (

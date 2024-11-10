@@ -3,17 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
 import { fetchContact } from "../redux/slices/contactSlice";
 
-const useContact = () => {
-  const dispatch: AppDispatch = useDispatch();
-
-  const {  error, contact, potentialSubContacts } = useSelector(
-    (state: RootState) => state.contact,
+export const useContact = () => {
+  const { error, contact, potentialSubContacts } = useSelector(
+    (state: RootState) => state.contact
   );
-
-  useEffect(() => {
-    dispatch(fetchContact());
-  }, [dispatch]);
-
   return {
     contact,
     error,
@@ -21,4 +14,11 @@ const useContact = () => {
   };
 };
 
-export default useContact;
+export const useContactFetch = () => {
+  const dispatch: AppDispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchContact());
+  }, [dispatch]);
+};
+
