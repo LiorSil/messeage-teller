@@ -9,7 +9,6 @@ const useContact = () => {
   const {  error, contact, potentialSubContacts } = useSelector(
     (state: RootState) => state.contact,
   );
-    
 
   useEffect(() => {
     dispatch(fetchContact());
@@ -19,7 +18,6 @@ const useContact = () => {
     contact,
     error,
     potentialSubContacts,
-    dispatch,
   };
 };
 

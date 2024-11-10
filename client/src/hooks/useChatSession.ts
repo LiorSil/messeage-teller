@@ -6,52 +6,49 @@ import { RootState } from "../redux/store";
 import { Message } from "../types/message";
 import { useMessages } from "./useMessages.ts";
 import { useNotification } from "./useNotification";
-import { useSocketListener } from "./useSocketListener";
 import { useChatInput } from "./useChatInput";
 import useContact from "./useContact.ts";
 import { fetchContact } from "../redux/thunks/contactThunks.ts";
+import { initSocketEvents } from "../sockets/socketEvents";
 
 export const useChatSession = () => {
   const dispatch: AppDispatch = useDispatch();
   const socket = useSocket();
-  const messages = useSelector((state: RootState) => state.chat.messages);
-  const selectedChat = useSelector(
-    (state: RootState) => state.chat.selectedChat
+  const { selectedChat, messages } = useSelector(
+    (state: RootState) => state.chat
   );
   const { contact } = useContact();
-  const { newMessages, createMessage } = useMessages(messages);
-  const { createNotification } = useNotification();
+  const { newMessages, createMessageOnScreen } = useMessages(messages);
+  const createNotification = useNotification();
   const { inputValue, handleInputChange, clearInput } = useChatInput();
+
   // Handle receiving messages from the server
   const receiveMessage = useCallback(
     (message: Message) => {
-      const isFromSelectedChat = message.fromId === selectedChat?._id;
-
-      isFromSelectedChat && createMessage(message);
-      contact && createNotification(message, contact);
-
+      if (message.fromId === selectedChat?._id) {
+        createMessageOnScreen(message);
+      }
+      createNotification(message);
       dispatch(fetchContact());
     },
-    [selectedChat, createMessage, createNotification, contact, dispatch]
+    [selectedChat, createMessageOnScreen, createNotification, contact, dispatch]
   );
 
   // Manage socket listeners for message receiving
-  useSocketListener(socket, receiveMessage);
+  const { sendMessage: emitMessage } = initSocketEvents(socket, receiveMessage, createMessageOnScreen);
 
-  const sendMessage = useCallback(() => {
-    if (socket && inputValue.trim() && contact?._id && selectedChat?._id) {
-      const message: Message = {
-        fromId: contact._id,
-        toId: selectedChat._id,
-        content: inputValue,
-        sentTD: new Date(),
-      };
+  const sendMessage =useCallback( () => {
+    const message: Message = {
+      fromId: contact?._id || "",
+      toId: selectedChat?._id || "",
+      content: inputValue.trim(),
+      sentTD: new Date(),
+    };
 
-      socket.emit("send_message", message);
-      createMessage(message);
-      clearInput();
-    }
-  }, [socket, inputValue, contact, selectedChat, createMessage, clearInput]);
+    emitMessage(message);
+    createMessageOnScreen(message);
+    clearInput();
+  }, [inputValue, contact, selectedChat, createMessageOnScreen, clearInput]);
 
   return {
     newMessages,
