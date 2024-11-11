@@ -1,17 +1,23 @@
 import { useState, useEffect, useCallback } from "react";
 import { Message } from "../types/message";
+import {useSelector} from "react-redux";
+import {RootState} from "../redux/store.ts";
 
-export const useMessages = (messages: Message[]) => {
-  const [newMessages, setNewMessages] = useState<Message[]>([]);
+export const useMessages = () => {
+  const {  messages } = useSelector((state: RootState) => state.chat);
+  const [newMessages, setNewMessages] = useState<Message[]>(messages);
 
-  // Sync messages with the Redux state
-  useEffect(() => {
-    setNewMessages(messages);
-  }, [messages]);
+    useEffect(() => {
+        setNewMessages(messages);
+    }, [messages]);
+
 
   const createMessageOnScreen = useCallback((message: Message) => {
+    console.log("createMessageOnScreen");
     setNewMessages((prevMessages) => [...prevMessages, message]);
-  }, []);
+  }, [
+    setNewMessages,
+  ]);
 
   return { newMessages, createMessageOnScreen };
 };

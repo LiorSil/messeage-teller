@@ -1,22 +1,32 @@
-import { Socket } from "socket.io-client";
-import { Message } from "../types/message";
-import { Contact } from "../types/contact";
+import {Socket} from "socket.io-client";
+import {Message} from "../types/message";
 
 export const initSocketEvents = (
-  socket: Socket | null,
-  onMessageReceived: (message: Message, recipient: Contact) => void,
-  onMessageSent: (message: Message) => void
+    socket: Socket | null,
+    onMessageReceived: (message: Message) => void
 ) => {
-  // Listen for incoming messages
-  socket?.on("receive_message", (message: Message) => {
-    const recipient = {}; // Replace with logic to determine recipient if needed
-    onMessageReceived(message, recipient as Contact);
-  });
+    // Ensure socket is valid
+    if (!socket) {
+        return {
+            sendMessage: () => {
+                console.warn("Socket is not connected.");
+            },
+        };
+    }
 
-  return {
-    sendMessage: (message: Message) => {
-      onMessageSent(message);
-      socket?.emit("send_message", message);
-    },
-  };
+    // Remove any existing listener before adding a new one to prevent duplication
+    socket.off("receive_message");
+
+    // Listen for incoming messages
+    socket.on("receive_message", (message: Message) => {
+        // Determine recipient based on your client logic if needed
+        onMessageReceived(message);
+    });
+
+    // Return a sendMessage function that uses the socket
+    const sendMessage = (message: Message) => {
+        socket.emit("send_message", message);
+    };
+
+    return {sendMessage};
 };

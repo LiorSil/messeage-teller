@@ -22,7 +22,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
         <InputField value={inputValue} onChange={onInputChange} />
         <div className="flex bg-gray-200 items-center ml-2 rounded-md ">
           <ActionButtons />
-          <SendButton onSend={onSendMessage} isInputEmpty={!inputValue} />
+            <SendButton onSend={onSendMessage} isInputEmpty={!inputValue} />
         </div>
       </div>
     </div>

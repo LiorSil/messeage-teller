@@ -4,10 +4,8 @@ import { getSelectedChatMessages } from "../redux/thunks/chatThunks";
 import { toggleChatManagerView } from "../redux/slices/chatSlice";
 import { SubContact } from "../types/subContact";
 import {useContact} from "./useContact";
-
 import { updateContact } from "../redux/slices/contactSlice";
 import { acknowledgeNotification } from "../redux/thunks/contactThunks";
-import { Contact } from "../types/contact";
 
 
 export const useChatManager = () => {
