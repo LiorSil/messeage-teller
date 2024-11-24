@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback } from "react";
 import ComboboxContainer from "./ComboboxContainer";
 import ComboboxInput from "./ComboboxInput";
 import ComboboxDropdown from "./ComboboxDropdown";
