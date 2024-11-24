@@ -6,6 +6,7 @@ export const useScrollToBottom = () => {
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
+      console.log(`scrolling to bottom`);
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
