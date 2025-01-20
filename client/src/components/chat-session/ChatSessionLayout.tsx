@@ -3,7 +3,6 @@ import ChatHeader from "./chat-header/ChatHeader";
 import MessageList from "./chat-messages/MessageList";
 import ChatInput from "./chat-input/ChatInput";
 import {useChatSession} from "../../hooks/useChatSession";
-import {DefaultSession} from "./chat-messages/DefaultSession.tsx";
 
 const ChatSessionLayout = () => {
 
@@ -34,7 +33,7 @@ const ChatSessionLayout = () => {
                     />
                 </>
             )}
-            {!hasActiveChat && <DefaultSession/>}
+            {!hasActiveChat }
         </div>
     );
 };
