@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/authMiddleware";
-import { getChatsByParticipantsIds } from "../controllers/chatController";
+import { getChatByParticipants } from "../controllers/chatController";
 const router = Router();
 
-router.get("/chatsByParticipants", authMiddleware, getChatsByParticipantsIds);
+router.get("/chatsByParticipants", authMiddleware, getChatByParticipants);
 
 export default router;

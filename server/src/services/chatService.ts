@@ -10,14 +10,17 @@ export const createMessageService = async (
 ): Promise<IChat | null> => {
   const newMessage = await pushMessage(chatId, messageData);
 
-  await sortSubContactsByLatestChats(messageData.fromId);
-  await sortSubContactsByLatestChats(messageData.toId);
+
   //add notification logic here
 
   return newMessage;
 };
 
 export const getChatByParticipants = async (participants: Types.ObjectId[]) => {
-  const chat = await getOrCreateChat(participants);
+  const chat  = await getOrCreateChat(participants);
+
+  
   return chat;
 };
+
+

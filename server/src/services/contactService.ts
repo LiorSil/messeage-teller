@@ -8,6 +8,7 @@ import {
 import { IContact, ISubContact } from "../models/model.interfaces";
 import { Types } from "mongoose";
 import { ClientSubContact } from "../types/client";
+import { sortSubContactsByLatestChats } from "../repositories/sortSubContactsByMessages";
 
 export const createContactService = async (
   contactData: Partial<IContact>
@@ -55,17 +56,7 @@ export const getContactByIdService = async (
 
 export const buildClientContactDataService = async (contact: IContact) => {
   try {
-    const subContacts = await Promise.all(
-      contact.subContacts.map(async (subContact: ISubContact) => {
-        const mSubContact = await getContactByIdService(
-          subContact.subContactId
-        );
-        return {
-          ...mSubContact,
-          isIncomingMessage: subContact.isIncomingMessage,
-        };
-      })
-    );
+    const subContacts = await sortSubContactsByLatestChats(contact);
 
     return {
       status: 200,

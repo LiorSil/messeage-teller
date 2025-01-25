@@ -10,6 +10,8 @@ export const pushMessage = async (
     .findByIdAndUpdate(chatId, { $push: { messages: message } }, { new: true })
     .exec();
 };
+
+
 export const pushNotification = async (
   chatId: Types.ObjectId,
   recipientId: Types.ObjectId

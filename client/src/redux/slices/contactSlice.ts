@@ -22,7 +22,6 @@ const contactSlice = createSlice({
   extraReducers: (builder) => {
     // * get contact
     builder.addCase(fetchContact.fulfilled, (state, action) => {
-      console.log(`contact: dispatch`);
       state.contact = action.payload;
     });
     builder.addCase(fetchContact.rejected, (state, action) => {

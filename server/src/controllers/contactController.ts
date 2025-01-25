@@ -31,7 +31,6 @@ export const getContact = async (
   try {
     const { contact } = await req.body;
     const result = await buildClientContactDataService(contact);
-    console.log("result", result);
     res.status(result.status).json(result.data);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
