@@ -1,5 +1,5 @@
 import { Socket, Server } from "socket.io";
-import { handleSendMessage } from "./messageHandler";
+import { handleSendMessage } from "./message.handler";
 
 export const handleConnection = (socket: Socket, io: Server) => {
   const contactId = socket.handshake.query.contactId as string;

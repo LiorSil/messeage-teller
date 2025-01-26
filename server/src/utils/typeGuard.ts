@@ -1,4 +1,4 @@
-import { IContact } from "../models/model.interfaces";
+import { IContact } from "../interfaces/model.interfaces";
 
 export const isContactType = (contact: any): contact is IContact => {
   if (

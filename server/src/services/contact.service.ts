@@ -4,12 +4,11 @@ import {
   updateContact,
   addSubContact,
   getContactById,
-} from "../repositories/contactRepo";
-import { IContact, ISubContact } from "../models/model.interfaces";
+} from "../repositories/contact.repository";
+import { IContact, ISubContact } from "../interfaces/model.interfaces";
 import { Types } from "mongoose";
-import { ClientSubContact } from "../types/client";
-import { sortSubContactsByLatestChats } from "../repositories/sortSubContactsByMessages";
-
+import { ClientSubContact } from "../types/client.type";
+import { sortSubContactsByLatestChats } from "./chat.service";
 export const createContactService = async (
   contactData: Partial<IContact>
 ): Promise<IContact> => {

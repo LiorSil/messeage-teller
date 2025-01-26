@@ -1,5 +1,5 @@
 import mongoose, {Schema} from "mongoose";
-import {IChat, IMessage} from "./model.interfaces";
+import {IChat, IMessage} from "../interfaces/model.interfaces";
 
 const messageSchema = new Schema<IMessage>({
     fromId: {

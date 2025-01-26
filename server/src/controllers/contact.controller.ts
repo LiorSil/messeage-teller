@@ -7,7 +7,7 @@ import {
   pushNotificationService,
   pullNotificationService,
   updateContactService,
-} from "../services/contactService";
+} from "../services/contact.service";
 
 export const createContact = async (
   req: Request,

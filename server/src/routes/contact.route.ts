@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { authMiddleware } from "../middlewares/authMiddleware";
+import { authMiddleware } from "../middlewares/auth.middleware";
 import {
   getContact,
   findContactsByQuery,
   addSubContact,
   updateProfile,
-} from "../controllers/contactController";
+} from "../controllers/contact.controller";
 
 const router = Router();
 

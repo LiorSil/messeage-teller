@@ -1,12 +1,12 @@
-import { IChat, IMessage } from "../../models/model.interfaces";
+import { IChat, IMessage } from "../../interfaces/model.interfaces";
 import { Server } from "socket.io";
 import { debounce } from "../../utils/debounce";
 import {
   createMessageService,
   getChatByParticipants,
-} from "../../services/chatService";
-import { addSubContactService } from "../../services/contactService";
-import { pushNotificationService } from "../../services/notificationService";
+} from "../../services/chat.service";
+import { addSubContactService } from "../../services/contact.service";
+import { pushNotificationService } from "../../services/notification.service";
 
 export const handleSendMessage = debounce(
   async (message: IMessage, io: Server) => {

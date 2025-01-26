@@ -1,6 +1,6 @@
 import {Schema, model,  Types} from "mongoose";
-import phoneNumberRegex from "../utils/phoneNumberRegex";
-import {IContact} from "./model.interfaces";
+import {phoneNumberRegex} from "../utils/regex";
+import {IContact} from "../interfaces/model.interfaces";
 
 // Define the contact schema
 const contactSchema = new Schema<IContact>(

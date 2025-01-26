@@ -4,13 +4,13 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import http from "http";
-import { initializeSocket } from "./sockets/socket";
+import { initializeSocket } from "./sockets/websocket";
 
-import contactRoute from "./routes/contactRoute";
-import authRoute from "./routes/authRoute";
-import userRoute from "./routes/userRoute";
-import chatRoute from "./routes/chatRoute";
-import notificationRoute from "./routes/notificationRoute";
+import contactRoute from "./routes/contact.route";
+import authRoute from "./routes/auth.route";
+import userRoute from "./routes/user.route";
+import chatRoute from "./routes/chat.route";
+import notificationRoute from "./routes/notification.route";
 
 const port = process.env.PORT || 3000;
 const app = express();

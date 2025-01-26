@@ -1,6 +1,6 @@
 import {Types} from "mongoose";
 
-export interface mappedChatParticipants {
+export type mappedChatParticipants = {
     subContactId: Types.ObjectId;
     lastMessageTime: Date;
 }

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import {
   pullNotificationService,
   pushNotificationService,
-} from "../services/notificationService";
+} from "../services/notification.service";
 
 export const creteNotification = async (
   req: Request,

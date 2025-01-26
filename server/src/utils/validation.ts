@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import contactModel from "../models/contactModel";
+import contactModel from "../models/contact.model";
 import * as yup from "yup";
 
 /**

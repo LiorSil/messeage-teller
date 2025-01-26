@@ -1,14 +1,13 @@
-// src/socket/index.ts
 import { Server as HttpServer } from "http";
 import { Server } from "socket.io";
-import { handleConnection } from "./handlers/connectionHandler";
+import { handleConnection } from "./handlers/connection.handler";
 
 export const initializeSocket = (server: HttpServer) => {
   const io = new Server(server, {
     cors: {
       origin: "http://localhost:5173", // Replace with your frontend URL
       methods: ["GET", "POST", "PUT", "DELETE"],
-      credentials: true, // Allow credentials (e.g., cookies)
+      credentials: true, // Allow credentials (cookies, authorization headers, etc.)
     },
   });
 

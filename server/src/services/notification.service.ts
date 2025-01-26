@@ -1,7 +1,7 @@
 
 import {Types} from "mongoose";
-import { IContact } from "../models/model.interfaces";
-import { getContactById, updateNotification } from "../repositories/contactRepo";
+import { IContact } from "../interfaces/model.interfaces";
+import { getContactById, updateNotification } from "../repositories/contact.repository";
 
 export const pushNotificationService = async (
   contactId: Types.ObjectId,

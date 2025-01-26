@@ -1,8 +1,24 @@
-import { getChatsByContactId } from "./chatRepo";
-import { IChat, IContact } from "../models/model.interfaces";
-import { getContactByIdService } from "../services/contactService";
-import { mappedChatParticipants } from "../types/chat";
-import { isContactType } from "../types/isContactType";
+import { IChat, IContact, IMessage } from "../interfaces/model.interfaces";
+import { getChatsByContactId, pushMessage } from "../repositories/chat.repository";
+import { Types } from "mongoose";
+import { getOrCreateChat } from "../repositories/chat.repository";
+import { getContactByIdService } from "./contact.service";
+import { mappedChatParticipants } from "../types/chat.type";
+import { isContactType } from "../utils/typeGuard";
+
+export const createMessageService = async (
+  chatId: Types.ObjectId,
+  messageData: IMessage
+): Promise<IChat | null> => {
+  const newMessage = await pushMessage(chatId, messageData);
+  return newMessage;
+};
+
+export const getChatByParticipants = async (participants: Types.ObjectId[]) => {
+  const chat = await getOrCreateChat(participants);
+
+  return chat;
+};
 
 export const sortSubContactsByLatestChats = async (contact: IContact) => {
   if (!isContactType(contact)) {
@@ -48,3 +64,4 @@ export const sortSubContactsByLatestChats = async (contact: IContact) => {
 
   return sortedSubContacts;
 };
+

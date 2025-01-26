@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
-import phoneNumberRegex from "../utils/phoneNumberRegex";
-import { IUser } from "./model.interfaces";
+import {phoneNumberRegex} from "../utils/regex";
+import { IUser } from "../interfaces/model.interfaces";
 
 const userSchema = new Schema<IUser>(
   {

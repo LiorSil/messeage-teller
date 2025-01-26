@@ -3,9 +3,9 @@ import {
   getUserByEmail,
   getUserByPhoneNumber,
   getUsers,
-} from "../repositories/userRepo";
+} from "../repositories/user.repository";
 import jwt from "jsonwebtoken";
-import { createContact } from "../repositories/contactRepo";
+import { createContact } from "../repositories/contact.repository";
 
 export const registerUserService = async (
   email: string,

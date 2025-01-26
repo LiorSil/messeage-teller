@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { getContactsByQueryService } from "../services/contactService";
+import { getContactsByQueryService } from "../services/contact.service";
 
 interface CustomRequest extends Request {
   contact?: any;
