@@ -4,34 +4,60 @@ import { Types } from "mongoose";
 import { getOrCreateChat } from "../repositories/chat.repository";
 import { getContactByIdService } from "./contact.service";
 import { mappedChatParticipants } from "../types/chat.type";
-import { isContactType } from "../utils/typeGuard";
-
+import {  isContactType } from "../utils/typeGuard";
+import { ClientSubContact } from "../types/client.type";
+/**
+ * Create a new message in a chat.
+ * @param {Types.ObjectId} chatId - The ID of the chat.
+ * @param {IMessage} messageData - The message data to be added.
+ * @returns {Promise<IChat | null>} - The updated chat with the new message or null if not found.
+ */
 export const createMessageService = async (
   chatId: Types.ObjectId,
   messageData: IMessage
 ): Promise<IChat | null> => {
-  const newMessage = await pushMessage(chatId, messageData);
-  return newMessage;
+  try {
+    return await pushMessage(chatId, messageData);
+  } catch (error : any) {
+    console.error(`Error creating message: ${error.message}`);
+    throw new Error(`Error creating message: ${error.message}`);
+  }
 };
 
-export const getChatByParticipants = async (participants: Types.ObjectId[]) => {
-  const chat = await getOrCreateChat(participants);
-
-  return chat;
+/**
+ * Get or create a chat by participants.
+ * @param {Types.ObjectId[]} participants - Array of participant IDs.
+ * @returns {Promise<IChat>} - The chat with the given participants.
+ */
+export const getChatByParticipants = async (participants: Types.ObjectId[]): Promise<IChat> => {
+  try {
+    return await getOrCreateChat(participants);
+  } catch (error: any) {
+    console.error(`Error getting or creating chat: ${error.message}`);
+    throw new Error(`Error getting or creating chat: ${error.message}`);
+  }
 };
 
-export const sortSubContactsByLatestChats = async (contact: IContact) => {
+/**
+ * Sort sub-contacts by the latest chat messages.
+ * @param {IContact} contact - The contact whose sub-contacts need to be sorted.
+ * @returns {Promise<IContact[]>} - Sorted sub-contacts.
+ */
+
+export const sortSubContactsByLatestChats = async (contact: IContact): 
+Promise<ClientSubContact[] > => {
+  // Step 1: Check if the input is a valid contact
   if (!isContactType(contact)) {
     throw new Error("Invalid contact type");
   }
 
-  // Fetch chats once and check for validity
+  // step 2: Fetch all chats for the contact
   const chats: IChat[] = await getChatsByContactId(contact._id);
   if (!chats || chats.length === 0) {
     return [];
   }
 
-  // Process the participants from all chats
+  // Step 3: Process all participants in the chats and extract the last message time for each chat
   const processedParticipants: mappedChatParticipants[] = chats.flatMap(
     (chat) => {
       const lastMessage = chat.messages[chat.messages.length - 1];
@@ -45,23 +71,22 @@ export const sortSubContactsByLatestChats = async (contact: IContact) => {
         }));
     }
   );
-
-  // Step 1: Sort participants by the last message time in descending order
+  
+  // Step 4: Sort participants by last message time
   processedParticipants.sort(
     (a, b) => b.lastMessageTime.getTime() - a.lastMessageTime.getTime()
   );
 
-  // Step 2: Resolve contact details for all subContacts in parallel
+  // Step 5: Fetch sub-contacts by ID and return the result with lastMessageTime
   const sortedSubContacts = await Promise.all(
     processedParticipants.map(async ({ subContactId, lastMessageTime }) => {
       const mSubContact = await getContactByIdService(subContactId);
       return {
         ...mSubContact,
-        lastMessageTime, // Ensure we return lastMessageTime in the result if needed
+        lastMessageTime, 
       };
     })
   );
-
-  return sortedSubContacts;
+    
+  return sortedSubContacts as ClientSubContact[];
 };
-

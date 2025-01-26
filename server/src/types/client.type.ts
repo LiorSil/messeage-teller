@@ -6,4 +6,5 @@ export type ClientSubContact = {
   phoneNumber: string;
   avatar: string;
   status?: number;
+  lastMessageTime: Date;
 };

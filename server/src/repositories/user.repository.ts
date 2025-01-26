@@ -17,8 +17,8 @@ export const createUser = async (
   try {
     const user = new userModel({ email, password, phoneNumber });
     return await user.save();
-  } catch (error) {
-    throw new Error(`Error creating user: ${error}`);
+  } catch (error: any) {
+    throw new Error(`Error creating user: ${error.message}`);
   }
 };
 
@@ -29,8 +29,8 @@ export const createUser = async (
 export const getUsers = async (): Promise<IUser[]> => {
   try {
     return await userModel.find().exec();
-  } catch (error) {
-    throw new Error(`Error fetching users: ${error}`);
+  } catch (error: any) {
+    throw new Error(`Error fetching users:${error.message}`);
   }
 };
 
@@ -45,8 +45,8 @@ export const getUserById = async (userId: string): Promise<IUser | null> => {
       throw new Error('Invalid user ID');
     }
     return await userModel.findById(userId).exec();
-  } catch (error) {
-    throw new Error(`Error fetching user by ID: ${error}`);
+  } catch (error: any) {
+    throw new Error(`Error fetching user by ID:${error.message}`);
   }
 };
 
@@ -60,8 +60,8 @@ export const getUserByPhoneNumber = async (
 ): Promise<IUser | null> => {
   try {
     return await userModel.findOne({ phoneNumber }).exec();
-  } catch (error) {
-    throw new Error(`Error fetching user by phone number: ${error}`);
+  } catch (error: any) {
+    throw new Error(`Error fetching user by phone number:${error.message}`);
   }
 };
 
@@ -73,8 +73,8 @@ export const getUserByPhoneNumber = async (
 export const getUserByEmail = async (email: string): Promise<IUser | null> => {
   try {
     return await userModel.findOne({ email }).exec();
-  } catch (error) {
-    throw new Error(`Error fetching user by email: ${error.message}`);
+  } catch (error: any) {
+    throw new Error(`Error fetching user by email:${error.message}`);
   }
 };
 
@@ -93,8 +93,8 @@ export const updateUser = async (
       throw new Error('Invalid user ID');
     }
     return await userModel.findByIdAndUpdate(userId, updateData, { new: true }).exec();
-  } catch (error) {
-    throw new Error(`Error updating user: ${error}`);
+  } catch (error: any) {
+    throw new Error(`Error updating user:${error.message}`);
   }
 };
 
@@ -109,7 +109,7 @@ export const deleteUser = async (userId: string): Promise<IUser | null> => {
       throw new Error('Invalid user ID');
     }
     return await userModel.findByIdAndDelete(userId).exec();
-  } catch (error) {
-    throw new Error(`Error deleting user: ${error}`);
+  } catch (error: any) {
+    throw new Error(`Error deleting user:${error.message}`);
   }
 };

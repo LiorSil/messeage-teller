@@ -12,8 +12,8 @@ interface IMessage extends Document {
 interface IChat extends Document {
   _id: Types.ObjectId;
   participants: Types.ObjectId[];
-  messages: IMessage[];
-}
+  messages: IMessage[]; 
+} 
 interface ISubContact {
   subContactId: Types.ObjectId;
   lastMessageTime: Date;
