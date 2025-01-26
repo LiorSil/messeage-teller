@@ -41,24 +41,31 @@ export const getChats = async (): Promise<IChat[] | IChat> => {
 };
 
 /**
+ * Retrieves a chat document by its ID.
  * @param chatId - The ID of the chat document to retrieve.
  * @returns {Promise<IChat | null>} - Returns the chat document or null if not found.
+ * @throws {Error} - Throws an error if the retrieval fails.
  */
+
 export const getOrCreateChat = async (
   participants: Types.ObjectId[]
 ): Promise<IChat> => {
   let chat = await chatModel
-    .findOne(
-      {
-        participants: { $all: participants },
-        $expr: { $eq: [{ $size: "$participants" }, participants.length] },
-      },
-      { $setOnInsert: { participants } },
-      { new: true, upsert: true, lean: true }
-    )
+    .findOne({
+      participants: { $all: participants },
+      $expr: { $eq: [{ $size: "$participants" }, participants.length] },
+    })
     .exec();
-  return chat as IChat;
+
+  // If no chat is found, create a new one ( can't )
+  if (!chat) {
+    chat = new chatModel({ participants });
+    await chat.save();
+  }
+  return chat;
 };
+
+
 
 /**
  * Updates a chat document with the provided update data.
