@@ -65,16 +65,14 @@ export const addSubContact = async (
   }
 };
 
+//TODO: Make the updateProfile generic to handle other updates
 export const updateProfile = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
-    const { contact } = req.body;
-    if (!contact) res.status(404).json({ message: "Contact not found" });
-
-    Object.assign(contact, req.body);
-    await updateContactService(contact._id, contact);
+    const { contact, name } = req.body;
+    await updateContactService(contact._id, { ...contact, name });
 
     res.status(200).json(contact);
   } catch (error: any) {
