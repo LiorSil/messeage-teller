@@ -72,9 +72,10 @@ export const updateProfile = async (
 ): Promise<void> => {
   try {
     const { contact, name } = req.body;
-    await updateContactService(contact._id, { ...contact, name });
+    const updatedContact = { ...contact, name };
+    await updateContactService(contact._id, updatedContact);
 
-    res.status(200).json(contact);
+    res.status(200).json(updatedContact);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }

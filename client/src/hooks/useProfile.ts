@@ -1,11 +1,13 @@
 import {useState, useEffect, useCallback} from "react";
 import {useContact} from "./useContact";
 import axiosInstance from "../api/axiosInstance.ts";
+import { updateName } from "../redux/slices/contactSlice.ts";
+import { AppDispatch } from "../redux/store.ts";
+import { useDispatch } from "react-redux";
 
-
-
-export  const useProfile = () => {
+export const useProfile = () => {
   const { contact } = useContact();
+  const dispatch: AppDispatch = useDispatch();
 
   const baseName = contact?.name || "";
 
@@ -25,14 +27,14 @@ export  const useProfile = () => {
   // Handle saving the profile name
   const handleSaveClick = useCallback(async () => {
     try {
-      const response = await axiosInstance.put("/contacts/updateProfile", {
+      const response  = await axiosInstance.put("/contacts/updateProfile", {
         name,
       });
-      if (response.data) {
+      if (response.status === 200) {
         window.alert("Changes saved successfully!");
         setIsEditMode(false);
-        // Optionally, update local state instead of reloading the page
-        setName(baseName);
+        setName(name);
+        dispatch(updateName(name));
       } else {
         window.alert("Failed to save changes. Please try again.");
       }

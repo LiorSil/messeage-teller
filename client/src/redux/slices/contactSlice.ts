@@ -15,6 +15,10 @@ const contactSlice = createSlice({
     updateContact: (state, action: PayloadAction<Contact | undefined>) => {
       if (action.payload) state.contact = action.payload;
     },
+    updateName: (state, action: PayloadAction<string>) => {
+      console.log("action.payload", action.payload);
+      state.contact!.name = action.payload;
+    },
     addSubContact: (state, action: PayloadAction<SubContact>) => {
       state.contact?.subContacts.push(action.payload);
     },
@@ -46,5 +50,6 @@ const contactSlice = createSlice({
 });
 
 export { fetchContact, fetchAddSubContact, fetchContactByPhoneOrName };
-export const { updateContact, addSubContact } = contactSlice.actions;
+export const { updateContact, updateName, addSubContact } =
+  contactSlice.actions;
 export default contactSlice.reducer;
