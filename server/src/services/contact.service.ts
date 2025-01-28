@@ -50,6 +50,7 @@ export const getContactByIdService = async (
     name,
     phoneNumber,
     avatar,
+    
   };
 };
 

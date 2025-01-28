@@ -12,7 +12,11 @@ const registerUser = createAsyncThunk<
     "auth/registerUser",
     async (userData, {rejectWithValue}) => {
         try {
-            const response = await axiosInstance.post<RegisterUserResponse>('/auth/register', userData);
+          const response = await axiosInstance.post<RegisterUserResponse>(
+            "/auth/register",
+            userData
+          );
+          
             return response.data;
         } catch (error) {
             // Ensure we return the result of `handleAxiosError` to maintain correct return type

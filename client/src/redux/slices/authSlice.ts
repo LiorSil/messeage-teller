@@ -12,12 +12,20 @@ const authSlice = createSlice({
     initialError: (state) => {
       state.error = "";
     },
+   
+   
   },
   extraReducers: (builder) => {
     builder.addCase(registerUser.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(registerUser.fulfilled, (state, _) => {
+    builder.addCase(registerUser.fulfilled, (state, action) => {
+      const { token } = action.payload;
+      cookies.set("token", token, {
+        path: "/",
+        expires: new Date(Date.now() + 1000 * 3600),
+      });
+      
       state.loading = false;
     });
     builder.addCase(registerUser.rejected, (state, action) => {

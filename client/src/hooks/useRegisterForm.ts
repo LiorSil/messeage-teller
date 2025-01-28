@@ -17,13 +17,10 @@ const useRegisterForm = () => {
     formState: { errors },
   } = useForm<RegisterFormData>(); // Type the useForm hook with RegisterFormData
   const dispatch: AppDispatch = useDispatch();
-  const { loading, error, success } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const { loading, error } = useSelector((state: RootState) => state.auth);
 
   const onSubmitHandler: SubmitHandler<RegisterFormData> = (data) => {
     dispatch(registerUser(data));
-    reset();
   };
 
   return {
@@ -33,7 +30,7 @@ const useRegisterForm = () => {
     errors,
     loading,
     error,
-    success,
+    reset,
   };
 };
 

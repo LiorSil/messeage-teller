@@ -115,6 +115,8 @@ export const updateContact = async (
   updateData: Partial<IContact>
 ): Promise<IContact | null> => {
   try {
+    console.log('contactId', contactId)
+    console.log('updateData', updateData)
     return await contactModel
       .findByIdAndUpdate(contactId, updateData, { new: true, lean: true })
       .exec();

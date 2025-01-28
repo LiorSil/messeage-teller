@@ -4,8 +4,6 @@ import {
   buildClientContactDataService,
   createContactService,
   findContactsByQueryService,
-  pushNotificationService,
-  pullNotificationService,
   updateContactService,
 } from "../services/contact.service";
 

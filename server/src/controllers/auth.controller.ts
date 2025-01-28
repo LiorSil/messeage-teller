@@ -6,10 +6,10 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     const { email, password, phoneNumber } = req.body;
 
     const newUser = await registerUserService(email, password, phoneNumber);
-    if (newUser.status === 201)
-      res
-        .status(201)
-        .json({ message: "User registered successfully", user: newUser.data });
+    if (newUser.status === 201){
+      const result = await loginUserService(email, password);
+      res.status(result.status).json(result.data);
+    }
     else res.status(400).json({ message: newUser.data.message });
   } catch (err: any) {
     res.status(400).json({ message: err.message });

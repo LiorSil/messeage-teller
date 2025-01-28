@@ -8,6 +8,7 @@ import Button from "../../shared/Button";
 import { AppDispatch } from "../../redux/store.ts";
 import { useDispatch } from "react-redux";
 import { initialError } from "../../redux/slices/authSlice.ts";
+import Cookies from "universal-cookie";
 
 interface IFormInputs {
   email: string;
@@ -16,22 +17,25 @@ interface IFormInputs {
 }
 
 const Register = () => {
-  const { register, handleSubmit, onSubmitHandler, error, loading, success } =
+  const { register, handleSubmit, onSubmitHandler, error, loading, reset } =
     useRegisterForm();
+  const cookies = new Cookies();
 
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+    console.log("data", data);
     dispatch(initialError());
     onSubmitHandler(data);
+    reset();
   };
 
   useEffect(() => {
-    if (success) {
+    if (cookies.get("token")) {
       navigate("/chat-room");
     }
-  }, [success, navigate]);
+  }, [cookies, navigate]);
 
   return (
     <>
