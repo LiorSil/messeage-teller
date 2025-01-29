@@ -66,13 +66,13 @@ export const addSubContact = async (
 };
 
 //TODO: Make the updateProfile generic to handle other updates
-export const updateProfile = async (
+export const updateContact = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
-    const { contact, name } = req.body;
-    const updatedContact = { ...contact, name };
+    const { contact, data } = req.body;
+        const updatedContact = { ...contact, ...data };
     await updateContactService(contact._id, updatedContact);
 
     res.status(200).json(updatedContact);

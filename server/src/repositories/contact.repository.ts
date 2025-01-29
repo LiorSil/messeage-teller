@@ -21,7 +21,7 @@ export const createContact = async (
  * @returns {Promise<IContact | null>} - Returns the contact document or null if not found.
  */
 export const getContactById = async (
-  contactId: Types.ObjectId | string
+  contactId: Pick<IContact, "_id">
 ): Promise<IContact | null> => {
   try {
     return await contactModel.findById(contactId).lean().exec();
@@ -131,8 +131,8 @@ export const updateContact = async (
  * @returns {Promise<IContact | null>} - Returns the updated contact document or null if the sub-contact already exists.
  */
 export const addSubContact = async (
-  contactId: Types.ObjectId,
-  subContactId: Types.ObjectId
+  contactId: Pick<IContact, "_id">,
+  subContactId: Pick<IContact, "_id"> 
 ): Promise<IContact | null> => {
   try {
     const subContactExists = await isSubContactExist(contactId, subContactId);
@@ -158,7 +158,7 @@ export const addSubContact = async (
  * @returns {Promise<IContact | null>} - Returns the deleted contact document or null if not found.
  */
 export const deleteContact = async (
-  contactId: Types.ObjectId | string
+  contactId: Types.ObjectId 
 ): Promise<IContact | null> => {
   try {
     return await contactModel.findByIdAndDelete(contactId).lean().exec();
@@ -176,8 +176,8 @@ export const deleteContact = async (
  * @returns {Promise<IContact | null>} - Returns the updated contact document or null if not found.
  */
 export const updateNotification = async (
-  contactId: Types.ObjectId,
-  subContactId: Types.ObjectId,
+  contactId: Pick<IContact, "_id">, 
+  subContactId:  Pick<IContact, "_id"> ,
   isIncomingMessage: boolean
 ): Promise<IContact | null> => {
   try {

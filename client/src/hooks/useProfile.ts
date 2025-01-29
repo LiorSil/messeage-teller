@@ -27,8 +27,8 @@ export const useProfile = () => {
   // Handle saving the profile name
   const handleSaveClick = useCallback(async () => {
     try {
-      const response  = await axiosInstance.put("/contacts/updateProfile", {
-        name,
+      const response = await axiosInstance.put("/contacts/updateContact", {
+        data: { name },
       });
       if (response.status === 200) {
         window.alert("Changes saved successfully!");

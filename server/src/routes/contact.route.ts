@@ -4,7 +4,7 @@ import {
   getContact,
   findContactsByQuery,
   addSubContact,
-  updateProfile,
+  updateContact,
 } from "../controllers/contact.controller";
 
 const router = Router();
@@ -12,6 +12,6 @@ const router = Router();
 router.get("/", authMiddleware, getContact);
 router.get("/:query", authMiddleware, findContactsByQuery);
 router.put("/addSubContact", authMiddleware, addSubContact);
-router.put("/updateProfile", authMiddleware, updateProfile);
+router.put("/updateContact", authMiddleware, updateContact);
 
 export default router;

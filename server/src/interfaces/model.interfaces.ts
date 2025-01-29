@@ -9,13 +9,15 @@ interface IMessage extends Document {
   content: string;
 }
 
+export type participant = Types.ObjectId;
+
 interface IChat extends Document {
   _id: Types.ObjectId;
-  participants: Types.ObjectId[];
-  messages: IMessage[]; 
+  participants: participant[];
+  messages: IMessage[];
 } 
 interface ISubContact {
-  subContactId: Types.ObjectId;
+  subContactId: Pick<IContact, "_id">;
   lastMessageTime: Date;
   isIncomingMessage?: boolean;
 }
@@ -38,8 +40,8 @@ interface IUser extends Document {
 }
 
 interface INotification {
-  contactId: Types.ObjectId;
-  contactNotifications: Types.ObjectId[];
+  contactId: Pick<IContact, "_id">;
+  contactNotifications: Array<Pick<IContact, "_id">>;
 }
 
 export { IMessage, IChat,  ISubContact, IContact,  IUser, INotification };

@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 import contactModel from "../models/contact.model";
 import * as yup from "yup";
+import { IContact } from "../interfaces/model.interfaces";
 
 /**
  * Validates if a subContactId already exists in the subContacts array of a specific contact.
@@ -22,8 +23,8 @@ export const phoneNumberSchema = yup
  */
 
 export const isSubContactExist = async (
-  contactId: Types.ObjectId,
-  subContactId: Types.ObjectId
+  contactId: Pick<IContact, "_id">,
+  subContactId: Pick<IContact, "_id">
 ): Promise<boolean> => {
   const existingContact = await contactModel.findOne({
     _id: contactId,

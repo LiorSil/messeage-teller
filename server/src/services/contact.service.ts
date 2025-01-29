@@ -29,8 +29,8 @@ export const updateContactService = async (
 };
 
 export const addSubContactService = async (
-  contactId: Types.ObjectId,
-  subContactId: Types.ObjectId
+  contactId: Pick<IContact, "_id">,
+  subContactId: Pick<IContact, "_id">
 ): Promise<ClientSubContact | null> => {
   await addSubContact(contactId, subContactId);
 
@@ -38,7 +38,7 @@ export const addSubContactService = async (
 };
 
 export const getContactByIdService = async (
-  subContactId: Types.ObjectId | string
+  subContactId: Pick<IContact, "_id">
 ): Promise<ClientSubContact | null> => {
   const fullSubContact = await getContactById(subContactId);
   if (!fullSubContact) return null;
@@ -50,7 +50,6 @@ export const getContactByIdService = async (
     name,
     phoneNumber,
     avatar,
-    
   };
 };
 

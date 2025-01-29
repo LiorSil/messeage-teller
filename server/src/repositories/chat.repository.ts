@@ -1,9 +1,16 @@
 import { Types } from "mongoose";
-import { IChat, IMessage } from "../interfaces/model.interfaces";
+import { IChat, IMessage, participant } from "../interfaces/model.interfaces";
 import chatModel from "../models/chat.model";
 
+/**
+ * 
+ * @param chatId 
+ * @param message 
+ * @returns 
+ */
+
 export const pushMessage = async (
-  chatId: Types.ObjectId,
+  chatId: Pick<IChat, "_id">,
   message: Partial<IMessage>
 ): Promise<IChat | null> => {
   return await chatModel
@@ -19,8 +26,8 @@ export const pushMessage = async (
  */
 
 export const pushNotification = async (
-  chatId: Types.ObjectId,
-  recipientId: Types.ObjectId
+  chatId: Pick<IChat, "_id">,
+  recipientId: participant
 ): Promise<IChat | null> => {
   const updatedChat = await chatModel
     .findByIdAndUpdate(
@@ -29,7 +36,6 @@ export const pushNotification = async (
       { new: true }
     )
     .exec();
-  console.log("Notification pushed:", updatedChat);
   return updatedChat;
 };
 
@@ -48,7 +54,7 @@ export const getChats = async (): Promise<IChat[] | IChat> => {
  */
 
 export const getOrCreateChat = async (
-  participants: Types.ObjectId[]
+  participants: Array<participant>
 ): Promise<IChat> => {
   let chat = await chatModel
     .findOne({
@@ -75,7 +81,7 @@ export const getOrCreateChat = async (
  * @throws {Error} - Throws an error if the update fails.
  */
 export const updateChat = async (
-  chatId: Types.ObjectId | string,
+  chatId: Pick<IChat, "_id">,
   updateData: Partial<IChat>
 ): Promise<IChat | null> => {
   try {
@@ -95,7 +101,7 @@ export const updateChat = async (
  * @returns {Promise<IChat | null>} - Returns the deleted chat document or null if not found.
  */
 export const deleteChat = async (
-  chatId: Types.ObjectId | string
+  chatId: Pick<IChat, "_id">
 ): Promise<IChat | null> => {
   const deletedChat = await chatModel.findByIdAndDelete(chatId).exec();
   return deletedChat as IChat;
@@ -108,7 +114,7 @@ export const deleteChat = async (
  * @throws {Error} - Throws an error if the retrieval fails.
  */
 export const getChatsByContactId = async (
-  participantId: Types.ObjectId
+  participantId: participant
 ): Promise<IChat[]> => {
   try {
     const chats = await chatModel
