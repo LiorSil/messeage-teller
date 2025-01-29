@@ -1,9 +1,6 @@
-import { Types } from "mongoose";
+import { IContact } from "../interfaces/model.interfaces";
 
-export type ClientSubContact = {
-  _id: Types.ObjectId;
-  name: string;
-  phoneNumber: string;
-  avatar: string;
-
-};
+export type ClientSubContact = Pick<
+  IContact,
+  "_id" | "name" | "phoneNumber" | "avatar"
+>;

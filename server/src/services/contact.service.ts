@@ -22,7 +22,7 @@ export const getContactsByQueryService = async (
 };
 
 export const updateContactService = async (
-  contactId: Types.ObjectId | string,
+  contactId: Pick<IContact, "_id">,
   updateData: Partial<IContact>
 ): Promise<IContact | null> => {
   return await updateContact(contactId, updateData);
@@ -75,18 +75,20 @@ export const buildClientContactDataService = async (contact: IContact) => {
     };
   }
 };
-
+/*
 export const findContactsByQueryService = async (
-  loggedInContact: IContact,
+  contact: IContact,
   query: string
 ) => {
-  const contacts = await getContactsByQuery(query);
-  return contacts
+
+
+ const queriedContacts = await getContactsByQuery(query);
+  return queriedContacts
     .filter(
-      (foundContact) =>
-        !foundContact._id.equals(loggedInContact._id) &&
-        !loggedInContact.subContacts.some((subContact: ISubContact) =>
-          subContact.subContactId.equals(foundContact._id)
+      (queriedContact) =>
+        !queriedContact._id.equals(contact._id) &&
+        !contact.subContacts.some((subContact: ISubContact) =>
+          subContact.subContactId.equals(queriedContact._id)
         )
     )
     .map(({ _id, name, phoneNumber, avatar }) => ({
@@ -97,4 +99,32 @@ export const findContactsByQueryService = async (
       //TODO: Add last message to the response
       lastMessage: "",
     }));
+    
+};
+
+*/
+
+export const findContactsByQueryService = async (
+  contact: IContact,
+  query: string
+): Promise<Pick<IContact, "_id" | "name" | "phoneNumber" | "avatar">[]> => {
+  const queriedContacts = await getContactsByQuery(query);
+
+  const contactIds = new Set([
+    contact._id.toString(),
+    ...contact.subContacts.map((subContact) =>
+      subContact.subContactId.toString()
+    ),
+  ]);
+
+  return queriedContacts
+    .filter((queriedContact) => !contactIds.has(queriedContact._id.toString()))
+    .map(({ _id, name, phoneNumber, avatar }) => ({
+      _id,
+      name,
+      phoneNumber,
+      avatar,
+      lastMessage: "",
+    }));
+  
 };

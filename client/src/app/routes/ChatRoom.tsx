@@ -8,7 +8,6 @@ import { useContactFetch } from "../../hooks/useContact";
 
 const ChatRoom: React.FC = () => {
   const { getClassNames } = useChatRoom();
-  console.log("rendering ChatRoom");
   useContactFetch();
   const { isChatMangerView } = useSelector((state: RootState) => state.chat);
 

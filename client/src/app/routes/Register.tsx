@@ -25,7 +25,6 @@ const Register = () => {
   const dispatch: AppDispatch = useDispatch();
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    console.log("data", data);
     dispatch(initialError());
     onSubmitHandler(data);
     reset();

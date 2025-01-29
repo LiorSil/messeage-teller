@@ -1,24 +1,20 @@
 import { Document, Types } from "mongoose";
+import { PhoneNumber } from "../types/regex.type";
+import { Participant } from "../types/chat.type";
 
 interface IMessage extends Document {
-  fromId: Types.ObjectId;
-  toId: Types.ObjectId;
+  fromId: Pick<IContact,"_id">;
+  toId: Pick<IContact,"_id">;
   sentTD?: Date;
   read?: boolean;
   readTD?: Date;
   content: string;
 }
 
-export type PhoneNumber = `05${string & { length: 8 } & {
-  [K in keyof any]: K extends keyof "0123456789" ? any : never;
-}}`; 
-
-
-export type participant = Types.ObjectId;
 
 interface IChat extends Document {
   _id: Types.ObjectId;
-  participants: participant[];
+  participants: Participant[];
   messages: IMessage[];
 } 
 interface ISubContact {

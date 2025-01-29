@@ -13,7 +13,6 @@ export const useMessages = () => {
 
 
   const createMessageOnScreen = useCallback((message: Message) => {
-    console.log("createMessageOnScreen");
     setNewMessages((prevMessages) => [...prevMessages, message]);
   }, [
     setNewMessages,

@@ -1,6 +1,6 @@
-import { Types } from "mongoose";
-import { IChat, IMessage, participant } from "../interfaces/model.interfaces";
+import { IChat, IMessage } from "../interfaces/model.interfaces";
 import chatModel from "../models/chat.model";
+import { Participant } from "../types/chat.type";
 
 /**
  * 
@@ -27,7 +27,7 @@ export const pushMessage = async (
 
 export const pushNotification = async (
   chatId: Pick<IChat, "_id">,
-  recipientId: participant
+  recipientId: Participant
 ): Promise<IChat | null> => {
   const updatedChat = await chatModel
     .findByIdAndUpdate(
@@ -54,7 +54,7 @@ export const getChats = async (): Promise<IChat[] | IChat> => {
  */
 
 export const getOrCreateChat = async (
-  participants: Array<participant>
+  participants: Array<Participant>
 ): Promise<IChat> => {
   let chat = await chatModel
     .findOne({
@@ -114,7 +114,7 @@ export const deleteChat = async (
  * @throws {Error} - Throws an error if the retrieval fails.
  */
 export const getChatsByContactId = async (
-  participantId: participant
+  participantId: Participant
 ): Promise<IChat[]> => {
   try {
     const chats = await chatModel

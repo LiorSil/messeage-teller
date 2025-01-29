@@ -1,6 +1,7 @@
 import userModel from "../models/user.model";
-import { IUser, PhoneNumber } from "../interfaces/model.interfaces";
-import mongoose from 'mongoose';
+import { IUser } from "../interfaces/model.interfaces";
+import { PhoneNumber } from "../types/regex.type";
+
 
 /**
  * Create a new user.
