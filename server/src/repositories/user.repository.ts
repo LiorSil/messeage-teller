@@ -1,6 +1,6 @@
-import userModel from "../models/user.model";
 import { IUser } from "../interfaces/model.interfaces";
 import { PhoneNumber } from "../types/regex.type";
+import userModel from "../models/user.model";
 
 
 /**
@@ -13,7 +13,7 @@ import { PhoneNumber } from "../types/regex.type";
 export const createUser = async (
   email: Pick<IUser, "email">,
   password: Pick<IUser, "password">,
-  phoneNumber: Pick<IUser, "phoneNumber">
+  phoneNumber:  PhoneNumber
 ): Promise<IUser> => {
   try {
     const user = new userModel({ email, password, phoneNumber });
@@ -68,7 +68,9 @@ export const getUserByPhoneNumber = async (
  * @param {string} email - User's email.
  * @returns {Promise<IUser | null>} - The user with the given email or null if not found.
  */
-export const getUserByEmail = async (email: string): Promise<IUser | null> => {
+export const getUserByEmail = async (
+  email: Pick<IUser, "email">
+): Promise<IUser | null> => {
   try {
     return await userModel.findOne({ email }).exec();
   } catch (error: any) {

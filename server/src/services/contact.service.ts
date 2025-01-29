@@ -1,3 +1,6 @@
+import { IContact } from "../interfaces/model.interfaces";
+import { ClientSubContact } from "../types/client.type";
+import { sortSubContactsByLatestChats } from "./chat.service";
 import {
   createContact,
   getContactsByQuery,
@@ -5,10 +8,8 @@ import {
   addSubContact,
   getContactById,
 } from "../repositories/contact.repository";
-import { IContact, ISubContact } from "../interfaces/model.interfaces";
-import { Types } from "mongoose";
-import { ClientSubContact } from "../types/client.type";
-import { sortSubContactsByLatestChats } from "./chat.service";
+
+
 export const createContactService = async (
   contactData: Partial<IContact>
 ): Promise<IContact> => {
@@ -126,5 +127,4 @@ export const findContactsByQueryService = async (
       avatar,
       lastMessage: "",
     }));
-  
 };

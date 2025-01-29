@@ -37,9 +37,9 @@ interface IContact extends Document {
 interface IUser extends Document {
   _id: Types.ObjectId;
   email: string;
-  password: PhoneNumber;
+  password: string;
+  comparePassword: (candidatePassword: string) => Promise<boolean>;
   phoneNumber: PhoneNumber;
-  comparePassword: (candidatePassword: PhoneNumber) => Promise<boolean>;
 }
 
 interface INotification {

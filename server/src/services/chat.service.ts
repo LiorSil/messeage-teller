@@ -1,13 +1,14 @@
 import { IChat, IContact, IMessage } from "../interfaces/model.interfaces";
+import { ClientSubContact } from "../types/client.type";
+import { mappedChatParticipants, Participant } from "../types/chat.type";
 import {
   getChatsByContactId,
   pushMessage,
 } from "../repositories/chat.repository";
+
+import { isContactType } from "../utils/typeGuard";
 import { getOrCreateChat } from "../repositories/chat.repository";
 import { getContactByIdService } from "./contact.service";
-import { mappedChatParticipants, Participant } from "../types/chat.type";
-import { isContactType } from "../utils/typeGuard";
-import { ClientSubContact } from "../types/client.type";
 
 /**
  * Create a new message in a chat.

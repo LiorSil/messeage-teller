@@ -1,5 +1,4 @@
 
-import {Types} from "mongoose";
 import { IContact } from "../interfaces/model.interfaces";
 import { getContactById, updateNotification } from "../repositories/contact.repository";
 

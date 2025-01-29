@@ -1,7 +1,7 @@
-import contactModel from "../models/contact.model";
+import { PhoneNumber } from "../types/regex.type";
 import { IContact } from "../interfaces/model.interfaces";
 import { isSubContactExist, phoneNumberSchema } from "../utils/validation";
-import { PhoneNumber } from "../types/regex.type";
+import contactModel from "../models/contact.model";
 
 /**
  * Creates a new contact document.

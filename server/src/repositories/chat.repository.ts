@@ -1,6 +1,6 @@
 import { IChat, IMessage } from "../interfaces/model.interfaces";
-import chatModel from "../models/chat.model";
 import { Participant } from "../types/chat.type";
+import chatModel from "../models/chat.model";
 
 /**
  * 

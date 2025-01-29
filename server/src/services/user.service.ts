@@ -1,16 +1,18 @@
+import { PhoneNumber } from "../types/regex.type";
+import { IUser } from "../interfaces/model.interfaces";
+import jwt from "jsonwebtoken";
+import { createContact } from "../repositories/contact.repository";
 import {
   createUser,
   getUserByEmail,
   getUserByPhoneNumber,
   getUsers,
 } from "../repositories/user.repository";
-import jwt from "jsonwebtoken";
-import { createContact } from "../repositories/contact.repository";
 
 export const registerUserService = async (
-  email: string,
-  password: string,
-  phoneNumber: string
+  email: Pick<IUser, "email">,
+  password: Pick<IUser, "password">,
+  phoneNumber: PhoneNumber
 ) => {
   try {
     const existingUser = await getUserByEmail(email);
@@ -24,7 +26,7 @@ export const registerUserService = async (
 
     const user = await createUser(email, password, phoneNumber);
     const contact = await createContact({
-      name: email,
+      name: email.toString(),
       phoneNumber,
       createdAt: new Date().toISOString(),
     });
@@ -34,7 +36,10 @@ export const registerUserService = async (
   }
 };
 
-export const loginUserService = async (email: string, password: string) => {
+export const loginUserService = async (
+  email: Pick<IUser, "email">,
+  password: string
+) => {
   try {
     // Fetch user by email
     const user = await getUserByEmail(email);
