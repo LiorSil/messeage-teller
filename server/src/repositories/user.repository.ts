@@ -1,18 +1,18 @@
 import userModel from "../models/user.model";
-import { IUser } from "../interfaces/model.interfaces";
+import { IUser, PhoneNumber } from "../interfaces/model.interfaces";
 import mongoose from 'mongoose';
 
 /**
  * Create a new user.
- * @param {string} email - User's email.
- * @param {string} password - User's password.
- * @param {string} phoneNumber - User's phone number.
+ * @param {Pick<IUser, "email">} email - User's email.
+ * @param {Pick<IUser, "password">} password - User's password.
+ * @param {Pick<IUser, "phoneNumber">} phoneNumber - User's phone number.
  * @returns {Promise<IUser>} - The created user.
  */
 export const createUser = async (
-  email: string,
-  password: string,
-  phoneNumber: string
+  email: Pick<IUser, "email">,
+  password: Pick<IUser, "password">,
+  phoneNumber: Pick<IUser, "phoneNumber">
 ): Promise<IUser> => {
   try {
     const user = new userModel({ email, password, phoneNumber });
@@ -36,15 +36,12 @@ export const getUsers = async (): Promise<IUser[]> => {
 
 /**
  * Get a user by ID.
- * @param {string} userId - User's ID.
+ * @param {Pick<IUser,"_id">} userId - User's ID.
  * @returns {Promise<IUser | null>} - The user with the given ID or null if not found.
  */
-export const getUserById = async (userId: string): Promise<IUser | null> => {
+export const getUserById = async (userId: Pick<IUser,"_id">): Promise<IUser | null> => {
   try {
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-      throw new Error('Invalid user ID');
-    }
-    return await userModel.findById(userId).exec();
+     return await userModel.findById(userId).exec();
   } catch (error: any) {
     throw new Error(`Error fetching user by ID:${error.message}`);
   }
@@ -52,11 +49,11 @@ export const getUserById = async (userId: string): Promise<IUser | null> => {
 
 /**
  * Get a user by phone number.
- * @param {string} phoneNumber - User's phone number.
+ * @param {PhoneNumber} phoneNumber - User's phone number.
  * @returns {Promise<IUser | null>} - The user with the given phone number or null if not found.
  */
 export const getUserByPhoneNumber = async (
-  phoneNumber: string
+  phoneNumber: PhoneNumber
 ): Promise<IUser | null> => {
   try {
     return await userModel.findOne({ phoneNumber }).exec();
@@ -80,18 +77,15 @@ export const getUserByEmail = async (email: string): Promise<IUser | null> => {
 
 /**
  * Update a user's information.
- * @param {string} userId - User's ID.
+ * @param {Pick<IUser,"_id">} userId - User's ID.
  * @param {Partial<IUser>} updateData - Data to update.
  * @returns {Promise<IUser | null>} - The updated user or null if not found.
  */
 export const updateUser = async (
-  userId: string,
+  userId: Pick<IUser,"_id">,
   updateData: Partial<IUser>
 ): Promise<IUser | null> => {
   try {
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-      throw new Error('Invalid user ID');
-    }
     return await userModel.findByIdAndUpdate(userId, updateData, { new: true }).exec();
   } catch (error: any) {
     throw new Error(`Error updating user:${error.message}`);
@@ -100,14 +94,13 @@ export const updateUser = async (
 
 /**
  * Delete a user by ID.
- * @param {string} userId - User's ID.
+ * @param {Pick<IUser,"_id">} userId - User's ID.
  * @returns {Promise<IUser | null>} - The deleted user or null if not found.
  */
-export const deleteUser = async (userId: string): Promise<IUser | null> => {
+export const deleteUser = async (
+  userId: Pick<IUser, "_id">
+): Promise<IUser | null> => {
   try {
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-      throw new Error('Invalid user ID');
-    }
     return await userModel.findByIdAndDelete(userId).exec();
   } catch (error: any) {
     throw new Error(`Error deleting user:${error.message}`);

@@ -1,5 +1,5 @@
 import contactModel from "../models/contact.model";
-import { IContact } from "../interfaces/model.interfaces";
+import { IContact, PhoneNumber } from "../interfaces/model.interfaces";
 import { Types } from "mongoose";
 import { isSubContactExist, phoneNumberSchema } from "../utils/validation";
 
@@ -38,7 +38,7 @@ export const getContactById = async (
  * @returns {Promise<IContact | null>} - Returns the contact document or null if not found.
  */
 export const getContactByPhoneNumber = async (
-  phoneNumber: string
+  phoneNumber: PhoneNumber
 ): Promise<IContact | null> => {
   try {
     return await contactModel.findOne({ phoneNumber }).lean().exec();
@@ -54,7 +54,7 @@ export const getContactByPhoneNumber = async (
  * @param name - The name to search for.
  * @returns {Promise<IContact[]>} - Returns an array of contact documents.
  */
-export const getContactsByName = async (name: string): Promise<IContact[]> => {
+export const getContactsByName = async (name: Pick<IContact, "name">): Promise<IContact[]> => {
   try {
     return await contactModel
       .find({ name: { $regex: name, $options: "i" } })
@@ -111,7 +111,7 @@ export const getContacts = async (): Promise<IContact[]> => {
  * @returns {Promise<IContact | null>} - Returns the updated contact document or null if not found.
  */
 export const updateContact = async (
-  contactId: Types.ObjectId | string,
+  contactId: Pick<IContact, "_id">,
   updateData: Partial<IContact>
 ): Promise<IContact | null> => {
   try {
@@ -158,7 +158,7 @@ export const addSubContact = async (
  * @returns {Promise<IContact | null>} - Returns the deleted contact document or null if not found.
  */
 export const deleteContact = async (
-  contactId: Types.ObjectId 
+  contactId: Pick<IContact, "_id">
 ): Promise<IContact | null> => {
   try {
     return await contactModel.findByIdAndDelete(contactId).lean().exec();

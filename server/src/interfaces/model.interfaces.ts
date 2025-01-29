@@ -9,6 +9,11 @@ interface IMessage extends Document {
   content: string;
 }
 
+export type PhoneNumber = `05${string & { length: 8 } & {
+  [K in keyof any]: K extends keyof "0123456789" ? any : never;
+}}`; 
+
+
 export type participant = Types.ObjectId;
 
 interface IChat extends Document {
@@ -17,6 +22,7 @@ interface IChat extends Document {
   messages: IMessage[];
 } 
 interface ISubContact {
+  _id: Types.ObjectId;
   subContactId: Pick<IContact, "_id">;
   lastMessageTime: Date;
   isIncomingMessage?: boolean;
@@ -26,20 +32,22 @@ interface IContact extends Document {
   _id: Types.ObjectId;
   name: string;
   avatar: string;
-  phoneNumber: string;
+  phoneNumber: PhoneNumber;
   subContacts: ISubContact[];
   status?: string;
   createdAt?: string;
 }
 
 interface IUser extends Document {
+  _id: Types.ObjectId;
   email: string;
-  password: string;
-  phoneNumber: string;
-  comparePassword: (candidatePassword: string) => Promise<boolean>;
+  password: PhoneNumber;
+  phoneNumber: PhoneNumber;
+  comparePassword: (candidatePassword: PhoneNumber) => Promise<boolean>;
 }
 
 interface INotification {
+  _id: Types.ObjectId;
   contactId: Pick<IContact, "_id">;
   contactNotifications: Array<Pick<IContact, "_id">>;
 }
