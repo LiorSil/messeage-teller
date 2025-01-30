@@ -9,6 +9,7 @@ import {
 import { isContactType } from "../utils/typeGuard";
 import { getOrCreateChat } from "../repositories/chat.repository";
 import { getContactByIdService } from "./contact.service";
+import { Types } from "mongoose";
 
 /**
  * Create a new message in a chat.
@@ -59,10 +60,36 @@ export const sortSubContactsByLatestChats = async (
   }
 
   // step 2: Fetch all chats for the contact
-  const chats: Array<IChat> = await getChatsByContactId(contact._id);
+  const chats: IChat[] = await getChatsByContactId(contact._id).then(
+    (chats) => {
+      return chats.filter((chat) => {
+        return chat.participants.some((participant) => {
+          const subContactIds: Types.ObjectId[] = contact.subContacts.map(
+            (subContact) => subContact._id
+          );
+
+          // Correct way to compare ObjectIds:
+          return subContactIds.some((subContactId) => {
+            console.log("participant", participant);
+            console.log("subContactId", subContactId);
+            console.log(
+              "participant.equals(subContactId)",
+              participant.equals(subContactId)
+            );
+            return participant.equals(subContactId);
+          });
+        });
+      });
+    }
+  );
+
+  console.log("chats", chats);
+
   if (!chats || chats.length === 0) {
     return [];
   }
+
+  // i need to filter out chats that the particpants are not in the contact.subcontacts
 
   // Step 3: Process all participants in the chats and extract the last message time for each chat
   const processedParticipants: mappedChatParticipants[] = chats.flatMap(

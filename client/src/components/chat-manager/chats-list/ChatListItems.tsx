@@ -10,7 +10,9 @@ const ChatListItems = ({
   subContacts,
   handleChatSelection,
 }: chatListItemsProps) => {
+
   if (!subContacts) return null;
+  
   const chats =
     subContacts?.map((contact, index) => (
       <li key={`${index}_${contact._id}`} className="space-y-3">

@@ -28,6 +28,10 @@ const FormWrapper = ({
                 <h1 className="font-assistant text-2xl font-bold text-center mb-4 text-app-palette-muted-turquoise--60">
                   {headline}
                 </h1>
+                <h1>lior.silmansoad@gmail.com</h1>
+                <br />
+                <h1>Pa$$w0rd</h1>
+                <br />
                 {children}
               </div>
             </div>
