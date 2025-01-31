@@ -2,12 +2,17 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../redux/store";
 import { toggleChatManagerView } from "../redux/slices/chatSlice";
+import { SubContact } from "../types/subContact";
+import { Contact } from "../types/contact";
+import axiosInstance from "../api/axiosInstance";
+import { updateContact } from "../redux/slices/contactSlice";
 
 export const useChatHeader = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const selectedChat = useSelector(
     (state: RootState) => state.chat.selectedChat
   );
+  const { contact} = useSelector((state: RootState) => state.contact);
   const dispatch: AppDispatch = useDispatch();
 
   const handleReturnButtonClick = () => {
@@ -16,7 +21,7 @@ export const useChatHeader = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 768); 
+      setIsSmallScreen(window.innerWidth < 768);
     };
 
     handleResize();
@@ -28,6 +33,37 @@ export const useChatHeader = () => {
     };
   }, []);
 
+  const deleteSubContact = async (
+  subContact: SubContact,
+  ) => {
+  if (!contact) {
+    return;
+  }
+  const updatedContact = {
+    ...contact,
+    subContacts: contact.subContacts.filter(
+      (sub) => sub._id !== subContact._id
+    ),
+  };
+
+  //TODO: fix the logic an create a new delete sub-contact service
+
+  try {
+    const response = await axiosInstance.put("/contacts/updateContact", {
+      data: { contact: updatedContact },
+    });
+    if (response.status === 200) {
+      dispatch(updateContact(updatedContact));
+      window.alert("Sub contact deleted successfully!");
+    } else {
+      window.alert("Failed to save changes. Please try again.");
+    }
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : error);
+    window.alert("Failed to save changes. Please try again.");
+  }
+};
+
   // Return the screen size state
-  return { isSmallScreen, handleReturnButtonClick, selectedChat };
+  return { isSmallScreen, handleReturnButtonClick, selectedChat, deleteSubContact };
 };

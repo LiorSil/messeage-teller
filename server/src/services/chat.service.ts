@@ -77,7 +77,6 @@ export const sortSubContactsByLatestChats = async (
     }
   );
 
-  console.log("chats", chats);
 
   if (!chats || chats.length === 0) {
     return [];
