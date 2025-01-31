@@ -59,25 +59,19 @@ export const sortSubContactsByLatestChats = async (
     throw new Error("Invalid contact type");
   }
 
-  // step 2: Fetch all chats for the contact
+  // step 2: Fetch all chats for the contact and filter out the chats that the contact is not a part of
   const chats: IChat[] = await getChatsByContactId(contact._id).then(
     (chats) => {
       return chats.filter((chat) => {
         return chat.participants.some((participant) => {
           const subContactIds: Types.ObjectId[] = contact.subContacts.map(
-            (subContact) => subContact._id
+            (subContact) => subContact.subContactId as Types.ObjectId
           );
 
           // Correct way to compare ObjectIds:
-          return subContactIds.some((subContactId) => {
-            console.log("participant", participant);
-            console.log("subContactId", subContactId);
-            console.log(
-              "participant.equals(subContactId)",
-              participant.equals(subContactId)
-            );
-            return participant.equals(subContactId);
-          });
+          return subContactIds.some((subContactId) =>
+            participant.equals(subContactId)
+          );
         });
       });
     }
@@ -89,14 +83,12 @@ export const sortSubContactsByLatestChats = async (
     return [];
   }
 
-  // i need to filter out chats that the particpants are not in the contact.subcontacts
 
   // Step 3: Process all participants in the chats and extract the last message time for each chat
   const processedParticipants: mappedChatParticipants[] = chats.flatMap(
     (chat) => {
       const lastMessage = chat.messages[chat.messages.length - 1];
       const lastMessageTime = lastMessage?.sentTD || new Date(0);
-
       return chat.participants
         .filter((participant) => !participant.equals(contact._id))
         .map((subContactId) => ({
