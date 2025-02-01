@@ -17,8 +17,7 @@ const AddContact = () => {
   const { handleFetchContactByPhoneOrName, query, handleUpdateQuery, handleClearQuery } = 
   useFindContact();
 
-    const { potentialSubContacts}  = useContact() || { potentialSubContacts: []} 
-
+    const { potentialSubContacts } = useContact(); 
   const { handleModifyContact} =
     useModifySubContacts();
 

@@ -34,12 +34,13 @@ const contactSlice = createSlice({
     });
     // * add sub contact
     builder.addCase(fetchModifySubContact.fulfilled, (state, action) => {
-      console.log(action.payload);
       const { actionType, subContact, subContactId } = action.payload;
+      console.log("action.payload", action.payload);
 
       if (state.contact?.subContacts) {
         if (actionType === "add" && subContact) {
           state.contact.subContacts.push(subContact);
+          console.log("state.contact.subContacts", state.contact.subContacts);
         } else if (actionType === "delete" && subContactId) {
           state.contact.subContacts = state.contact.subContacts.filter(
             (sub) => sub._id !== subContactId

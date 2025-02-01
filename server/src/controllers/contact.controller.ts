@@ -62,7 +62,9 @@ export const ModifySubContact = async (
       if (!newSubContact)
         res.status(404).json({ message: "Sub contact not found" });
 
-      res.status(200).json({ ...newSubContact, isIncomingMessage: false });
+      res
+        .status(200)
+        .json({ subContact: { ...newSubContact, isIncomingMessage: false } });
     } else if (actionType == "delete") {
       const subContactIsDelete = await deleteSubContact(contact, subContactId);
       if (subContactIsDelete)
