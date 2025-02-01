@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { initialState } from "../states/contactState";
 import { Contact } from "../../types/contact";
 import { fetchContact } from "../thunks/contactThunks";
-import { SubContact } from "../../types/subContact";
+import { SubContact, SubContactId } from "../../types/subContact";
 import {
   fetchModifySubContact,
   fetchContactByPhoneOrName,
@@ -34,16 +34,15 @@ const contactSlice = createSlice({
     });
     // * add sub contact
     builder.addCase(fetchModifySubContact.fulfilled, (state, action) => {
-      const { actionType, ...subContact } = action.payload;
+      console.log(action.payload);
+      const { actionType, subContact, subContactId } = action.payload;
 
-      if (actionType === "add") {
-        if (state.contact?.subContacts) {
+      if (state.contact?.subContacts) {
+        if (actionType === "add" && subContact) {
           state.contact.subContacts.push(subContact);
-        }
-      } else if (actionType === "delete") {
-        if (state.contact?.subContacts) {
+        } else if (actionType === "delete" && subContactId) {
           state.contact.subContacts = state.contact.subContacts.filter(
-            (sub) => sub._id !== subContact._id
+            (sub) => sub._id !== subContactId
           );
         }
       }

@@ -1,7 +1,9 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { Action, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   FetchModifySubContactParams,
+  FetchModifySubContactResponse,
   SubContact,
+  SubContactId,
 } from "../../types/subContact";
 import {
   fetchModifySubContactParams,
@@ -35,22 +37,21 @@ export const fetchContactByPhoneOrName = createAsyncThunk<
   }
 );
 export const fetchModifySubContact = createAsyncThunk<
-  SubContact,
+  FetchModifySubContactResponse,
   FetchModifySubContactParams,
   { rejectValue: unknown }
 >(
   "subContactsFinder/fetchModifySubContact",
   async ({ subContactId, actionType }, { rejectWithValue }) => {
     try {
+      // Corrected the axiosInstance.put syntax to directly pass the data payload
       const response = await axiosInstance.put<SubContact>(
         `/contacts/fetchModifySubContact`,
-        {
-          data: { subContactId, actionType },
-        }
+        { subContactId, actionType } 
       );
 
-      // Return both the subContact data and the actionType
-      return { ...response.data, actionType };
+      // Ensure the return type includes the actionType and either subContact or subContactId
+      return { ...response.data, actionType, subContactId };
     } catch (error) {
       return handleAxiosError(error, rejectWithValue);
     }

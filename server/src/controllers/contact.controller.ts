@@ -55,23 +55,20 @@ export const ModifySubContact = async (
   res: Response
 ): Promise<void> => {
   try {
-    console.log(req.body);
-    const { contact, data } = req.body;
+    const { contact, subContactId, actionType } = req.body;
 
-    if (data.actionType == "add") {
-      const newSubContact = await addSubContactService(
-        contact,
-        data.subContactId
-      );
-      if (!newSubContact) {
+    if (actionType == "add") {
+      const newSubContact = await addSubContactService(contact, subContactId);
+      if (!newSubContact)
         res.status(404).json({ message: "Sub contact not found" });
-      }
+
       res.status(200).json({ ...newSubContact, isIncomingMessage: false });
-    } else if (data.actionType == "delete") {
-      const updatedContact = await deleteSubContact(contact, data.subContactId);
-      res.status(200).json({
-        updatedContact,
-      });
+    } else if (actionType == "delete") {
+      const subContactIsDelete = await deleteSubContact(contact, subContactId);
+      if (subContactIsDelete)
+        res.status(200).json({
+          subContactId,
+        });
     }
   } catch (error: any) {
     res.status(500).json({ message: error.message });
