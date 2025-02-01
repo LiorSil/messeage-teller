@@ -3,10 +3,10 @@ import {
   addSubContactService,
   buildClientContactDataService,
   createContactService,
+  deleteSubContact,
   findContactsByQueryService,
   updateContactService,
 } from "../services/contact.service";
-
 
 export const createContact = async (
   req: Request,
@@ -50,17 +50,29 @@ export const findContactsByQuery = async (
   }
 };
 
-export const addSubContact = async (
+export const ModifySubContact = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
-    const { contact, subContactId } = req.body;
+    console.log(req.body);
+    const { contact, data } = req.body;
 
-    const newSubContact = await addSubContactService(contact._id, subContactId);
-    if (!newSubContact)
-      res.status(404).json({ message: "Sub contact not found" });
-    res.status(200).json({...newSubContact, isIncomingMessage: false});
+    if (data.actionType == "add") {
+      const newSubContact = await addSubContactService(
+        contact,
+        data.subContactId
+      );
+      if (!newSubContact) {
+        res.status(404).json({ message: "Sub contact not found" });
+      }
+      res.status(200).json({ ...newSubContact, isIncomingMessage: false });
+    } else if (data.actionType == "delete") {
+      const updatedContact = await deleteSubContact(contact, data.subContactId);
+      res.status(200).json({
+        updatedContact,
+      });
+    }
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
@@ -73,7 +85,7 @@ export const updateContact = async (
 ): Promise<void> => {
   try {
     const { contact, data } = req.body;
-        const updatedContact = { ...contact, ...data };
+    const updatedContact = { ...contact, ...data };
     await updateContactService(contact._id, updatedContact);
 
     res.status(200).json(updatedContact);
@@ -81,4 +93,3 @@ export const updateContact = async (
     res.status(500).json({ message: error.message });
   }
 };
-

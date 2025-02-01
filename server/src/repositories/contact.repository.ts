@@ -132,7 +132,7 @@ export const updateContact = async (
  */
 export const addSubContact = async (
   contactId: Pick<IContact, "_id">,
-  subContactId: Pick<IContact, "_id"> 
+  subContactId: Pick<IContact, "_id">
 ): Promise<IContact | null> => {
   try {
     const subContactExists = await isSubContactExist(contactId, subContactId);

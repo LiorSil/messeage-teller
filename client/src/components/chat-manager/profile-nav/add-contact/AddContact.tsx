@@ -5,7 +5,6 @@ import ComboboxDropdown from "./ComboboxDropdown";
 import ComboboxItem from "./ComboboxItem";
 import useFindContact from "../../../../hooks/useFindContact";
 import useModifySubContacts from "../../../../hooks/useModifySubContacts";
-import NoticeComponent from "../../../../shared/NoticeMessage";
 import {useContact} from "../../../../hooks/useContact";
 
 
@@ -20,13 +19,13 @@ const AddContact = () => {
 
     const { potentialSubContacts}  = useContact() || { potentialSubContacts: []} 
 
-  const { handleAddSubContact, showNotice, handleShowNotice } =
+  const { handleModifyContact} =
     useModifySubContacts();
 
   const handleInputChange = useCallback(
     ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
       handleUpdateQuery(value);
-      if (value.length >= 5  ) {
+      if (value.length >= 5) {
         handleFetchContactByPhoneOrName(value);
       }
     },
@@ -36,17 +35,9 @@ const AddContact = () => {
     setSelectedItem((prev) => (prev === subContactId ? null : subContactId));
   }, []);
 
-
-
   return (
     <>
-      {showNotice && (
-        <NoticeComponent
-          message="Contact added successfully"
-          onClose={() => handleShowNotice()}
-        />
-      )}
-
+     
       <ComboboxContainer>
         <ComboboxInput
           value={query}
@@ -57,7 +48,7 @@ const AddContact = () => {
           isVisible={query.length >= 5}
           onAddContact={() => {
             if (selectedItem && potentialSubContacts.length > 0) {
-              handleAddSubContact(selectedItem);
+              handleModifyContact(selectedItem, "add");
             } else {
               alert("Please select a contact to add");
             }

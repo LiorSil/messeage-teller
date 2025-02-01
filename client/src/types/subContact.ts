@@ -5,3 +5,10 @@ export interface SubContact {
   name: string;
   phoneNumber: string;
 }
+
+export interface FetchModifySubContactParams {
+  subContactId: string;
+  actionType: "add" | "delete";
+}
+
+

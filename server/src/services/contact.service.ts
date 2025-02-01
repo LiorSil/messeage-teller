@@ -9,7 +9,6 @@ import {
   getContactById,
 } from "../repositories/contact.repository";
 
-
 export const createContactService = async (
   contactData: Partial<IContact>
 ): Promise<IContact> => {
@@ -30,12 +29,23 @@ export const updateContactService = async (
 };
 
 export const addSubContactService = async (
-  contactId: Pick<IContact, "_id">,
+  contact: IContact,
   subContactId: Pick<IContact, "_id">
 ): Promise<ClientSubContact | null> => {
-  await addSubContact(contactId, subContactId);
-
+  await addSubContact(contact._id, subContactId);
   return await getContactByIdService(subContactId);
+};
+
+export const deleteSubContact = async (
+  contact: IContact,
+  subContactId: Pick<IContact, "_id">
+): Promise<ClientSubContact | null> => {
+  contact.subContacts = contact.subContacts.filter(
+    (subContact) =>
+      subContact.subContactId.toString() !== subContactId.toString()
+  );
+  const updatedContact = await updateContact(contact._id, { ...contact });
+  return updatedContact;
 };
 
 export const getContactByIdService = async (
@@ -76,34 +86,6 @@ export const buildClientContactDataService = async (contact: IContact) => {
     };
   }
 };
-/*
-export const findContactsByQueryService = async (
-  contact: IContact,
-  query: string
-) => {
-
-
- const queriedContacts = await getContactsByQuery(query);
-  return queriedContacts
-    .filter(
-      (queriedContact) =>
-        !queriedContact._id.equals(contact._id) &&
-        !contact.subContacts.some((subContact: ISubContact) =>
-          subContact.subContactId.equals(queriedContact._id)
-        )
-    )
-    .map(({ _id, name, phoneNumber, avatar }) => ({
-      _id,
-      name,
-      phoneNumber,
-      avatar,
-      //TODO: Add last message to the response
-      lastMessage: "",
-    }));
-    
-};
-
-*/
 
 export const findContactsByQueryService = async (
   contact: IContact,

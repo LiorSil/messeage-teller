@@ -1,7 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { SubContact } from "../../types/subContact";
 import {
-  FetchAddSubContactParams,
+  FetchModifySubContactParams,
+  SubContact,
+} from "../../types/subContact";
+import {
+  fetchModifySubContactParams,
   FetchContactByPhoneOrNameParams,
 } from "../../types/contact";
 import axiosInstance from "../../api/axiosInstance.ts";
@@ -31,23 +34,23 @@ export const fetchContactByPhoneOrName = createAsyncThunk<
     }
   }
 );
-
-export const fetchAddSubContact = createAsyncThunk<
+export const fetchModifySubContact = createAsyncThunk<
   SubContact,
-  FetchAddSubContactParams,
+  FetchModifySubContactParams,
   { rejectValue: unknown }
 >(
-  "subContactsFinder/FetchAddSubContact",
-  async ({ subContactId }, { rejectWithValue }) => {
+  "subContactsFinder/fetchModifySubContact",
+  async ({ subContactId, actionType }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.put<SubContact>(
-        `/contacts/addSubContact`,
+        `/contacts/fetchModifySubContact`,
         {
-          subContactId,
+          data: { subContactId, actionType },
         }
       );
 
-      return response.data;
+      // Return both the subContact data and the actionType
+      return { ...response.data, actionType };
     } catch (error) {
       return handleAxiosError(error, rejectWithValue);
     }

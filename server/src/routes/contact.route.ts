@@ -3,7 +3,7 @@ import { authMiddleware } from "../middlewares/auth.middleware";
 import {
   getContact,
   findContactsByQuery,
-  addSubContact,
+  ModifySubContact,
   updateContact,
 } from "../controllers/contact.controller";
 
@@ -11,7 +11,7 @@ const router = Router();
 
 router.get("/", authMiddleware, getContact);
 router.get("/:query", authMiddleware, findContactsByQuery);
-router.put("/addSubContact", authMiddleware, addSubContact);
+router.put("/fetchModifySubContact", authMiddleware, ModifySubContact);
 router.put("/updateContact", authMiddleware, updateContact);
 
 export default router;

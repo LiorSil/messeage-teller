@@ -4,7 +4,7 @@ import { Contact } from "../../types/contact";
 import { fetchContact } from "../thunks/contactThunks";
 import { SubContact } from "../../types/subContact";
 import {
-  fetchAddSubContact,
+  fetchModifySubContact,
   fetchContactByPhoneOrName,
 } from "../thunks/subContactThunks";
 
@@ -19,7 +19,7 @@ const contactSlice = createSlice({
       console.log("action.payload", action.payload);
       state.contact!.name = action.payload;
     },
-    addSubContact: (state, action: PayloadAction<SubContact>) => {
+    ModifySubContact: (state, action: PayloadAction<SubContact>) => {
       state.contact?.subContacts.push(action.payload);
     },
   },
@@ -33,10 +33,23 @@ const contactSlice = createSlice({
       state.error = action.payload as string;
     });
     // * add sub contact
-    builder.addCase(fetchAddSubContact.fulfilled, (state, action) => {
-      state.contact?.subContacts.push(action.payload);
+    builder.addCase(fetchModifySubContact.fulfilled, (state, action) => {
+      const { actionType, ...subContact } = action.payload;
+
+      if (actionType === "add") {
+        if (state.contact?.subContacts) {
+          state.contact.subContacts.push(subContact);
+        }
+      } else if (actionType === "delete") {
+        if (state.contact?.subContacts) {
+          state.contact.subContacts = state.contact.subContacts.filter(
+            (sub) => sub._id !== subContact._id
+          );
+        }
+      }
     });
-    builder.addCase(fetchAddSubContact.rejected, (state, action) => {
+
+    builder.addCase(fetchModifySubContact.rejected, (state, action) => {
       state.error = action.payload as string;
     });
     // * potential subContacts finder
@@ -49,7 +62,7 @@ const contactSlice = createSlice({
   },
 });
 
-export { fetchContact, fetchAddSubContact, fetchContactByPhoneOrName };
-export const { updateContact, updateName, addSubContact } =
+export { fetchContact, fetchModifySubContact, fetchContactByPhoneOrName };
+export const { updateContact, updateName, ModifySubContact } =
   contactSlice.actions;
 export default contactSlice.reducer;

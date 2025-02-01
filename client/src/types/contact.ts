@@ -20,11 +20,13 @@ export interface FetchContactByPhoneOrNameParams {
 }
 
 // src/types/notification.ts
-export interface FetchAddSubContactParams {
+export interface fetchModifySubContactParams {
   subContactId: string;
+  actionType: "add" | "delete";
 }
 
 export interface AckNotificationArgs {
   contactId: string;
   subContactId: string;
+ 
 }
