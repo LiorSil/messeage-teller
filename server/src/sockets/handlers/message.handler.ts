@@ -5,17 +5,22 @@ import {
   createMessageService,
   getChatByParticipants,
 } from "../../services/chat.service";
-import { ModifySubContactService } from "../../services/contact.service";
+
 import { pushNotificationService } from "../../services/notification.service";
+import { addSubContactService } from "../../services/contact.service";
+import { Participant } from "../../types/chat.type";
 
 export const handleSendMessage = debounce(
   async (message: IMessage, io: Server) => {
     try {
       const [sender, recipient] = [message.fromId, message.toId];
-      const chat: IChat = await getChatByParticipants([recipient, sender]);
+      const chat: IChat = await getChatByParticipants([
+        recipient,
+        sender,
+      ] as Array<Participant>);
       await createMessageService(chat._id, message);
 
-      const isNewSubContact = await ModifySubContactService(recipient, sender);
+      const isNewSubContact = await addSubContactService(recipient, sender);
       await pushNotificationService(recipient, sender);
       io.to(recipient.toString()).emit("receive_message", message);
     } catch (error) {

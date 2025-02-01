@@ -29,10 +29,10 @@ export const updateContactService = async (
 };
 
 export const addSubContactService = async (
-  contact: IContact,
+  contactId: Pick<IContact, "_id">,
   subContactId: Pick<IContact, "_id">
 ): Promise<ClientSubContact | null> => {
-  await addSubContact(contact._id, subContactId);
+  await addSubContact(contactId, subContactId);
   return await getContactByIdService(subContactId);
 };
 

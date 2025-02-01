@@ -31,6 +31,7 @@ export const useSocket = () => {
       setSocket(null); // Cleanup the socket state
     };
   }, [contactId]); // Ensure the effect runs when contactId changes
+  
 
   return socket;
 };

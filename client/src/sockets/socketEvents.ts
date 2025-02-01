@@ -5,21 +5,20 @@ export const initSocketEvents = (
     socket: Socket | null,
     onMessageReceived: (message: Message) => void
 ) => {
-    // Ensure socket is valid
     if (!socket) {
-        return {
-            sendMessage: () => {
-                console.warn("Socket is not connected.");
-            },
-        };
+      return {
+        sendMessage: () => {
+          console.warn("Socket is not connected.");
+        },
+      };
     }
-
     // Remove any existing listener before adding a new one to prevent duplication
     socket.off("receive_message");
 
     // Listen for incoming messages
     socket.on("receive_message", (message: Message) => {
         // Determine recipient based on your client logic if needed
+        console.log("receive_message", message);;
         onMessageReceived(message);
     });
 
