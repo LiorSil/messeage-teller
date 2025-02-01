@@ -1,13 +1,11 @@
 import { useChatHeader } from "../../../hooks/useChatHeader";
+import useModifySubContacts from "../../../hooks/useModifySubContacts";
 import IconButton from "./IconButton";
 
 const ChatHeader = () => {
-  const {
-    isSmallScreen,
-    selectedChat,
-    handleReturnButtonClick,
-    deleteSubContact,
-  } = useChatHeader();
+  const { isSmallScreen, selectedChat, handleReturnButtonClick } =
+    useChatHeader();
+  const { handleModifyContact } = useModifySubContacts();
 
   return (
     <div className="sticky top-0 z-10 bg-app-palette-sap-green-light-+30">
@@ -38,7 +36,9 @@ const ChatHeader = () => {
           </div>
           <IconButton
             icon="garbage"
-            onClick={() => selectedChat && deleteSubContact(selectedChat)}
+            onClick={() =>
+              selectedChat && handleModifyContact(selectedChat._id, "delete")
+            }
           />
         </div>
 
