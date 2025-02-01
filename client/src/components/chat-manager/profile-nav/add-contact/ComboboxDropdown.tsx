@@ -28,4 +28,6 @@ const ComboboxDropdown: React.FC<ComboboxDropdownProps> = ({
   );
 };
 
-export default ComboboxDropdown;
+const MemoizedComboboxDropdown = React.memo(ComboboxDropdown);
+export default MemoizedComboboxDropdown;
+

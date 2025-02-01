@@ -16,7 +16,6 @@ const contactSlice = createSlice({
       if (action.payload) state.contact = action.payload;
     },
     updateName: (state, action: PayloadAction<string>) => {
-      console.log("action.payload", action.payload);
       state.contact!.name = action.payload;
     },
     ModifySubContact: (state, action: PayloadAction<SubContact>) => {
@@ -35,12 +34,10 @@ const contactSlice = createSlice({
     // * add sub contact
     builder.addCase(fetchModifySubContact.fulfilled, (state, action) => {
       const { actionType, subContact, subContactId } = action.payload;
-      console.log("action.payload", action.payload);
 
       if (state.contact?.subContacts) {
         if (actionType === "add" && subContact) {
           state.contact.subContacts.push(subContact);
-          console.log("state.contact.subContacts", state.contact.subContacts);
         } else if (actionType === "delete" && subContactId) {
           state.contact.subContacts = state.contact.subContacts.filter(
             (sub) => sub._id !== subContactId

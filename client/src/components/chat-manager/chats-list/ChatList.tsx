@@ -1,19 +1,10 @@
 import ChatListItems from "./ChatListItems";
-import {useContact} from "../../../hooks/useContact";
+import { useContact } from "../../../hooks/useContact";
 import { useChatManager } from "../../../hooks/useChatManager";
-import { useEffect, useState } from "react";
 
 const ChatList = () => {
   const { contact } = useContact();
   const { handleChatSelection } = useChatManager();
-
-  const [subContacts, setSubContacts] = useState(contact?.subContacts || []);
-  console.log("subContacts", subContacts);
-
-  useEffect(() => {
-    console.log("changed")
-    setSubContacts(contact?.subContacts || []);
-  }, [contact]);
 
   return (
     <>
