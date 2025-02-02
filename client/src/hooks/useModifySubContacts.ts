@@ -9,8 +9,9 @@ const useModifySubContacts = () => {
   const handleModifyContact = useCallback(
     (subContactId: string, actionType: "add" | "delete") => {
       dispatch(fetchModifySubContact({ subContactId, actionType }));
-      if (actionType === "add") dispatch(clearQuery());
-      alert(`subContact actionType: ${actionType} successfully`);
+      if (actionType === "add") 
+        dispatch(clearQuery());
+      
       
     },
     [dispatch]

@@ -1,12 +1,11 @@
-import { Action, createAsyncThunk } from "@reduxjs/toolkit";
+import {  createAsyncThunk } from "@reduxjs/toolkit";
 import {
   FetchModifySubContactParams,
   FetchModifySubContactResponse,
   SubContact,
-  SubContactId,
+  
 } from "../../types/subContact";
 import {
-  fetchModifySubContactParams,
   FetchContactByPhoneOrNameParams,
 } from "../../types/contact";
 import axiosInstance from "../../api/axiosInstance.ts";

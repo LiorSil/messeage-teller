@@ -9,18 +9,18 @@ import { useChatInput } from "./useChatInput";
 import { useContact } from "./useContact";
 import { initSocketEvents } from "../sockets/socketEvents";
 import { Contact } from "../types/contact";
-import { fetchModifySubContact } from "../redux/thunks/subContactThunks";
+import useModifySubContacts from "./useModifySubContacts";
 
 export const useChatSession = () => {
   const selectedChat = useSelector(
     (state: RootState) => state.chat.selectedChat
   );
-  const dispatch: AppDispatch = useDispatch();
   const socket = useSocket();
   const { contact } = useContact();
   const { newMessages, createMessageOnScreen } = useMessages();
   const createNotification = useNotification();
   const { inputValue, handleInputChange, clearInput } = useChatInput();
+  const { handleModifyContact } = useModifySubContacts();
 
   // Handle receiving messages from the server
   const receiveMessage = useCallback(
@@ -29,12 +29,7 @@ export const useChatSession = () => {
       if (message.fromId === selectedChat?._id) createMessageOnScreen(message);
       if (contact)
         if (!isSenderInSubContact(contact, message.fromId))
-          dispatch(
-            fetchModifySubContact({
-              subContactId: message.fromId,
-              actionType: "add",
-            })
-          );
+          handleModifyContact(message.fromId, "add");
 
       createNotification(message);
     },
