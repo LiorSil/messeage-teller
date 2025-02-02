@@ -37,7 +37,10 @@ const contactSlice = createSlice({
 
       if (state.contact?.subContacts) {
         if (actionType === "add" && subContact) {
-          state.contact.subContacts.push(subContact);
+          state.contact.subContacts.push({
+            ...subContact,
+            isIncomingMessage: true,
+          });
         } else if (actionType === "delete" && subContactId) {
           state.contact.subContacts = state.contact.subContacts.filter(
             (sub) => sub._id !== subContactId

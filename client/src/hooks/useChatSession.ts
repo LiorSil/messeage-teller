@@ -1,19 +1,21 @@
-import {useCallback} from "react";
-import {useSocket} from "./useSocket";
-import {useSelector} from "react-redux";
-import {RootState} from "../redux/store";
-import {Message} from "../types/message";
-import {useMessages} from "./useMessages";
-import {useNotification} from "./useNotification";
-import {useChatInput} from "./useChatInput";
-import {useContact} from "./useContact";
-import {initSocketEvents} from "../sockets/socketEvents";
+import { useCallback } from "react";
+import { useSocket } from "./useSocket";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "../redux/store";
+import { Message } from "../types/message";
+import { useMessages } from "./useMessages";
+import { useNotification } from "./useNotification";
+import { useChatInput } from "./useChatInput";
+import { useContact } from "./useContact";
+import { initSocketEvents } from "../sockets/socketEvents";
 import { Contact } from "../types/contact";
+import { fetchModifySubContact } from "../redux/thunks/subContactThunks";
 
 export const useChatSession = () => {
   const selectedChat = useSelector(
     (state: RootState) => state.chat.selectedChat
   );
+  const dispatch: AppDispatch = useDispatch();
   const socket = useSocket();
   const { contact } = useContact();
   const { newMessages, createMessageOnScreen } = useMessages();
@@ -25,8 +27,14 @@ export const useChatSession = () => {
     (message: Message) => {
       console.log("Received message!");
       if (message.fromId === selectedChat?._id) createMessageOnScreen(message);
-      if (!isSenderInSubContact(contact!!, message.fromId))
-        console.log("Received message from new subContact");
+      if (contact)
+        if (!isSenderInSubContact(contact, message.fromId))
+          dispatch(
+            fetchModifySubContact({
+              subContactId: message.fromId,
+              actionType: "add",
+            })
+          );
 
       createNotification(message);
     },
