@@ -14,7 +14,7 @@ export type ClientSubContact = Pick<
 // } & ClientSubContact;
 
 export interface ContactSubContact {
-    _id: Types.ObjectId;
+    subContactId: Types.ObjectId;
     name: string;
     phoneNumber: string;
     avatar?: string; // Avatar might be optional

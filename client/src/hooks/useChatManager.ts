@@ -33,9 +33,9 @@ export const useChatManager = () => {
   ) => {
     if (!contact) return;
     const updatedSubContacts = contact.subContacts.map((subContact) =>
-      subContact._id === selectedChat._id
+      subContact.subContactId === selectedChat.subContactId
         ? { ...subContact, isIncomingMessage: false }
-        : subContact,
+        : subContact
     );
 
     dispatch(updateContact({ ...contact, subContacts: updatedSubContacts }));
@@ -43,7 +43,7 @@ export const useChatManager = () => {
       dispatch(
         acknowledgeNotification({
           contactId: contact._id,
-          subContactId: selectedChat._id,
+          subContactId: selectedChat.subContactId,
         })
       );
     }

@@ -1,5 +1,5 @@
 import { IChat, IContact, IMessage } from "../interfaces/model.interfaces";
-import { ClientSubContact } from "../types/client.type";
+import { ClientSubContact, ContactSubContact } from "../types/client.type";
 import { mappedChatParticipants, Participant } from "../types/chat.type";
 import {
   getChatsByContactId,
@@ -8,7 +8,7 @@ import {
 
 import { isContactType } from "../utils/typeGuard";
 import { getOrCreateChat } from "../repositories/chat.repository";
-import { getContactByIdService, getContactSubContact } from "./contact.service";
+import {  getContactSubContact } from "./contact.service";
 import { Types } from "mongoose";
 
 /**
@@ -53,7 +53,7 @@ export const getChatByParticipants = async (
 
 export const sortSubContactsByLatestChats = async (
   contact: IContact
-): Promise<Array<ClientSubContact>> => {
+): Promise<Array<ContactSubContact>> => {
   // Step 1: Check if the input is a valid contact
   if (!isContactType(contact)) {
     throw new Error("Invalid contact type");
@@ -111,7 +111,7 @@ export const sortSubContactsByLatestChats = async (
     })
   );
 
-  return sortedSubContacts as ClientSubContact[];
+  return sortedSubContacts as Array<ContactSubContact>;
 };
 
 

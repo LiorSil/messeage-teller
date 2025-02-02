@@ -10,7 +10,7 @@ const getSelectedChatMessages = createAsyncThunk<
   try {
     const response = await axiosInstance.get(`/chats/chatsByParticipants`, {
       params: {
-        subContactId: subContact._id,
+        subContactId: subContact.subContactId,
       },
     });
     console.log("response", response.data);

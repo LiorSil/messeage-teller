@@ -11,10 +11,10 @@ export const useNotification = () => {
 
   return  (message: Message) => {
     const updatedSubContacts = contact?.subContacts.map(
-        (subContact: SubContact) =>
-            subContact._id === message.fromId
-                ? {...subContact, isIncomingMessage: true}
-                : subContact
+      (subContact: SubContact) =>
+        subContact.subContactId === message.fromId
+          ? { ...subContact, isIncomingMessage: true }
+          : subContact
     );
 
     const updatedContact = {...contact, subContacts: updatedSubContacts};

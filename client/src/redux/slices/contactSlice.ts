@@ -25,7 +25,7 @@ const contactSlice = createSlice({
   extraReducers: (builder) => {
     // * get contact
     builder.addCase(fetchContact.fulfilled, (state, action) => {
-      console.log("contact", action.payload);
+      console.log('fetchContact.fulfilled', action.payload);
       state.contact = action.payload;
     });
     builder.addCase(fetchContact.rejected, (state, action) => {
@@ -44,7 +44,7 @@ const contactSlice = createSlice({
           });
         } else if (actionType === "delete" && subContactId) {
           state.contact.subContacts = state.contact.subContacts.filter(
-            (sub) => sub._id !== subContactId
+            (sub) => sub.subContactId !== subContactId
           );
         }
       }

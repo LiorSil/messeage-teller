@@ -70,20 +70,38 @@ export const getContactSubContact = async (
   subContactId: Types.ObjectId
 ): Promise<ContactSubContact | null> => {
   const contact = await getContactById(contactId);
-  const subContactAsSubContact = contact?.subContacts.find((sc) =>
+
+  if (!contact || !contact.subContacts) {
+    return null;
+  }
+
+  const subContactData = contact.subContacts.find((sc) =>
     sc.subContactId.equals(subContactId)
   );
-  const subContactAsContact = await getContactById(subContactId);
-  if (!subContactAsSubContact || !subContactAsContact) return null;
-  const subContact: ContactSubContact = {
-    _id: subContactAsContact._id,
-    name: subContactAsContact.name,
-    phoneNumber: subContactAsContact.phoneNumber,
-    avatar: subContactAsContact.avatar,
-    lastMessageTime: subContactAsSubContact.lastMessageTime,
-    isIncomingMessage: subContactAsSubContact.isIncomingMessage as boolean,
-  };
-  return subContact;
+
+  if (!subContactData) {
+    return null;
+  }
+
+  try {
+    const subContactAsContact = await getContactById(subContactId);
+    if (!subContactAsContact) {
+      return null; 
+    }
+    const subContact: ContactSubContact = {
+      phoneNumber: subContactAsContact.phoneNumber,
+      avatar: subContactAsContact.avatar,
+      name: subContactAsContact.name,
+      subContactId: subContactData.subContactId,
+      lastMessageTime: subContactData.lastMessageTime,
+      isIncomingMessage: subContactData.isIncomingMessage as boolean,
+    };
+
+    return subContact;
+  } catch (error) {
+    console.error("Error fetching subcontact details:", error);
+    return null; // Handle the error appropriately
+  }
 };
 
 export const buildClientContactDataService = async (contact: IContact) => {

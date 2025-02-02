@@ -46,7 +46,7 @@ const markIncomingMessages = (
   const notificationsSet = new Set(notificationsIds.contactNotifications);
   const updatedSubContacts = subContacts.map((subContact) => ({
     ...subContact,
-    sIncomingMessage: notificationsSet.has(subContact._id),
+    sIncomingMessage: notificationsSet.has(subContact.subContactId),
   }));
   return updatedSubContacts;
 };

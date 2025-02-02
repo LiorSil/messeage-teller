@@ -32,12 +32,15 @@ const ChatHeader = () => {
             <h2 className="text-lg font-semibold text-gray-800 leading-none">
               {selectedChat?.name}
             </h2>
-            <span className="text-sm text-gray-500">{selectedChat?._id}</span>
+            <span className="text-sm text-gray-500">
+              {selectedChat?.subContactId}
+            </span>
           </div>
           <IconButton
             icon="garbage"
             onClick={() =>
-              selectedChat && handleModifyContact(selectedChat._id, "delete")
+              selectedChat &&
+              handleModifyContact(selectedChat.subContactId, "delete")
             }
           />
         </div>

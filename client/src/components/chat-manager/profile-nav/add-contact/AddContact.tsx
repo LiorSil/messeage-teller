@@ -53,13 +53,13 @@ const AddContact = () => {
             }
           }}
         >
-          {potentialSubContacts.map((item, index) => {
+          {potentialSubContacts.map((subContact, index) => {
             return (
               <ComboboxItem
                 key={index}
-                text={item.name}
-                isSelected={item._id === selectedItem}
-                onClick={() => handleItemClick(item._id)}
+                text={subContact.name}
+                isSelected={subContact.subContactId === selectedItem}
+                onClick={() => handleItemClick(subContact.subContactId)}
               />
             );
           })}

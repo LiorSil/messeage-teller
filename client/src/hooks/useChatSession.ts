@@ -26,14 +26,14 @@ export const useChatSession = () => {
   const receiveMessage = useCallback(
     (message: Message) => {
       console.log("Received message!");
-      if (message.fromId === selectedChat?._id) createMessageOnScreen(message);
+      if (message.fromId === selectedChat?.subContactId) createMessageOnScreen(message);
       if (contact)
         if (!isSenderInSubContact(contact, message.fromId))
           handleModifyContact(message.fromId, "add");
 
       createNotification(message);
     },
-    [selectedChat?._id, createMessageOnScreen, createNotification]
+    [selectedChat?.subContactId, createMessageOnScreen, createNotification]
   );
 
   // Initialize socket events with message receiving logic
@@ -44,7 +44,7 @@ export const useChatSession = () => {
 
     const message: Message = {
       fromId: contact?._id || "",
-      toId: selectedChat?._id || "",
+      toId: selectedChat?.subContactId || "",
       content: inputValue.trim(),
       sentTD: new Date(),
     };
@@ -61,7 +61,7 @@ export const useChatSession = () => {
   ]);
 
   const isSenderInSubContact = (contact: Contact, sender: string): boolean => {
-    const subContactsIds = contact.subContacts.map((sc) => sc._id);
+    const subContactsIds = contact.subContacts.map((sc) => sc.subContactId);
     console.log("sender:", sender, "typeof: ", typeof sender);
     if (subContactsIds.some((scId) => scId === sender)) return true;
     else return false;
