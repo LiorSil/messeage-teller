@@ -18,14 +18,18 @@ const contactSlice = createSlice({
     updateName: (state, action: PayloadAction<string>) => {
       state.contact!.name = action.payload;
     },
-    ModifySubContact: (state, action: PayloadAction<SubContact>) => {
+    modifySubContact: (state, action: PayloadAction<SubContact>) => {
       state.contact?.subContacts.push(action.payload);
     },
+    clearContactState: (state) => {
+      state.contact = initialState.contact;
+      state.error = initialState.error;
+      state.potentialSubContacts = initialState.potentialSubContacts;
+    }
   },
   extraReducers: (builder) => {
     // * get contact
     builder.addCase(fetchContact.fulfilled, (state, action) => {
-      console.log('fetchContact.fulfilled', action.payload);
       state.contact = action.payload;
     });
     builder.addCase(fetchContact.rejected, (state, action) => {
@@ -64,6 +68,6 @@ const contactSlice = createSlice({
 });
 
 export { fetchContact, fetchModifySubContact, fetchContactByPhoneOrName };
-export const { updateContact, updateName, ModifySubContact } =
+export const { updateContact, updateName, modifySubContact, clearContactState } =
   contactSlice.actions;
 export default contactSlice.reducer;

@@ -25,7 +25,7 @@ const acknowledgeNotification = createAsyncThunk<
   "contact/acknowledgeNotification",
   async ({ contactId, subContactId }, { rejectWithValue }) => {
     try {
-      const resp = await axiosInstance.put(
+          const resp = await axiosInstance.put(
         "/notifications/acknowledgeNotification",
         {
           contactId,
@@ -44,7 +44,7 @@ const markIncomingMessages = (
   subContacts: SubContact[]
 ): SubContact[] => {
   const notificationsSet = new Set(notificationsIds.contactNotifications);
-  const updatedSubContacts = subContacts.map((subContact) => ({
+   const updatedSubContacts = subContacts.map((subContact) => ({
     ...subContact,
     sIncomingMessage: notificationsSet.has(subContact.subContactId),
   }));

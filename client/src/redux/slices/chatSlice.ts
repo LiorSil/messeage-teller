@@ -11,8 +11,15 @@ const chatSlice = createSlice({
       state.inputValue = action.payload;
     },
     toggleChatManagerView: (state) => {
+      
       state.isChatMangerView = !state.isChatMangerView;
     },
+    clearChatState: (state) => {
+      state.inputValue = initialState.inputValue;
+      state.selectedChat = initialState.selectedChat;
+      state.messages= initialState.messages;
+    }
+    
   },
   extraReducers: (builder) => {
     builder.addCase(getSelectedChatMessages.fulfilled, (state, action) => {
@@ -26,5 +33,6 @@ const chatSlice = createSlice({
   },
 });
 
-export const { updateInputValue, toggleChatManagerView } = chatSlice.actions;
+export const { updateInputValue, toggleChatManagerView, clearChatState } =
+  chatSlice.actions;
 export default chatSlice.reducer;

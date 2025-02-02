@@ -17,6 +17,7 @@ const subContactsFinderSlice = createSlice({
     clearQuery: (state) => {
       state.query = "";
     },
+    
   },
 });
 

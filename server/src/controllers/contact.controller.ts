@@ -50,7 +50,7 @@ export const findContactsByQuery = async (
   }
 };
 
-export const ModifySubContact = async (
+export const modifySubContact = async (
   req: Request,
   res: Response
 ): Promise<void> => {
@@ -58,7 +58,10 @@ export const ModifySubContact = async (
     const { contact, subContactId, actionType } = req.body;
 
     if (actionType == "add") {
-      const newSubContact = await addSubContactService(contact._id, subContactId);
+      const newSubContact = await addSubContactService(
+        contact._id,
+        subContactId
+      );
       if (!newSubContact)
         res.status(404).json({ message: "Sub contact not found" });
 
