@@ -3,8 +3,8 @@ import { IContact } from "../interfaces/model.interfaces";
 import { getContactById, updateNotification } from "../repositories/contact.repository";
 
 export const pushNotificationService = async (
-  contactId: Pick<IContact, "_id">,
-  subContactId: Pick<IContact, "_id">
+  contactId: Types.ObjectId,
+  subContactId: Types.ObjectId
 ): Promise<IContact | null> => {
   const contact = await getContactById(contactId);
   if (!contact) return null;
@@ -18,8 +18,8 @@ export const pushNotificationService = async (
 };
 
 export const pullNotificationService = async (
-  contactId: Pick<IContact, "_id">,
-  subContactId: Pick<IContact, "_id">
+  contactId: Types.ObjectId,
+  subContactId: Types.ObjectId
 ): Promise<IContact | null> => {
   const contact = await getContactById(contactId);
   if (!contact) return null;

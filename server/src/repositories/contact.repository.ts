@@ -21,7 +21,7 @@ export const createContact = async (
  * @returns {Promise<IContact | null>} - Returns the contact document or null if not found.
  */
 export const getContactById = async (
-  contactId: Pick<IContact, "_id">
+  contactId: Types.ObjectId
 ): Promise<IContact | null> => {
   try {
     return await contactModel.findById(contactId).lean().exec();
@@ -30,7 +30,6 @@ export const getContactById = async (
     throw new Error("Failed to retrieve contact.");
   }
 };
-
 
 /**
  * Retrieves a contact document by its phone number.
@@ -48,13 +47,14 @@ export const getContactByPhoneNumber = async (
   }
 };
 
-
 /**
  * Retrieves contact documents by name using a case-insensitive regex search.
  * @param name - The name to search for.
  * @returns {Promise<IContact[]>} - Returns an array of contact documents.
  */
-export const getContactsByName = async (name: Pick<IContact, "name">): Promise<IContact[]> => {
+export const getContactsByName = async (
+  name: Pick<IContact, "name">
+): Promise<IContact[]> => {
   try {
     return await contactModel
       .find({ name: { $regex: name, $options: "i" } })
@@ -71,7 +71,9 @@ export const getContactsByName = async (name: Pick<IContact, "name">): Promise<I
  * @param query - The query to search for (phone number or name).
  * @returns {Promise<IContact[]>} - Returns an array of contact documents.
  */
-export const getContactsByQuery = async (query: string): Promise<IContact[]> => {
+export const getContactsByQuery = async (
+  query: string
+): Promise<IContact[]> => {
   try {
     const isPhoneNumber = await phoneNumberSchema
       .validate(query)
@@ -89,7 +91,6 @@ export const getContactsByQuery = async (query: string): Promise<IContact[]> => 
   }
 };
 
-
 /**
  * Retrieves all contact documents.
  * @returns {Promise<IContact[]>} - Returns an array of all contact documents.
@@ -103,7 +104,6 @@ export const getContacts = async (): Promise<IContact[]> => {
   }
 };
 
-
 /**
  * Updates a contact document with the provided update data.
  * @param contactId - The ID of the contact document to update.
@@ -111,7 +111,7 @@ export const getContacts = async (): Promise<IContact[]> => {
  * @returns {Promise<IContact | null>} - Returns the updated contact document or null if not found.
  */
 export const updateContact = async (
-  contactId: Pick<IContact, "_id">,
+  contactId: Types.ObjectId,
   updateData: Partial<IContact>
 ): Promise<IContact | null> => {
   try {
@@ -131,8 +131,8 @@ export const updateContact = async (
  * @returns {Promise<IContact | null>} - Returns the updated contact document or null if the sub-contact already exists.
  */
 export const addSubContact = async (
-  contactId: Pick<IContact, "_id">,
-  subContactId: Pick<IContact, "_id">
+  contactId: Types.ObjectId,
+  subContactId: Types.ObjectId
 ): Promise<IContact | null> => {
   try {
     const subContactExists = await isSubContactExist(contactId, subContactId);
@@ -158,7 +158,7 @@ export const addSubContact = async (
  * @returns {Promise<IContact | null>} - Returns the deleted contact document or null if not found.
  */
 export const deleteContact = async (
-  contactId: Pick<IContact, "_id">
+  contactId: Types.ObjectId
 ): Promise<IContact | null> => {
   try {
     return await contactModel.findByIdAndDelete(contactId).lean().exec();
@@ -176,8 +176,8 @@ export const deleteContact = async (
  * @returns {Promise<IContact | null>} - Returns the updated contact document or null if not found.
  */
 export const updateNotification = async (
-  contactId: Pick<IContact, "_id">, 
-  subContactId:  Pick<IContact, "_id"> ,
+  contactId: Types.ObjectId,
+  subContactId: Types.ObjectId,
   isIncomingMessage: boolean
 ): Promise<IContact | null> => {
   try {

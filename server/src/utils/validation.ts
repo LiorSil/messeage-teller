@@ -23,8 +23,8 @@ export const phoneNumberSchema = yup
  */
 
 export const isSubContactExist = async (
-  contactId: Pick<IContact, "_id">,
-  subContactId: Pick<IContact, "_id">
+  contactId: Types.ObjectId,
+  subContactId: Types.ObjectId
 ): Promise<boolean> => {
   const existingContact = await contactModel.findOne({
     _id: contactId,

@@ -19,7 +19,7 @@ interface IChat extends Document {
 } 
 interface ISubContact {
   _id: Types.ObjectId;
-  subContactId: Pick<IContact, "_id">;
+  subContactId: Types.ObjectId;
   lastMessageTime: Date;
   isIncomingMessage?: boolean;
 }
@@ -44,8 +44,8 @@ interface IUser extends Document {
 
 interface INotification {
   _id: Types.ObjectId;
-  contactId: Pick<IContact, "_id">;
-  contactNotifications: Array<Pick<IContact, "_id">>;
+  contactId: Types.ObjectId;
+  contactNotifications: Array<Types.ObjectId>;
 }
 
 export { IMessage, IChat,  ISubContact, IContact,  IUser, INotification };

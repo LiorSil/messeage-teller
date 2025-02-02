@@ -18,7 +18,6 @@ export const handleSendMessage = debounce(
         sender,
       ] as Array<Participant>);
       await createMessageService(chat._id, message);
-
       await pushNotificationService(recipient, sender);
       io.to(recipient.toString()).emit("receive_message", message);
     } catch (error) {

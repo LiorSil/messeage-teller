@@ -1,5 +1,5 @@
-import { IContact } from "../interfaces/model.interfaces";
-import { ClientSubContact } from "../types/client.type";
+import { IContact, ISubContact } from "../interfaces/model.interfaces";
+import { ClientSubContact, ContactSubContact } from "../types/client.type";
 import { sortSubContactsByLatestChats } from "./chat.service";
 import {
   createContact,
@@ -8,6 +8,7 @@ import {
   addSubContact,
   getContactById,
 } from "../repositories/contact.repository";
+import { Types } from "mongoose";
 
 export const createContactService = async (
   contactData: Partial<IContact>
@@ -22,15 +23,15 @@ export const getContactsByQueryService = async (
 };
 
 export const updateContactService = async (
-  contactId: Pick<IContact, "_id">,
+  contactId: Types.ObjectId,
   updateData: Partial<IContact>
 ): Promise<IContact | null> => {
   return await updateContact(contactId, updateData);
 };
 
 export const addSubContactService = async (
-  contactId: Pick<IContact, "_id">,
-  subContactId: Pick<IContact, "_id">
+  contactId: Types.ObjectId,
+  subContactId: Types.ObjectId
 ): Promise<ClientSubContact | null> => {
   await addSubContact(contactId, subContactId);
   return await getContactByIdService(subContactId);
@@ -38,7 +39,7 @@ export const addSubContactService = async (
 
 export const deleteSubContact = async (
   contact: IContact,
-  subContactId: Pick<IContact, "_id">
+  subContactId: Types.ObjectId
 ): Promise<ClientSubContact | null> => {
   contact.subContacts = contact.subContacts.filter(
     (subContact) =>
@@ -49,7 +50,7 @@ export const deleteSubContact = async (
 };
 
 export const getContactByIdService = async (
-  subContactId: Pick<IContact, "_id">
+  subContactId: Types.ObjectId
 ): Promise<ClientSubContact | null> => {
   const fullSubContact = await getContactById(subContactId);
   if (!fullSubContact) return null;
@@ -62,6 +63,27 @@ export const getContactByIdService = async (
     phoneNumber,
     avatar,
   };
+};
+
+export const getContactSubContact = async (
+  contactId: Types.ObjectId,
+  subContactId: Types.ObjectId
+): Promise<ContactSubContact | null> => {
+  const contact = await getContactById(contactId);
+  const subContactAsSubContact = contact?.subContacts.find((sc) =>
+    sc.subContactId.equals(subContactId)
+  );
+  const subContactAsContact = await getContactById(subContactId);
+  if (!subContactAsSubContact || !subContactAsContact) return null;
+  const subContact: ContactSubContact = {
+    _id: subContactAsContact._id,
+    name: subContactAsContact.name,
+    phoneNumber: subContactAsContact.phoneNumber,
+    avatar: subContactAsContact.avatar,
+    lastMessageTime: subContactAsSubContact.lastMessageTime,
+    isIncomingMessage: subContactAsSubContact.isIncomingMessage as boolean,
+  };
+  return subContact;
 };
 
 export const buildClientContactDataService = async (contact: IContact) => {

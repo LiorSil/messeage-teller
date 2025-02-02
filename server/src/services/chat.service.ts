@@ -8,7 +8,7 @@ import {
 
 import { isContactType } from "../utils/typeGuard";
 import { getOrCreateChat } from "../repositories/chat.repository";
-import { getContactByIdService } from "./contact.service";
+import { getContactByIdService, getContactSubContact } from "./contact.service";
 import { Types } from "mongoose";
 
 /**
@@ -77,11 +77,9 @@ export const sortSubContactsByLatestChats = async (
     }
   );
 
-
   if (!chats || chats.length === 0) {
     return [];
   }
-
 
   // Step 3: Process all participants in the chats and extract the last message time for each chat
   const processedParticipants: mappedChatParticipants[] = chats.flatMap(
@@ -105,7 +103,7 @@ export const sortSubContactsByLatestChats = async (
   // Step 5: Fetch sub-contacts by ID and return the result with lastMessageTime
   const sortedSubContacts = await Promise.all(
     processedParticipants.map(async ({ subContactId, lastMessageTime }) => {
-      const mSubContact = await getContactByIdService(subContactId);
+      const mSubContact = await getContactSubContact(contact._id, subContactId);
       return {
         ...mSubContact,
         lastMessageTime,
@@ -115,3 +113,5 @@ export const sortSubContactsByLatestChats = async (
 
   return sortedSubContacts as ClientSubContact[];
 };
+
+

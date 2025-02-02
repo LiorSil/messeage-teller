@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { initialState } from "../states/contactState";
 import { Contact } from "../../types/contact";
 import { fetchContact } from "../thunks/contactThunks";
-import { SubContact, SubContactId } from "../../types/subContact";
+import { SubContact } from "../../types/subContact";
 import {
   fetchModifySubContact,
   fetchContactByPhoneOrName,
@@ -25,6 +25,7 @@ const contactSlice = createSlice({
   extraReducers: (builder) => {
     // * get contact
     builder.addCase(fetchContact.fulfilled, (state, action) => {
+      console.log("contact", action.payload);
       state.contact = action.payload;
     });
     builder.addCase(fetchContact.rejected, (state, action) => {
