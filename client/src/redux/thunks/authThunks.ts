@@ -34,10 +34,13 @@ const loginUser = createAsyncThunk<
     "auth/loginUser",
     async (userData, {rejectWithValue}) => {
         try {
-            const response = await axiosInstance.post<LoginUserResponse>('/auth/login', userData);
-            return response.data;
-        } catch (error) {
-            return handleAxiosError<any>(error, rejectWithValue);
+          const response = await axiosInstance.post<LoginUserResponse>(
+            "/auth/login",
+            userData
+          );
+          return response.data;
+        } catch (error: any) {
+          return handleAxiosError<any>(error, rejectWithValue);
         }
     }
 );
