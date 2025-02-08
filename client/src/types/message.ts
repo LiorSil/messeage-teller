@@ -3,7 +3,7 @@ export type Message = {
   content: string;
   fromId: string;
   toId: string;
-  sentTD: Date;
+  sentTD: Date | string;
 };
 
 

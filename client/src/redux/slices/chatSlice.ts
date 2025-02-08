@@ -24,6 +24,7 @@ const chatSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getSelectedChatMessages.fulfilled, (state, action) => {
       state.messages = action.payload?.messages || [];
+     
       state.selectedChat = action.payload.selectedChat;
     });
     builder.addCase(getSelectedChatMessages.rejected, (state, _) => {

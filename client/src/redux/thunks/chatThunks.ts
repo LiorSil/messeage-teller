@@ -8,12 +8,14 @@ const getSelectedChatMessages = createAsyncThunk<
   FetchChatsArgs
 >("chat/getContactChats", async ({ subContact }, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.get(`/chats/chatsByParticipants`, {
-      params: {
-        subContactId: subContact.subContactId,
-      },
-    });
-    console.log("response", response.data);
+    const response = await axiosInstance.get<any>(
+      `/chats/chatsByParticipants`,
+      {
+        params: {
+          subContactId: subContact.subContactId,
+        },
+      }
+    );
 
     return {
       messages: response.data.messages,

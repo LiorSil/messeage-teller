@@ -85,7 +85,7 @@ export const sortSubContactsByLatestChats = async (
   const processedParticipants: mappedChatParticipants[] = chats.flatMap(
     (chat) => {
       const lastMessage = chat.messages[chat.messages.length - 1];
-      const lastMessageTime = lastMessage?.sentTD || new Date(0);
+        const lastMessageTime = lastMessage?.sentTD || new Date(0);
       return chat.participants
         .filter((participant) => !participant.equals(contact._id))
         .map((subContactId) => ({

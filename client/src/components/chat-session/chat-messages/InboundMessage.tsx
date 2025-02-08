@@ -6,18 +6,24 @@ interface InboundMessageProps {
 }
 
 const InboundMessage: React.FC<InboundMessageProps> = ({ message }) => {
+
+  const date = new Date(message.sentTD);
+  const time = date.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
   return (
     <div className="chat-message">
       <div className="flex items-end justify-end">
-        <div
-          className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end 
-        
-        "
-        >
+        <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end">
           <div>
-            <span className="px-4 py-2 rounded-xl rounded-br-none inline-block bg-blue-600 text-white text-lg  border-2 border-black">
+            <p className="px-2  rounded-xl rounded-br-none inline-block bg-app-palette-sap-green-light--20 text-white text-lg border-2 border-black">
               {message.content}
-            </span>
+              <br />
+              <p className="text-app-palette-grey-green-light-+40 text-sm leading-6">
+                {time}
+              </p>
+            </p>
           </div>
         </div>
         <img
