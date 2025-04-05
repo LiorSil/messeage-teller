@@ -1,7 +1,7 @@
 import  { useEffect, useState } from "react";
-import { ReactComponent as SaveIcon } from "../../../../assets/icons/Save.svg";
-import IconButtonWrapper from "../../../../shared/IconButtonWrapper";
-import Button from "../../../../shared/Button";
+import { ReactComponent as SaveIcon } from "../../../../../assets/icons/Save.svg";
+import IconButtonWrapper from "../../../../../shared/IconButtonWrapper";
+import Button from "../../../../../shared/Button";
 
 type Props = {
   onClick?: () => void;

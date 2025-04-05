@@ -1,5 +1,5 @@
-import { ReactComponent as EditIcon } from "../../../../assets/icons/Edit.svg";
-import IconButtonWrapper from "../../../../shared/IconButtonWrapper";
+import { ReactComponent as EditIcon } from "../../../../../assets/icons/Edit.svg";
+import IconButtonWrapper from "../../../../../shared/IconButtonWrapper";
 
 type Props = {
   onClick?: () => void;

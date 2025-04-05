@@ -1,12 +1,12 @@
 import React from "react";
 import EditIconButton from "./EditIconButton";
 
-type ProfileViewProps = {
+type NameViewProps = {
   name: string;
   onEditClick: () => void;
 };
 
-const ProfileView: React.FC<ProfileViewProps> = ({ name, onEditClick }) => {
+const NameView: React.FC<NameViewProps> = ({ name, onEditClick }) => {
   return (
     <div className="flex items-center justify-between">
       <div className="ml-2 text-xl">{name}</div>
@@ -15,4 +15,4 @@ const ProfileView: React.FC<ProfileViewProps> = ({ name, onEditClick }) => {
   );
 };
 
-export default ProfileView;
+export default NameView;

@@ -2,7 +2,7 @@ import React from "react";
 import CancelIconButton from "./CancelIconButton";
 import SaveIconButton from "./SaveIconButton";
 
-type ProfileEditProps = {
+type NameEditProps = {
   name: string;
   isNameValid: boolean;
   onNameChange: (name: string) => void;
@@ -10,7 +10,7 @@ type ProfileEditProps = {
   onSaveClick: () => void;
 };
 
-const ProfileEdit: React.FC<ProfileEditProps> = ({
+const NameEdit: React.FC<NameEditProps> = ({
   name,
   isNameValid,
   onNameChange,
@@ -33,4 +33,4 @@ const ProfileEdit: React.FC<ProfileEditProps> = ({
   );
 };
 
-export default ProfileEdit;
+export default NameEdit;

@@ -7,7 +7,7 @@ import Drawer from "./Drawer";
 import DrawerMenuLink from "./DrawerMenuLink";
 import AddContact from "../add-contact/AddContact.tsx"; // Import your components
 import SignOut from "../sign-out/SignOut";
-import Profile from "../profile/Profile";
+import Profile from "../profile/Profile.tsx";
 
 const NavBar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);

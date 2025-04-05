@@ -1,9 +1,9 @@
 import React from "react";
 import {useContact} from "../../../../hooks/useContact";
+import Avatar from "../../../../shared/Avatar";
 
 const UserProfile: React.FC = () => {
   const { contact, error } = useContact();
-
 
   if (error) {
     return (
@@ -13,17 +13,14 @@ const UserProfile: React.FC = () => {
     );
   }
 
+
   return (
-    <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse">
-      <img
-        src={contact?.avatar || "https://flowbite.com/docs/images/logo.svg"}
-        className="w-14 h-14 rounded-full border-2 border-black object-cover object-center"
-        alt={contact?.name || "UserProfile Logo"}
-      />
-      <span className="self-center md:text-xl lg:text-2xl font-semibold whitespace-nowrap text-white">
-        {contact?.name || "Guest"}
-      </span>
-    </a>
+    <Avatar
+      href="#"
+      avatarUrl={contact?.avatar}
+      name={contact?.name}
+      size={14} 
+    />
   );
 };
 

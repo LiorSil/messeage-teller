@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { ReactComponent as CancelIcon } from "../../../../assets/icons/Cancel.svg";
-import IconButtonWrapper from "../../../../shared/IconButtonWrapper";
-import Button from "../../../../shared/Button"; // Import a regular Button component
+import { ReactComponent as CancelIcon } from "../../../../../assets/icons/Cancel.svg";
+import IconButtonWrapper from "../../../../../shared/IconButtonWrapper";
+import Button from "../../../../../shared/Button"; // Import a regular Button component
 
 type CancelIconButtonProps = {
   onClick?: () => void;
